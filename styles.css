@@ -1,0 +1,224 @@
+.registerBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-image: url(./images/back.png);
+    background-size: center;
+    background-attachment: fixed;
+    animation: scrollBackground 120s linear infinite;
+    font-family: Arial, sans-serif;
+}
+
+.homeBody {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2D283E;
+}
+
+.dynamic-island {
+    position: fixed;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #802BB1;
+    color: #ffffff;
+    border-radius: 50px;
+    padding: 15px 30px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.6);
+}
+
+.island-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-content {
+    margin-top: 100px; /* Ensure content is below the fixed island */
+    padding: 20px;
+}
+
+@keyframes scrollBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    33% {
+        background-position: 100% 100%;
+    }
+
+    66% {
+        background-position: 0% 100%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.login-container {
+    position: relative;
+    transition-duration: 0.5s;
+    padding: 150px;
+    background-color: #2D283E;
+    border-radius: 10px;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
+    margin-top: -75px;
+}
+
+.title {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-variant: small-caps;
+    transition-duration: 0.5s;
+    font-size: 35px;
+    text-align: center;
+    color: #802BB1;
+    position: relative;
+    top: -65px;
+}
+
+input[type="email"],
+input[type="username"],
+input[type="password"] {
+    transition-duration: 0.5s;
+    width: 100%;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    font-size: 15px;
+    padding: 10px;
+    margin: 7px;
+    border: 3px solid #564F6F;
+    border-radius: 5px;
+}
+
+input[type="email"]::placeholder,
+input[type="username"]::placeholder,
+input[type="password"]::placeholder {
+    transition-duration: 0.2s;
+    color: #D1D7E0;
+}
+
+input[type="email"]:focus::placeholder,
+input[type="username"]:focus::placeholder,
+input[type="password"]:focus::placeholder {
+    color: #4C495D;
+}
+
+input[type="email"]:hover::placeholder,
+input[type="username"]:hover::placeholder,
+input[type="password"]:hover::placeholder {
+    transition-duration: 0.2s;
+    color: #564F6F;
+}
+
+input[type="email"]:hover,
+input[type="username"]:hover,
+input[type="password"]:hover {
+    transition-duration: 0.2s;
+    background-color: #564F6F;
+}
+
+input[type="submit"] {
+    transition-duration: 0.5s;
+    position: absolute;
+    top: 85%;
+    font-size: 15px;
+    width: 35%;
+    padding: 7.5px;
+    margin: 7px;
+    background-color: #802BB1;
+    color: #D1D7E0;
+    border: 3px solid #802BB1;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    transition-duration: 0.5s;
+    background-color: #802bb1c0;
+    color: #D1D7E0;
+    border: 3px solid #802bb100;
+    border-radius: 5px;
+}
+
+input[type="submit"]:not(:hover) {
+    transition-duration: 0.5s;
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 1000px) {
+    .login-container {
+        transition-duration: 0.5s;
+        padding: 100px;
+    }
+
+    .title {
+        transition-duration: 0.5s;
+        font-size: 35px;
+        position: relative;
+        top: -35px;
+    }
+}
+
+@media (max-width: 500px) {
+    .login-container {
+        transition-duration: 0.5s;
+        padding: 30px 40px 100px;
+    }
+
+    .title {
+        transition-duration: 0.5s;
+        font-size: 35px;
+        position: relative;
+        top:-5px;
+    }
+
+    input[type="submit"] {
+        transition-duration: 0.5s;
+        margin-top: -5px;
+        width: 50%;
+    }
+
+    input[type="email"],
+    input[type="username"],
+    input[type="password"] {
+        transition-duration: 0.5s;
+        margin: 7px;
+    }
+}
+
+@media (max-height: 700px) {
+    .login-container {
+        transition-duration: 0.5s;
+        padding: 30px 40px 100px;
+    }
+
+    .title {
+        transition-duration: 0.5s;
+        font-size: 35px;
+        position: relative;
+        top:-5px;
+    }
+
+    input[type="submit"] {
+        transition-duration: 0.5s;
+        margin-top: -5px;
+        width: 50%;
+    }
+
+    input[type="email"],
+    input[type="username"],
+    input[type="password"] {
+        transition-duration: 0.5s;
+        margin: 7px;
+    }
+}
