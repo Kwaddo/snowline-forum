@@ -3,6 +3,8 @@ body {
     background-color: #2D283E;
 }
 
+/* --- DYNAMIC ISLAND STYLES --- */
+
 .dynamic-island {
     position: fixed;
     top: 35px;
@@ -33,16 +35,28 @@ body {
     width: 1.6rem;
 }
 
+/* --- END --- */
+
+
+
+/* --- TITLE STYLES --- */
+
 #title {
     color: #802BB1;
-    font-family:fantasy ;
+    font-family: fantasy;
     font-weight: 100;
     text-align: center;
     margin-top: 15rem;
     font-size: 10rem;
 }
 
-.containers{
+/* --- END --- */
+
+
+
+/* --- FILTERS AND POSTS STYLES --- */
+
+.containers {
     display: flex;
     flex-direction: column;
     margin-top: 200px;
@@ -80,13 +94,19 @@ body {
     display: flex;
     color: #D1D7E0;
     flex-direction: column;
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
 }
 
-/* scroll bar */
+/* --- END --- */
+
+
+
+/* --- SCROLL BAR STYLES --- */
 
 html::-webkit-scrollbar {
     width: 0.4vw;
-    
 }
 
 html::-webkit-scrollbar-thumb {
@@ -102,10 +122,173 @@ html::-webkit-scrollbar-track {
     background-color: #48355E;
 }
 
+/* --- END --- */
 
-/* ----- Media ----- */
 
-@media (max-width:1024px) {
+
+/* --- LOGIN POPUP STYLES --- */
+
+input[type="email"],
+input[type="password"] {
+    transition-duration: 0.5s;
+    width: 80%;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    font-size: 15px;
+    padding: 10px;
+    margin: 7px;
+    border: 3px solid #564F6F;
+    border-radius: 5px;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    transition-duration: 0.2s;
+    color: #D1D7E0;
+}
+
+input[type="email"]:focus::placeholder,
+input[type="password"]:focus::placeholder {
+    color: #4C495D;
+}
+
+input[type="email"]:hover::placeholder,
+input[type="password"]:hover::placeholder {
+    transition-duration: 0.2s;
+    color: #564F6F;
+}
+
+input[type="email"]:hover,
+input[type="password"]:hover {
+    transition-duration: 0.2s;
+    background-color: #564F6F;
+}
+
+input[type="submit"] {
+    transition-duration: 0.5s;
+    font-size: 15px;
+    width: 60%;
+    padding: 10px;
+    margin-top: 50px;
+    background-color: #802BB1;
+    color: #D1D7E0;
+    border: 3px solid #802BB1;
+    border-radius: 2rem;
+    cursor: pointer;    
+}
+
+input[type="submit"]:hover {
+    transition-duration: 0.5s;
+    background-color: #802bb1c0;
+    color: #D1D7E0;
+    border: 3px solid #802bb100;
+    border-radius: 5px;
+}
+
+input[type="submit"]:not(:hover) {
+    transition-duration: 0.5s;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#popup:target {
+    display: flex;
+}
+
+.popup-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    transition-duration: 0.5s;
+    width: 40vw;
+    height: 70vh;
+    background-color: #2D283E;
+    border-radius: 10px;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
+    margin-top: -75px;
+}
+
+#popup:target .popup-content {
+    display: block;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+#popup:not(:target) .popup-content {
+    animation: slideFadeOut 0.5s forwards;
+}
+
+.logtitle {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-variant: small-caps;
+    transition-duration: 0.5s;
+    font-size: 2.5em;
+    text-align: center;
+    color: #802BB1;
+    margin-top: 90px;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin-top: 10vh;
+}
+
+.popup-close {
+    position: absolute;
+    top: 0;
+    right: 16px;
+    text-decoration: none;
+    color: #802BB1;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+    transition: opacity 0.5s;
+}
+
+.popup-close img {
+    width: 25px;
+    height: 25px;
+}
+
+/* --- END --- */
+
+
+
+/* --- MEDIA QUERIES --- */
+
+/* -- 4K -- */
+@media (min-width: 1500px) {
+    .popup-content {
+        height: 48vh;
+        width: 30vw;
+    }
+
+    .logtitle {
+        font-size: 3.2em;
+    }
+    
+    .loginForm {
+        margin-top: 10vh;
+    }
+}
+
+/* -- LAPTOP 1024PX -- */
+@media (max-width:1024px) { 
     #title {
         font-size: 110px;
     }
@@ -114,7 +297,7 @@ html::-webkit-scrollbar-track {
         height: 1.5rem;
         width: 1.5rem;
     }
-    
+
     .profile-icon {
         height: 1.2rem;
         width: 1.2rem;
@@ -134,37 +317,17 @@ html::-webkit-scrollbar-track {
     }
 }
 
-/*
-@media (max-width:960px) {
-    .containers {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
-    }
-
-    .filters {
-        position: static;
-        width: 70%;
-        height: 200px;
-    }
-
-    .posts {
-        width: 70%;
-    }
-
-    .post {
-        width: 80%;
-        margin-top: 1.5rem;
-    }
-}
-
-*/
+/* -- TABLET -- */
 @media (max-width:768px) {
-
     .filters {
         position: static;
         width: 500px;
         height: 250px;
+    }
+
+    .popup-content {
+        height: 67vh;
+        width: 62vw;
     }
 
     .posts {
@@ -176,35 +339,17 @@ html::-webkit-scrollbar-track {
     }
 }
 
-
-/* 
-@media (max-width: 600px) {
-    .containers {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
-    }
-
-    .filters {
-        position: static;
-        width: 80%;
-        height: 200px;
-    }
-
-    .posts {
-        width: 80%;
-    }
-
-    .post {
-        width: 85%;
-    }
-} */
-
+/* -- MOBILE L -- */
 @media (max-width:515px) {
     .containers {
         flex-direction: column;
         gap: 2rem;
         align-items: center;
+    }
+
+    .popup-content {
+        height: 65vh;
+        width: 70vw;
     }
 
     .filters {
@@ -226,11 +371,16 @@ html::-webkit-scrollbar-track {
     }
 }
 
+/* -- MOBILE S -- */
 @media (max-width: 320px) {
-
     #title {
         text-align: center;
         font-size: 90px;
+    }
+
+    .popup-content {
+        height: 65vh;
+        width: 80vw;
     }
 
     .filters {
@@ -245,3 +395,33 @@ html::-webkit-scrollbar-track {
         width: 270px;
     }
 }
+
+/* --- END --- */
+
+
+/* --- KEYFRAMES --- */
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        scale: 0.9;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+@keyframes slideFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- END --- */
