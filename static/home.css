@@ -169,12 +169,12 @@ input[type="submit"] {
     font-size: 15px;
     width: 60%;
     padding: 10px;
-    margin-top: 50px;
+    margin-top: 30px;
     background-color: #802BB1;
     color: #D1D7E0;
     border: 3px solid #802BB1;
     border-radius: 2rem;
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 input[type="submit"]:hover {
@@ -213,12 +213,13 @@ input[type="submit"]:not(:hover) {
     justify-items: center;
     align-items: center;
     transition-duration: 0.5s;
-    width: 40vw;
-    height: 70vh;
+    width: 500px;
+    height: auto;
     background-color: #2D283E;
     border-radius: 10px;
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
     margin-top: -75px;
+    padding-bottom: 9vh;
 }
 
 #popup:target .popup-content {
@@ -231,10 +232,11 @@ input[type="submit"]:not(:hover) {
 }
 
 .logtitle {
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: fantasy, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: 200;
     font-variant: small-caps;
     transition-duration: 0.5s;
-    font-size: 2.5em;
+    font-size: 3.3em;
     text-align: center;
     color: #802BB1;
     margin-top: 90px;
@@ -246,6 +248,16 @@ input[type="submit"]:not(:hover) {
     align-items: center;
     width: 90%;
     margin-top: 10vh;
+}
+
+#regred {
+    text-decoration: none;
+    margin-top: 20px;
+    color: #802BB1;
+}
+
+#regred:hover {
+    color: #9ca0a7;
 }
 
 .popup-close {
@@ -273,13 +285,9 @@ input[type="submit"]:not(:hover) {
 
 /* -- 4K -- */
 @media (min-width: 1500px) {
-    .popup-content {
-        height: 48vh;
-        width: 30vw;
-    }
 
     .logtitle {
-        font-size: 3.2em;
+        font-size: 4em;
     }
     
     .loginForm {
@@ -325,11 +333,6 @@ input[type="submit"]:not(:hover) {
         height: 250px;
     }
 
-    .popup-content {
-        height: 67vh;
-        width: 62vw;
-    }
-
     .posts {
         width: 500px;
     }
@@ -339,17 +342,18 @@ input[type="submit"]:not(:hover) {
     }
 }
 
+@media (max-width:600px) {
+    .popup-content {
+        width: 350px;
+    }
+}
+
 /* -- MOBILE L -- */
 @media (max-width:515px) {
     .containers {
         flex-direction: column;
         gap: 2rem;
         align-items: center;
-    }
-
-    .popup-content {
-        height: 65vh;
-        width: 70vw;
     }
 
     .filters {
@@ -371,6 +375,12 @@ input[type="submit"]:not(:hover) {
     }
 }
 
+@media (max-width: 376px) {
+    .popup-content {
+        width: 300px;
+    }
+}
+
 /* -- MOBILE S -- */
 @media (max-width: 320px) {
     #title {
@@ -379,8 +389,7 @@ input[type="submit"]:not(:hover) {
     }
 
     .popup-content {
-        height: 65vh;
-        width: 80vw;
+        width: 280px;
     }
 
     .filters {
