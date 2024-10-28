@@ -132,6 +132,30 @@ input[type="submit"]:not(:hover) {
     align-items: center;
 }
 
+.back-button {
+    display: inline-block; /* Makes it behave like a button */
+    text-align: center;
+    font-size: 25px; /* Font size */
+    color: #D1D7E0; /* Text color */
+    text-decoration: none; /* No underline */
+    background-color: #802BB1;
+    padding: 10px 15px; /* Padding for button */
+    border-radius: 10px;
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.3s, color 0.3s; /* Transition effects */
+    position: fixed; /* Ensures it stays in the flow of the document */
+    bottom: 50px; /* Keeps it aligned at the bottom of its container */
+}
+
+.back-button:hover {
+    background-color: #6c2396; /* Change background on hover */
+}
+
+.icon {
+    height: 2rem;
+    width: 2rem;
+}
+
 @media (max-width: 1000px) {
     .login-container {
         transition-duration: 0.5s;
