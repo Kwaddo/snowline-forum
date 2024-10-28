@@ -196,13 +196,14 @@ input[type="submit"]:not(:hover) {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none;
+    display: none; 
     justify-content: center;
     align-items: center;
     z-index: 999;
 }
 
-#popup:target {
+#popup:target,
+#createPostPopup:target { 
     display: flex;
 }
 
@@ -275,6 +276,96 @@ input[type="submit"]:not(:hover) {
 .popup-close img {
     width: 25px;
     height: 25px;
+}
+
+/* --- END --- */
+
+
+/* --- CREATE POST POPUP STYLES --- */
+.createPostForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin-top: 2vh;
+}
+
+.createPostForm input[type="text"],
+.createPostForm textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    transition-duration: 0.5s;
+    width: 80%;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    font-size: 15px;
+    padding: 10px;
+    margin: 7px;
+    border: 3px solid #564F6F;
+    border-radius: 5px;
+}
+
+.createPostForm textarea {
+    resize: none;
+}
+
+#createPostPopup:target .popup-content {
+    display: block;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+#CreatePostPopup:not(:target) .popup-content {
+    animation: slideFadeOut 0.5s forwards;
+}
+
+.createPostForm input[type="text"]::placeholder,
+.createPostForm textarea::placeholder {
+    transition-duration: 0.2s;
+    color: #D1D7E0;
+}
+
+.createPostForm input[type="text"]:focus::placeholder,
+.createPostForm textarea:focus::placeholder {
+    color: #4C495D;
+}
+
+.createPostForm input[type="text"]:hover::placeholder,
+.createPostForm textarea:hover::placeholder {
+    transition-duration: 0.2s;
+    color: #564F6F;
+}
+
+.createPostForm input[type="text"]:hover,
+.createPostForm textarea:hover {
+    transition-duration: 0.2s;
+    background-color: #564F6F;
+}
+
+.createPostForm input[type="submit"] {
+    transition-duration: 0.5s;
+    font-size: 15px;
+    width: 60%;
+    padding: 10px;
+    margin-top: 30px;
+    background-color: #802BB1;
+    color: #D1D7E0;
+    border: 3px solid #802BB1;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+.createPostForm input[type="submit"]:hover {
+    background-color: #802bb1c0;
+    border: 3px solid #802bb1c0;
+}
+
+.createPostForm #regred {
+    text-decoration: none;
+    margin-top: 20px;
+    color: #802BB1;
+}
+
+.createPostForm #regred:hover {
+    color: #9ca0a7;
 }
 
 /* --- END --- */

@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Home Page</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/home.css">
-    </head>
-    <body>
-        <!-- Popup structure -->
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <a href="#" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
-                <h2 class="logtitle">LOGIN</h2>
-                <form class="loginForm">
-                    <input
-                        type="email"
-                        placeholder="Email Address"
-                        maxlength="254"
-                        minlength="9"
-                        required
-                    >
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        maxlength="100"
-                        minlength="8"
-                        required
-                    >
-                    <input type="submit" value="Login">
-                    <a href="register.html" id="regred">Don't Have an Account? Press Here</a>
-                </form>
-            </div>
+
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/home.css">
+</head>
+
+<body>
+    <!-- Popup structure -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <a href="#" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
+            <h2 class="logtitle">LOGIN</h2>
+            <form class="loginForm">
+                <input type="email" placeholder="Email Address" maxlength="254" minlength="9" required>
+                <input type="password" placeholder="Password" maxlength="100" minlength="8" required>
+                <input type="submit" value="Login">
+                <a href="register.html" id="regred">Don't Have an Account? Press Here</a>
+            </form>
         </div>
-        <!-- Main page content -->
-        <div class="dynamic-island">
-            <div class="island-content">
-                <a href="">
-                    <img src="../images/Artboard 3.png" class="icon">
-                </a>
-                <a href="">
-                    <img src="../images/Artboard 2.png" class="icon">
-                </a>
-                <a href="#popup">
-                    <img src="../images/Artboard 1.png" class="icon profile-icon">
-                </a>
-            </div>
+    </div>
+    <!-- Create Post Pop-up -->
+    <div id="createPostPopup" class="popup">
+        <div class="popup-content">
+            <a href="#" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
+            <h2 class="logtitle">CREATE POST</h2>
+            <form class="createPostForm">
+                <input type="text" placeholder="Title" maxlength="100" required>
+                <textarea placeholder="Start typing!" rows="8" maxlength="2000" required></textarea>
+                <input type="submit" value="Submit Post">
+            </form>
         </div>
-        <h1 id="title">Forum</h1>
-        <div class="containers">
-            <div class="filters"></div>
-            <div class="posts">
-                <div class="post"></div>
-                <div class="post"></div>
-                <div class="post"></div>
-                <div class="post"></div>
-                <div class="post"></div>
-                <div class="post"></div>
-            </div>
+    </div>
+    <!-- Main page content -->
+    <div class="dynamic-island">
+        <div class="island-content">
+            <a href="">
+                <img src="../images/Artboard 3.png" class="icon">
+            </a>
+            <a href="#createPostPopup">
+                <img src="../images/Artboard 2.png" class="icon">
+            </a>
+            <a href="#popup">
+                <img src="../images/Artboard 1.png" class="icon profile-icon">
+            </a>
         </div>
-    </body>
+    </div>
+    <h1 id="title">Forum</h1>
+    <div class="containers">
+        <div class="filters"></div>
+        <div class="posts">
+            <div class="post"></div>
+            <div class="post"></div>
+            <div class="post"></div>
+            <div class="post"></div>
+            <div class="post"></div>
+            <div class="post"></div>
+        </div>
+    </div>
+</body>
+
 </html>
