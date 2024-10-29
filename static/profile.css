@@ -58,6 +58,23 @@ html {
     align-items: center;
 }
 
+#home {
+    height: 2em;
+    width: 2em;
+}
+
+#homeContainer {
+    height: 3em;
+    width: 3em;
+    background-color: #802BB1;
+    position: absolute;
+    left: 8px;
+    border-radius: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #content-break {
     max-width: 90%;
     height: 2px;
@@ -114,21 +131,25 @@ html {
 }
 
 .close {
-    margin-bottom: 2em;
     background-color: #3c2f63;
-    width: 10em;
+    width: 8em;
     color: #802BB1;
-    height: 4em;
+    height: 3em;
     border-radius: 4em;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.close:hover {
+    background-color: #413567;
+}
+
 #close {
     text-decoration: none;
     position: sticky;
     top: 4px;
+    margin-left: 35em;
     z-index: 5;
 }
 
@@ -166,6 +187,7 @@ html {
     font-family: fantasy;
     font-size: 1.4em;
     color: #802BB1;
+    margin-bottom: 1em;
 }
 
 @keyframes drawLine {
