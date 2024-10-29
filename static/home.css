@@ -89,15 +89,53 @@ body {
 .post {
     background-color: #564F6F;
     width: 700px;
-    height: 400px;
+    height: 100px; /* Adjust height as needed */
     border-radius: 20px;
     display: flex;
-    color: #D1D7E0;
-    flex-direction: column;
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between left and right content */
+    padding: 10px; /* Optional padding inside the post */
+    position: relative; /* Position relative to contain the absolute child */
     animation: appear linear;
     animation-timeline: view();
     animation-range: entry 0% cover 30%;
 }
+
+#postTitle {
+    margin: 20px; /* Remove default margin */
+    font-size: 22px;
+    text-decoration: underline; /* Underline the title */
+    color: #D1D7E0; /* Ensure text color is consistent */
+}
+
+#postAuthor {
+    position: absolute; /* Position absolutely */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Offset by half its width to truly center */
+    bottom: -5px; /* Adjust as needed to position it vertically */
+    color: #D1D7E0; /* Ensure text color is consistent */
+}
+
+.rightSide {
+    display: flex; /* Use flex to align icons and counters */
+    align-items: center; /* Center items vertically */
+    gap: 5px; /* Space between icons and counters */
+    color: #D1D7E0;
+    margin: 20px; /* This margin can be adjusted or removed */
+}
+
+.likeIcon,
+.dislikeIcon,
+.commentIcon {
+    width: 24px; /* Adjust icon size */
+    height: 24px; /* Adjust icon size */
+    margin-right: 2px; /* Space between icon and counter */
+}
+
+#counters {
+    margin: 0;
+}
+
 
 /* --- END --- */
 
