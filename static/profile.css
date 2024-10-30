@@ -166,6 +166,7 @@ html {
     padding-top: 3rem;
     gap: 2rem;
     animation-duration: 2s;
+    position: relative;
 }
 
 .post {
@@ -220,6 +221,10 @@ html {
     .post {
         width: 550px;
     }
+
+    #close {
+        margin-left: 26em;
+    }
 }
 
 /* -- TABLET -- */
@@ -230,6 +235,10 @@ html {
 
     .post {
         width: 400px;
+    }
+
+    #close {
+        margin-left: 16em;
     }
 }
 
@@ -252,6 +261,10 @@ html {
     .post {
         width: 270px;
     }
+
+    #close {
+        margin-left: 9em;
+    }
 }
 
 /* -- MOBILE S -- */
@@ -262,6 +275,10 @@ html {
 
     .post {
         width: 270px;
+    }
+
+    #close {
+        margin-left: 0em;
     }
 }
 
