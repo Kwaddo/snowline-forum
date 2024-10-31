@@ -5,6 +5,7 @@ import "net/http"
 func (app *app) routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", app.HomepageHandler)
+	mux.HandleFunc("GET /errorpage", app.ErrorpageHandler)
 	mux.HandleFunc("POST /1", app.LogoutHandler)
 	mux.HandleFunc("POST /2", app.SaveCommentHandler)
 	// mux.HandleFunc("GET /signin", app.SigninPageHandler)

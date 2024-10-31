@@ -35,6 +35,10 @@ func ErrorHandle(w http.ResponseWriter, statusCode int) {
 	tmp.Execute(w, statusCode)
 }
 
+func (app *app) ErrorpageHandler(w http.ResponseWriter, r *http.Request){
+	render(w ,r,"./assets/templates/error.html")
+}
+
 func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 	posts, err := app.posts.AllPosts()
 	if err != nil {
