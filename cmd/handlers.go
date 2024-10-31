@@ -43,7 +43,7 @@ func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmp, err := template.ParseFiles("./assets/templates/homepage.html")
+	tmp, err := template.ParseFiles("./assets/templates/home.html")
 	if err != nil {
 		ErrorHandle(w, 500)
 		log.Println(err)
@@ -65,7 +65,7 @@ func (app *app) ViewPostHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	tmp, err := template.ParseFiles("./assets/templates/viewpost.html")
+	tmp, err := template.ParseFiles("./assets/templates/post.html")
 	if err != nil {
 		ErrorHandle(w, 500)
 		log.Println(err)
@@ -80,7 +80,7 @@ func (app *app) ViewPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "./assets/templates/signuppage.html")
+	render(w, r, "./assets/templates/register.html")
 }
 func (app *app) SigninPageHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "./assets/templates/signinpage.html")
@@ -177,6 +177,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "Unable to create file", http.StatusInternalServerError)
+		log.Println(err)
 		return
 	}
 	defer place.Close()

@@ -36,6 +36,8 @@ func main() {
 		Handler: app.routes(),
 	}
 	log.Println("Server Start at :8080")
-	server.ListenAndServe()
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("Server failed: %v", err)
+	}
 
 }
