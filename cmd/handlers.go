@@ -214,3 +214,35 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 
 }
+func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID,err := app.users.GetUserID(w,r) 
+	if err != nil {
+		log.Fatalf("Error")
+	}
+	stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE)`
+	app.posts.DB.Exec(stmt,postID,userID)
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID,err := app.users.GetUserID(w,r) 
+	if err != nil {
+		log.Fatalf("Error")
+	}
+	stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE)`
+	app.posts.DB.Exec(stmt,postID,userID)
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
