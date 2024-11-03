@@ -8,6 +8,8 @@ type Post struct {
 	Content   string
 	ImagePath string
 	CreatedAt time.Time
+	Likes     string
+	Dislikes  string
 }
 
 type Comment struct {

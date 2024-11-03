@@ -52,6 +52,16 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 		if err != nil {
 			return nil, err
 		}
+		likesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
+			err = m.DB.QueryRow(likesStmt, p.ID).Scan(&p.Likes)
+			if err != nil {
+				log.Println("Error fetching likes count:", err)
+			}
+		dislikesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
+		err = m.DB.QueryRow(dislikesStmt, p.ID).Scan(&p.Dislikes)
+		if err != nil {
+			log.Println("Error fetching dislikes count:", err)
+		}
 		posts = append(posts, p)
 	}
 	err = rows.Err()
