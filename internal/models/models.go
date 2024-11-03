@@ -3,6 +3,7 @@ package models
 import "time"
 
 type Post struct {
+	Username  string
 	ID        int
 	Title     string
 	Content   string
@@ -13,6 +14,7 @@ type Post struct {
 }
 
 type Comment struct {
+	Username  string
 	ID        int
 	PostID    int
 	Content   string

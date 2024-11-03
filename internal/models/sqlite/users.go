@@ -30,21 +30,22 @@ func (u *USERMODEL) Insert(name, email, password string) error {
 	return nil
 }
 
-func (u *USERMODEL) Authentication(email, password string) (int, error) {
+func (u *USERMODEL) Authentication(email, password string) (int, string, error) {
 	var id int
+	var name string
 	var passwordHash []byte
 
-	stmt := `SELECT user_id, password FROM USERS WHERE email = ?`
+	stmt := `SELECT user_id, password, name FROM USERS WHERE email = ?`
 	row := u.DB.QueryRow(stmt, email)
-	err := row.Scan(&id, &passwordHash)
+	err := row.Scan(&id, &passwordHash, &name)
 	if err != nil {
-		return 0, err
+		return 0, "",err
 	}
 	err = bcrypt.CompareHashAndPassword(passwordHash, []byte(password))
 	if err != nil {
-		return 0, err
+		return 0, "",err
 	}
-	return id, nil
+	return id, name,nil
 
 }
 
@@ -73,6 +74,34 @@ func (u *USERMODEL) GetUserID(w http.ResponseWriter, r *http.Request) (string, e
 		return "", err
 	}
 	return id, nil
+
+}
+
+func (u *USERMODEL) GetUserName(w http.ResponseWriter, r *http.Request) (string, error) {
+	var username string
+	cookies := r.Cookies()
+
+	for _, cookie := range cookies {
+		if strings.HasPrefix(cookie.Name, "Forum-") {
+			username = cookie.Value
+			break
+		}
+	}
+	if username == "" {
+		log.Println("No session id found")
+	}
+
+	var name string
+	stmt, err := u.DB.Prepare("SELECT username FROM SESSIONS WHERE cookie_value = ?")
+	if err != nil {
+		return "", err
+	}
+	row := stmt.QueryRow(username)
+	err = row.Scan(&name)
+	if err != nil {
+		return "", err
+	}
+	return name, nil
 
 }
 

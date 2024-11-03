@@ -139,7 +139,7 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := app.users.Authentication(
+	id,name, err := app.users.Authentication(
 		r.PostForm.Get("email"),
 		r.PostForm.Get("password"),
 	)
@@ -161,8 +161,8 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	expiresAt := time.Now().Add(1 * time.Hour)
-	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at) VALUES (?, ?, ?)`
-	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt)
+	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at, username) VALUES (?, ?, ?, ?)`
+	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")

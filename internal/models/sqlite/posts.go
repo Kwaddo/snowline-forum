@@ -17,8 +17,13 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		log.Println(err)
 		return err
 	}
-	stmt := `INSERT INTO POSTS (title, content, image_path, user_id, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
-	_, err = m.DB.Exec(stmt, title, content, image_path, userID)
+	userName, err := userModel.GetUserName(w, r)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	stmt := `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))`
+	_, err = m.DB.Exec(stmt, title, content, image_path, userID,userName)
 	return err
 }
 
@@ -28,8 +33,13 @@ func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r
 		log.Println(err)
 		return err
 	}
-	stmt := `INSERT INTO COMMENTS (post_id, user_id, content, created_at) VALUES (?, ?, ?, datetime('now'))`
-	_, err = m.DB.Exec(stmt, post_id, userID, content)
+	userName, err := userModel.GetUserName(w, r)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	stmt := `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, datetime('now'))`
+	_, err = m.DB.Exec(stmt, post_id, userID, content, userName)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -38,7 +48,7 @@ func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r
 }
 
 func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
-	stmt := `SELECT post_id, title, content, image_path, created_at FROM POSTS ORDER BY post_id DESC`
+	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS ORDER BY post_id DESC`
 	rows, err := m.DB.Query(stmt)
 	if err != nil {
 		log.Println(err)
@@ -48,7 +58,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt,&p.Username)
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +83,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 }
 
 func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]models.Post, error) {
-	stmt := `SELECT post_id, title, content, image_path, created_at FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
+	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
 	userID, err := u.GetUserID(w,r)
 	if err != nil {
 		log.Println(err)
@@ -88,7 +98,7 @@ func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mo
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt, &p.Username)
 		if err != nil {
 			return nil, err
 		}
@@ -105,17 +115,17 @@ func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mo
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
 	postID := r.URL.Query().Get("id")
 
-	stmt := `SELECT post_id, title, content, image_path, created_at FROM POSTS WHERE post_id = ?`
+	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ?`
 	row := m.DB.QueryRow(stmt, postID)
 
 	p := models.Post{}
-	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt)
+	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
 	if err != nil {
 		log.Println(err)
 		return models.PostandComment{}, err
 	}
 
-	stmt2 := `SELECT comment_id, post_id, content, created_at FROM COMMENTS WHERE post_id = ?`
+	stmt2 := `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
 	rows, err := m.DB.Query(stmt2, postID)
 	if err != nil {
 		log.Println(err)
@@ -126,7 +136,7 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 	comments := []models.Comment{}
 	for rows.Next() {
 		c := models.Comment{}
-		err := rows.Scan(&c.ID, &c.PostID, &c.Content, &c.CreatedAt)
+		err := rows.Scan(&c.ID, &c.PostID, &c.Content, &c.CreatedAt, &c.Username)
 		if err != nil {
 			log.Println(err)
 			return models.PostandComment{}, err
