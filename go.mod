@@ -1,6 +1,6 @@
 module db
 
-go 1.22.3
+go 1.22.5
 
 require (
 	github.com/gofrs/uuid/v5 v5.3.0 // indirect

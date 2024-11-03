@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "db/internal/models"
-
 	"fmt"
 	"html/template"
 	"io"
@@ -14,17 +12,28 @@ import (
 	"github.com/gofrs/uuid/v5"
 )
 
-func render(w http.ResponseWriter, r *http.Request, t string) {
+func render(w http.ResponseWriter, r *http.Request, t, urlpath string) {
 	tmp, err := template.ParseFiles(t)
 	if err != nil {
-		ErrorHandle(w, 500)
+		ErrorHandle(w, 500, "Internal Server Error")
 		log.Println(err)
 		return
 	}
-	tmp.Execute(w, nil)
+	if r.Method == http.MethodGet {
+		if r.URL.Path == urlpath {
+			if err := tmp.Execute(w, nil); err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+			}
+		} else {
+			ErrorHandle(w, 404, "Page not Found")
+		}
+	} else {
+		ErrorHandle(w, 405, "Method Not Allowed")
+	}
 }
 
-func ErrorHandle(w http.ResponseWriter, statusCode int) {
+func ErrorHandle(w http.ResponseWriter, statusCode int, message string) {
 	tmp, err := template.ParseFiles("./assets/templates/error.html")
 	if err != nil {
 		http.Error(w, "Internal Server Error", 500)
@@ -32,92 +41,101 @@ func ErrorHandle(w http.ResponseWriter, statusCode int) {
 		return
 	}
 	w.WriteHeader(statusCode)
-	tmp.Execute(w, statusCode)
-}
-
-func (app *app) ErrorpageHandler(w http.ResponseWriter, r *http.Request){
-	render(w ,r,"./assets/templates/error.html")
+	errData := map[string]interface{}{
+		"Code": statusCode,
+		"Msg":  message,
+	}
+	if err := tmp.Execute(w, errData); err != nil {
+		log.Println("Error executing error template:", err)
+	}
 }
 
 func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
-	posts, err := app.posts.AllPosts()
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
-	}
+	if r.Method == http.MethodGet {
+		if r.URL.Path == "/" {
+			posts, err := app.posts.AllPosts()
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
 
-	tmp, err := template.ParseFiles("./assets/templates/home.html")
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
-	}
+			tmp, err := template.ParseFiles("./assets/templates/home.html")
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
 
-	err = tmp.Execute(w, map[string]any{"Posts": posts})
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
+			if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+		} else {
+			ErrorHandle(w, 404, "Page not Found")
+		}
+	} else {
+		ErrorHandle(w, 405, "Method Not Allowed")
 	}
 }
 
-func (app *app) ViewPostHandler(w http.ResponseWriter, r *http.Request) {
-	commentPosts, err := app.posts.PostWithComment(r)
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
-	}
-	tmp, err := template.ParseFiles("./assets/templates/post.html")
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
-	}
-	err = tmp.Execute(w, map[string]any{"info": commentPosts})
-	if err != nil {
-		ErrorHandle(w, 500)
-		log.Println(err)
-		return
+func (app *app) ViewPostPageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		if r.URL.Path == "/view-post" {
+			commentPosts, err := app.posts.PostWithComment(r)
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+			tmp, err := template.ParseFiles("./assets/templates/post.html")
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+			if err := tmp.Execute(w, map[string]any{"info": commentPosts}); err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+		} else {
+			ErrorHandle(w, 404, "Page not Found")
+		}
+	} else {
+		ErrorHandle(w, 405, "Method Not Allowed")
 	}
 }
 
 func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "./assets/templates/register.html")
-}
-func (app *app) SigninPageHandler(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "./assets/templates/signinpage.html")
-}
-func (app *app) CreatPostPageHandler(w http.ResponseWriter, r *http.Request) {
-	render(w, r, "./assets/templates/creatpostpage.html")
+	render(w, r, "./assets/templates/register.html", "/register")
 }
 
 func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
+	if err := r.ParseForm(); err != nil {
+		ErrorHandle(w, 400, "Failed to parse form")
 		log.Println(err)
 		return
 	}
-	err = app.users.Insert(
+
+	err := app.users.Insert(
 		r.PostForm.Get("name"),
 		r.PostForm.Get("email"),
 		r.PostForm.Get("password"),
 	)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, "Email Used", http.StatusUnauthorized)
+		ErrorHandle(w, 409, "Email already in use")
 		return
 	}
-	http.Redirect(w, r, "/signin", http.StatusFound)
-
+	http.Redirect(w, r, "/#login", http.StatusFound)
 }
 
 func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
+	if err := r.ParseForm(); err != nil {
+		ErrorHandle(w, 400, "Failed to parse form")
 		log.Println(err)
-		http.Error(w, "Failed to parse form", http.StatusBadRequest)
 		return
 	}
 
@@ -127,11 +145,9 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		ErrorHandle(w, 401, "Invalid credentials")
 		return
 	}
-
-	log.Println("User ID:", id)
 
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, r.PostForm.Get("email")).String()
 	http.SetCookie(w, &http.Cookie{
@@ -148,8 +164,8 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at) VALUES (?, ?, ?)`
 	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt)
 	if err != nil {
-		log.Println("Error inserting sessions:", err)
-		http.Redirect(w, r, "/", http.StatusFound)
+		log.Println("Error inserting session:", err)
+		ErrorHandle(w, 500, "Failed to create session")
 		return
 	}
 
@@ -157,60 +173,95 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(10 << 20)
-	if err != nil {
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		ErrorHandle(w, 400, "Failed to parse form")
 		log.Println(err)
-		http.Error(w, "Failed to parse form", http.StatusBadRequest)
 		return
 	}
+
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 	image, _, err := r.FormFile("image")
 	if err != nil {
+		ErrorHandle(w, 400, "Error retrieving the file")
 		log.Println(err)
-		http.Error(w, "Error retrieving the file", http.StatusBadRequest)
 		return
 	}
 	defer image.Close()
 
 	timestamp := time.Now().UnixNano()
-	imagePath := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
 	saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
+	dbimage:= fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
 
 	place, err := os.Create(saveImage)
-
 	if err != nil {
-		http.Error(w, "Unable to create file", http.StatusInternalServerError)
+		ErrorHandle(w, 500, "Unable to create file")
 		log.Println(err)
 		return
 	}
 	defer place.Close()
+
 	if _, err := io.Copy(place, image); err != nil {
-		http.Error(w, "Error saving the file", http.StatusInternalServerError)
+		ErrorHandle(w, 500, "Error saving the file")
+		log.Println(err)
 		return
 	}
 
-	err = app.posts.InsertPost(app.users, w, r, title, content, imagePath)
+	err = app.posts.InsertPost(app.users, w, r, title, content, dbimage)
 	if err != nil {
 		log.Println(err)
+		http.Redirect(w,r,"#login",http.StatusFound)
+		return
 	}
+
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "Failed to parse form", http.StatusBadRequest)
-		return
-	}
-	content := r.PostFormValue("content")
-	postID := r.FormValue("post_id")
-	err = app.posts.InsertComment(app.users, w, r, content, postID)
-	if err != nil {
+	if err := r.ParseForm(); err != nil {
+		ErrorHandle(w, 400, "Failed to parse form")
 		log.Println(err)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
 
+	content := r.FormValue("content")
+	postID := r.FormValue("post_id")
+
+	if err := app.posts.InsertComment(app.users, w, r, content, postID); err != nil {
+		log.Println(err)
+		ErrorHandle(w, 500, "Failed to save comment")
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func (app *app) ProfilePageHandler(w http.ResponseWriter , r *http.Request){
+	if r.Method == http.MethodGet {
+		if r.URL.Path == "/Profile-page" {
+			posts, err := app.users.AllUsersPosts(w,r)
+			if err != nil {
+				http.Redirect(w,r,"/#login",http.StatusFound)
+				log.Println(err)
+				return
+			}
+
+			tmp, err := template.ParseFiles("./assets/templates/profilepage.html")
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+
+			if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+		} else {
+			ErrorHandle(w, 404, "Page not Found")
+		}
+	} else {
+		ErrorHandle(w, 405, "Method Not Allowed")
+	}
 }

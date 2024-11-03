@@ -7,38 +7,42 @@
     <link rel="stylesheet" href="../static/error.css">
 </head>
 <body>
+  {{if .}}
     <div class="all">
         <div class="wrapper">
-            <div class="itemLeft item1">Error404</div>
-            <div class="itemLeft item2">Error404</div>
-            <div class="itemLeft item3">Error404</div>
-            <div class="itemLeft item4">Error404</div>
-            <div class="itemLeft item5">Error404</div>
-            <div class="itemLeft item6">Error404</div>
-            <div class="itemLeft item7">Error404</div>
-            <div class="itemLeft item8">Error404</div>
+          <div class="itemLeft item1">{{.Code}}</div>
+          <div class="itemLeft item2">{{.Code}}</div>
+          <div class="itemLeft item3">{{.Code}}</div>
+          <div class="itemLeft item4">{{.Code}}</div>
+          <div class="itemLeft item5">{{.Code}}</div>
+          <div class="itemLeft item6">{{.Code}}</div>
+          <div class="itemLeft item7">{{.Code}}</div>
+          <div class="itemLeft item8">{{.Code}}</div>
           </div>
 
           <div class="errorMsg">
+           
             <div class="error">
-                Error 404
+                {{.Code}}
             </div>
             <div class="msg">
-                Page Not Found
+              {{.Msg}}
             </div>
             
           </div>
 
           <div class="wrapper wrapperDown">
-            <div class="itemRight item1">Error404</div>
-            <div class="itemRight item2">Error404</div>
-            <div class="itemRight item3">Error404</div>
-            <div class="itemRight item4">Error404</div>
-            <div class="itemRight item5">Error404</div>
-            <div class="itemRight item6">Error404</div>
-            <div class="itemRight item7">Error404</div>
-            <div class="itemRight item8">Error404</div>
-          </div>
+            <div class="itemRight item1">{{.Code}}</div>
+            <div class="itemRight item2">{{.Code}}</div>
+            <div class="itemRight item3">{{.Code}}</div>
+            <div class="itemRight item4">{{.Code}}</div>
+            <div class="itemRight item5">{{.Code}}</div>
+            <div class="itemRight item6">{{.Code}}</div>
+            <div class="itemRight item7">{{.Code}}</div>
+            <div class="itemRight item8">{{.Code}}</div>
+        </div>
+        
     </div>
+    {{end}}
 </body>
 </html>

@@ -62,6 +62,36 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	return posts, nil
 }
 
+func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]models.Post, error) {
+	stmt := `SELECT post_id, title, content, image_path, created_at FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
+	userID, err := u.GetUserID(w,r)
+	if err != nil {
+		log.Println(err)
+		return nil,err
+	}
+	rows, err := u.DB.Query(stmt, userID)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	posts := []models.Post{}
+	for rows.Next() {
+		p := models.Post{}
+		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, p)
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return posts, nil
+}
+
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
 	postID := r.URL.Query().Get("id")
 
