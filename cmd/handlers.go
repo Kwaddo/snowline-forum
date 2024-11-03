@@ -191,7 +191,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	timestamp := time.Now().UnixNano()
 	saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
-	dbimage:= fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+	dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
 
 	place, err := os.Create(saveImage)
 	if err != nil {
@@ -210,7 +210,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	err = app.posts.InsertPost(app.users, w, r, title, content, dbimage)
 	if err != nil {
 		log.Println(err)
-		http.Redirect(w,r,"#login",http.StatusFound)
+		http.Redirect(w, r, "#login", http.StatusFound)
 		return
 	}
 
@@ -236,12 +236,12 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func (app *app) ProfilePageHandler(w http.ResponseWriter , r *http.Request){
+func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		if r.URL.Path == "/Profile-page" {
-			posts, err := app.users.AllUsersPosts(w,r)
+			posts, err := app.users.AllUsersPosts(w, r)
 			if err != nil {
-				http.Redirect(w,r,"/#login",http.StatusFound)
+				http.Redirect(w, r, "/#login", http.StatusFound)
 				log.Println(err)
 				return
 			}
@@ -265,6 +265,7 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter , r *http.Request){
 		ErrorHandle(w, 405, "Method Not Allowed")
 	}
 }
+
 func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -272,12 +273,12 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	userID,err := app.users.GetUserID(w,r) 
+	userID, err := app.users.GetUserID(w, r)
 	if err != nil {
 		log.Fatalf("Error")
 	}
 	stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE)`
-	app.posts.DB.Exec(stmt,postID,userID)
+	app.posts.DB.Exec(stmt, postID, userID)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
@@ -288,12 +289,11 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	userID,err := app.users.GetUserID(w,r) 
+	userID, err := app.users.GetUserID(w, r)
 	if err != nil {
 		log.Fatalf("Error")
 	}
 	stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE)`
-	app.posts.DB.Exec(stmt,postID,userID)
+	app.posts.DB.Exec(stmt, postID, userID)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
-
