@@ -12,6 +12,12 @@ func (app *app) routes() http.Handler {
 	mux.HandleFunc("POST /register", app.StoreUserHandler)
 	mux.HandleFunc("POST /save-post", app.SavePostHandler)
 	mux.HandleFunc("GET /view-post", app.ViewPostPageHandler)
+<<<<<<< HEAD
+=======
+	mux.HandleFunc("GET /Profile-page", app.ProfilePageHandler)
+	mux.HandleFunc("POST /like", app.LikeHandler)
+	mux.HandleFunc("POST /dislike", app.DislikeHandler)
+>>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 
 	fs := http.FileServer(http.Dir("./assets/static"))
 	fs2 := http.FileServer(http.Dir("./assets/uploads"))

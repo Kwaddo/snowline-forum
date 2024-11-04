@@ -59,6 +59,7 @@ func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
+<<<<<<< HEAD
 
 			tmp, err := template.ParseFiles("./assets/templates/home.html")
 			if err != nil {
@@ -72,6 +73,36 @@ func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
+=======
+			if app.users.IsAuthenticated(r) {
+				tmp, err := template.ParseFiles("./assets/templates/home.html")
+				if err != nil {
+					ErrorHandle(w, 500, "Internal Server Error")
+					log.Println(err)
+					return
+				}
+
+				if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+					ErrorHandle(w, 500, "Internal Server Error")
+					log.Println(err)
+					return
+				}
+			} else {
+				tmp, err := template.ParseFiles("./assets/templates/guest.html")
+				if err != nil {
+					ErrorHandle(w, 500, "Internal Server Error")
+					log.Println(err)
+					return
+				}
+
+				if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+					ErrorHandle(w, 500, "Internal Server Error")
+					log.Println(err)
+					return
+				}
+			}
+
+>>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 		} else {
 			ErrorHandle(w, 404, "Page not Found")
 		}
@@ -129,7 +160,11 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 409, "Email already in use")
 		return
 	}
+<<<<<<< HEAD
 	http.Redirect(w, r, "/signin", http.StatusFound)
+=======
+	http.Redirect(w, r, "/#login", http.StatusFound)
+>>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 }
 
 func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
@@ -139,7 +174,7 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := app.users.Authentication(
+	id, name, err := app.users.Authentication(
 		r.PostForm.Get("email"),
 		r.PostForm.Get("password"),
 	)
@@ -161,8 +196,8 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	expiresAt := time.Now().Add(1 * time.Hour)
-	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at) VALUES (?, ?, ?)`
-	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt)
+	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at, username) VALUES (?, ?, ?, ?)`
+	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")
@@ -191,7 +226,11 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	timestamp := time.Now().UnixNano()
 	saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
+<<<<<<< HEAD
 	dbimage:= fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+=======
+	dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+>>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 
 	place, err := os.Create(saveImage)
 	if err != nil {
@@ -210,7 +249,11 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	err = app.posts.InsertPost(app.users, w, r, title, content, dbimage)
 	if err != nil {
 		log.Println(err)
+<<<<<<< HEAD
 		http.Redirect(w,r,"#login",http.StatusFound)
+=======
+		http.Redirect(w, r, "#login", http.StatusFound)
+>>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 		return
 	}
 
@@ -235,3 +278,78 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
+
+func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		if r.URL.Path == "/Profile-page" {
+			posts, err := app.users.AllUsersPosts(w, r)
+			if err != nil {
+				http.Redirect(w, r, "/#login", http.StatusFound)
+				log.Println(err)
+				return
+			}
+
+			tmp, err := template.ParseFiles("./assets/templates/profilepage.html")
+			if err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+
+			if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+				ErrorHandle(w, 500, "Internal Server Error")
+				log.Println(err)
+				return
+			}
+		} else {
+			ErrorHandle(w, 404, "Page not Found")
+		}
+	} else {
+		ErrorHandle(w, 405, "Method Not Allowed")
+	}
+}
+
+func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
+    err := r.ParseForm()
+    if err != nil {
+        log.Println(err)
+        return
+    }
+    postID := r.FormValue("post_id")
+    userID, err := app.users.GetUserID(r)
+    if err != nil {
+        log.Println("Error getting user ID:", err)
+        http.Redirect(w, r, "/#login", http.StatusFound)
+        return
+    }
+    stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE)`
+    _, err = app.posts.DB.Exec(stmt, postID, userID)
+    if err != nil {
+        http.Redirect(w, r, "/#login", http.StatusFound)
+        return
+    }
+    http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
+    err := r.ParseForm()
+    if err != nil {
+        log.Println(err)
+        return
+    }
+    postID := r.FormValue("post_id")
+    userID, err := app.users.GetUserID(r)
+    if err != nil {
+        log.Println("Error getting user ID:", err)
+        http.Redirect(w, r, "/#login", http.StatusFound)
+        return
+    }
+    stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE)`
+    _, err = app.posts.DB.Exec(stmt, postID, userID)
+    if err != nil {
+        http.Redirect(w, r, "/#login", http.StatusFound)
+        return
+    }
+    http.Redirect(w, r, "/", http.StatusFound)
+}
+

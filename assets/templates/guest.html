@@ -9,13 +9,9 @@
 </head>
 
 <body>
-    <div>
-        <a href="/Profile-page">Profile Page</a>
-    </div>
+   
 
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
+
 
     <!-- Login Popup -->
     <div id="login" class="popup">
@@ -39,7 +35,7 @@
             <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
                 <input type="text" placeholder="Title" maxlength="100" name="title" required>
                 <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                <input type="file" id="image" name="image">
+                <input type="file" id="image" name="image" required>
                 <input type="submit" value="Submit Post">
             </form>
         </div>
@@ -65,25 +61,6 @@
         <div class="filters"></div>
         <div class="posts">
             {{range .Posts}}
-<<<<<<< HEAD
-            <div class="postWithOptions">
-                <div class="post">
-                    <p class="postAuthor">@{{.ID}}</p>
-                    <h2 class="postTitle">{{.Title}}</h2>
-                    <input type="hidden" name="post_id" value="{{.ID}}">
-                    <h4 class="postContent">{{.Content}}</h4>
-                    {{if .ImagePath}}
-                    <div class="imageContainer">
-                        <img src="{{.ImagePath}}" alt="image" class="postImage">
-                    </div>
-                    {{end}}
-                </div>
-                <div class="postOptions">
-                    <img src="../images/like-filled.png" class="likeIcon">
-                    <p class="counters">30</p>
-                    <img src="../images/dislike-filled.png" class="dislikeIcon">
-                    <p class="counters">1</p>
-=======
             <div class="post">
                 <h2 id="postTitle">{{.Title}}</h2>
                 <input type="hidden" name="post_id" value="{{.ID}}">
@@ -105,7 +82,6 @@
                             {{.Dislikes}}
                         </button>
                     </form>
->>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
                     <img src="../images/comments.png" class="commentIcon">
                     <p class="counters">2</p>
                 </div>
