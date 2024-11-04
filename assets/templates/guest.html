@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/home.css">
+</head>
+
+<body>
+   
+
+
+
+    <!-- Login Popup -->
+    <div id="login" class="popup">
+        <div class="popup-content">
+            <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
+            <h2 class="logtitle">LOGIN</h2>
+            <form action="/signin" method="POST" class="loginForm">
+                <input type="email" name="email" placeholder="Email Address" maxlength="254" minlength="9" required>
+                <input type="password" name="password" placeholder="Password" maxlength="100" minlength="0" required>
+                <input type="submit" value="Login">
+                <a href="/register" id="regred">Don't Have an Account? Register!</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Post Popup -->
+    <div id="createPostPopup" class="popup">
+        <div class="popup-content">
+            <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
+            <h2 class="logtitle">CREATE POST</h2>
+            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
+                <input type="text" placeholder="Title" maxlength="100" name="title" required>
+                <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
+                <input type="file" id="image" name="image" required>
+                <input type="submit" value="Submit Post">
+            </form>
+        </div>
+    </div>
+
+    <!-- Main page content -->
+    <div class="dynamic-island">
+        <div class="island-content">
+            <a href="/">
+                <img src="../images/Home.png" class="icon" title="Home">
+            </a>
+            <a href="#createPostPopup">
+                <img src="../images/Plus.png" class="icon" title="Create Post">
+            </a>
+            <a href="#login">
+                <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
+            </a>
+        </div>
+    </div>
+
+    <h1 id="title">Forum</h1>
+    <div class="containers">
+        <div class="filters"></div>
+        <div class="posts">
+            {{range .Posts}}
+            <div class="post">
+                <h2 id="postTitle">{{.Title}}</h2>
+                <input type="hidden" name="post_id" value="{{.ID}}">
+                <img src="{{.ImagePath}}" alt="image">
+                <h4>{{.Content}}</h4>
+                <p id="postAuthor">@{{.Username}}</p>
+                <div class="rightSide">
+                    <form action="/like" method="POST">
+                        <input type="hidden" name="post_id" value="{{.ID}}">
+                        <button type="submit" class="vote-button">
+                            <i class="fas fa-thumbs-up"></i>
+                            {{.Likes}}
+                        </button>
+                    </form>
+                    <form action="/dislike" method="POST">
+                        <input type="hidden" name="post_id" value="{{.ID}}">
+                        <button type="submit" class="vote-button">
+                            <i class="fas fa-thumbs-down"></i>
+                            {{.Dislikes}}
+                        </button>
+                    </form>
+                    <img src="../images/comments.png" class="commentIcon">
+                    <p class="counters">2</p>
+                </div>
+            </div>
+            <a href="/view-post?id={{.ID}}">View Comments</a>
+            {{end}}
+        </div>
+    </div>
+</body>
+
+</html>

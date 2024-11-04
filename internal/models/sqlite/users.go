@@ -39,17 +39,17 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 	row := u.DB.QueryRow(stmt, email)
 	err := row.Scan(&id, &passwordHash, &name)
 	if err != nil {
-		return 0, "",err
+		return 0, "", err
 	}
 	err = bcrypt.CompareHashAndPassword(passwordHash, []byte(password))
 	if err != nil {
-		return 0, "",err
+		return 0, "", err
 	}
-	return id, name,nil
+	return id, name, nil
 
 }
 
-func (u *USERMODEL) GetUserID(w http.ResponseWriter, r *http.Request) (string, error) {
+func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 	var userID string
 	cookies := r.Cookies()
 
@@ -77,7 +77,7 @@ func (u *USERMODEL) GetUserID(w http.ResponseWriter, r *http.Request) (string, e
 
 }
 
-func (u *USERMODEL) GetUserName(w http.ResponseWriter, r *http.Request) (string, error) {
+func (u *USERMODEL) GetUserName(r *http.Request) (string, error) {
 	var username string
 	cookies := r.Cookies()
 
@@ -105,7 +105,7 @@ func (u *USERMODEL) GetUserName(w http.ResponseWriter, r *http.Request) (string,
 
 }
 
-func (u *USERMODEL) GetPostID(w http.ResponseWriter, r *http.Request) (string, error) {
+func (u *USERMODEL) GetPostID(r *http.Request) (string, error) {
 	var userID string
 	cookies := r.Cookies()
 
@@ -130,4 +130,14 @@ func (u *USERMODEL) GetPostID(w http.ResponseWriter, r *http.Request) (string, e
 		return "", err
 	}
 	return id, nil
+}
+
+func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
+	cookies := r.Cookies()
+	for _, cookie := range cookies {
+		if strings.HasPrefix(cookie.Name, "Forum-") {
+			return true
+		}
+	}
+	return false
 }

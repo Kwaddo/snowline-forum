@@ -12,28 +12,28 @@ type POSTMODEL struct {
 }
 
 func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path string) error {
-	userID, err := userModel.GetUserID(w, r)
+	userID, err := userModel.GetUserID(r)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	userName, err := userModel.GetUserName(w, r)
+	userName, err := userModel.GetUserName(r)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 	stmt := `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))`
-	_, err = m.DB.Exec(stmt, title, content, image_path, userID,userName)
+	_, err = m.DB.Exec(stmt, title, content, image_path, userID, userName)
 	return err
 }
 
 func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, content, post_id string) error {
-	userID, err := userModel.GetUserID(w, r)
+	userID, err := userModel.GetUserID(r)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	userName, err := userModel.GetUserName(w, r)
+	userName, err := userModel.GetUserName(r)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -58,15 +58,15 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt,&p.Username)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
 		if err != nil {
 			return nil, err
 		}
 		likesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
-			err = m.DB.QueryRow(likesStmt, p.ID).Scan(&p.Likes)
-			if err != nil {
-				log.Println("Error fetching likes count:", err)
-			}
+		err = m.DB.QueryRow(likesStmt, p.ID).Scan(&p.Likes)
+		if err != nil {
+			log.Println("Error fetching likes count:", err)
+		}
 		dislikesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
 		err = m.DB.QueryRow(dislikesStmt, p.ID).Scan(&p.Dislikes)
 		if err != nil {
@@ -82,12 +82,12 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	return posts, nil
 }
 
-func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]models.Post, error) {
+func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]models.Post, error) {
 	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
-	userID, err := u.GetUserID(w,r)
+	userID, err := u.GetUserID(r)
 	if err != nil {
 		log.Println(err)
-		return nil,err
+		return nil, err
 	}
 	rows, err := u.DB.Query(stmt, userID)
 	if err != nil {
@@ -98,7 +98,7 @@ func (u *USERMODEL ) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mo
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content,&p.ImagePath, &p.CreatedAt, &p.Username)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
 		if err != nil {
 			return nil, err
 		}
