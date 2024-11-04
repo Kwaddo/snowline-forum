@@ -59,21 +59,6 @@ func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
-<<<<<<< HEAD
-
-			tmp, err := template.ParseFiles("./assets/templates/home.html")
-			if err != nil {
-				ErrorHandle(w, 500, "Internal Server Error")
-				log.Println(err)
-				return
-			}
-
-			if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
-				ErrorHandle(w, 500, "Internal Server Error")
-				log.Println(err)
-				return
-			}
-=======
 			if app.users.IsAuthenticated(r) {
 				tmp, err := template.ParseFiles("./assets/templates/home.html")
 				if err != nil {
@@ -102,7 +87,6 @@ func (app *app) HomepageHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 
->>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 		} else {
 			ErrorHandle(w, 404, "Page not Found")
 		}
@@ -160,11 +144,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 409, "Email already in use")
 		return
 	}
-<<<<<<< HEAD
-	http.Redirect(w, r, "/signin", http.StatusFound)
-=======
 	http.Redirect(w, r, "/#login", http.StatusFound)
->>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 }
 
 func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
@@ -226,11 +206,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	timestamp := time.Now().UnixNano()
 	saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
-<<<<<<< HEAD
-	dbimage:= fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
-=======
 	dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
->>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 
 	place, err := os.Create(saveImage)
 	if err != nil {
@@ -249,11 +225,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	err = app.posts.InsertPost(app.users, w, r, title, content, dbimage)
 	if err != nil {
 		log.Println(err)
-<<<<<<< HEAD
-		http.Redirect(w,r,"#login",http.StatusFound)
-=======
 		http.Redirect(w, r, "#login", http.StatusFound)
->>>>>>> 1af720d85fd52d8b48d50ba7e92b3686165a9f9e
 		return
 	}
 
@@ -289,7 +261,7 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			tmp, err := template.ParseFiles("./assets/templates/profilepage.html")
+			tmp, err := template.ParseFiles("./assets/templates/profile.html")
 			if err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
 				log.Println(err)
