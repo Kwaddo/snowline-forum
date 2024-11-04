@@ -1,6 +1,7 @@
 package main
 
 import (
+	"db/internal/sqlite"
 	"log"
 	"net/http"
 	"strings"
@@ -12,11 +13,9 @@ func (app *app) CleanupExpiredSessions() {
 		time.Sleep(time.Minute)
 		app.mu.Lock()
 
-		stmt := `DELETE FROM SESSIONS WHERE expires_at < ?`
-		_, err := app.users.DB.Exec(stmt, time.Now())
+		_, err := app.users.DB.Exec(sqlite.DeleteExpiredSessionsQuery, time.Now())
 		if err != nil {
-			log.Println(err)
-			return
+			log.Println("Error deleting expired sessions:", err)
 		}
 
 		app.mu.Unlock()
@@ -24,7 +23,6 @@ func (app *app) CleanupExpiredSessions() {
 }
 
 func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
-
 	var sessionID string
 	cookies := r.Cookies()
 
@@ -44,10 +42,11 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	app.mu.Lock()
 	defer app.mu.Unlock()
 
-	_, err := app.users.DB.Exec("DELETE FROM SESSIONS WHERE cookie_value = ?", sessionID)
+	_, err := app.users.DB.Exec(sqlite.DeleteSessionQuery, sessionID)
 	if err != nil {
 		ErrorHandle(w, 500, "Internal Server Error")
 		log.Println("Error deleting session:", err)
+		return
 	}
 
 	http.SetCookie(w, &http.Cookie{
@@ -61,5 +60,4 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	http.Redirect(w, r, "/#login", http.StatusFound)
-
 }

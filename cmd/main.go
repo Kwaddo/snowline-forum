@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"db/internal/models/sqlite"
+	"db/internal/sqlite"
 	"log"
 	"net/http"
 	"sync"
@@ -17,7 +17,7 @@ type app struct {
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", "./app.db")
+	db, err := sql.Open("sqlite3", "./internal/sqlite/app.db")
 	if err != nil {
 		log.Fatal(err)
 	}

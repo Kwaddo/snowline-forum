@@ -1,6 +1,7 @@
 package main
 
 import (
+	"db/internal/sqlite"
 	"fmt"
 	"html/template"
 	"io"
@@ -176,8 +177,8 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	expiresAt := time.Now().Add(1 * time.Hour)
-	stmt := `INSERT OR REPLACE INTO SESSIONS (cookie_value, user_id, expires_at, username) VALUES (?, ?, ?, ?)`
-	_, err = app.users.DB.Exec(stmt, sessionValue, id, expiresAt, name)
+	
+	_, err = app.users.DB.Exec(sqlite.InsertOrReplaceSession, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")
@@ -261,7 +262,7 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			tmp, err := template.ParseFiles("./assets/templates/profile.html")
+			tmp, err := template.ParseFiles("./assets/templates/profilepage.html")
 			if err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
 				log.Println(err)
@@ -282,46 +283,46 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
-    err := r.ParseForm()
-    if err != nil {
-        log.Println(err)
-        return
-    }
-    postID := r.FormValue("post_id")
-    userID, err := app.users.GetUserID(r)
-    if err != nil {
-        log.Println("Error getting user ID:", err)
-        http.Redirect(w, r, "/#login", http.StatusFound)
-        return
-    }
-    stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE)`
-    _, err = app.posts.DB.Exec(stmt, postID, userID)
-    if err != nil {
-        http.Redirect(w, r, "/#login", http.StatusFound)
-        return
-    }
-    http.Redirect(w, r, "/", http.StatusFound)
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
+
+	
+	_, err = app.posts.DB.Exec(sqlite.InsertOrReplaceLike, postID, userID)
+	if err != nil {
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
-    err := r.ParseForm()
-    if err != nil {
-        log.Println(err)
-        return
-    }
-    postID := r.FormValue("post_id")
-    userID, err := app.users.GetUserID(r)
-    if err != nil {
-        log.Println("Error getting user ID:", err)
-        http.Redirect(w, r, "/#login", http.StatusFound)
-        return
-    }
-    stmt := `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE)`
-    _, err = app.posts.DB.Exec(stmt, postID, userID)
-    if err != nil {
-        http.Redirect(w, r, "/#login", http.StatusFound)
-        return
-    }
-    http.Redirect(w, r, "/", http.StatusFound)
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
+	_, err = app.posts.DB.Exec(sqlite.InsertOrReplaceDislike, postID, userID)
+	if err != nil {
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 

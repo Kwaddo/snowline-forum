@@ -1,3 +1,4 @@
+// your original file, e.g., post_model.go
 package sqlite
 
 import (
@@ -22,8 +23,7 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		log.Println(err)
 		return err
 	}
-	stmt := `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))`
-	_, err = m.DB.Exec(stmt, title, content, image_path, userID, userName)
+	_, err = m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName)
 	return err
 }
 
@@ -38,22 +38,21 @@ func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r
 		log.Println(err)
 		return err
 	}
-	stmt := `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, datetime('now'))`
-	_, err = m.DB.Exec(stmt, post_id, userID, content, userName)
+	_, err = m.DB.Exec(InsertCommentQuery, post_id, userID, content, userName)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	return err
+	return nil
 }
 
 func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
-	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS ORDER BY post_id DESC`
-	rows, err := m.DB.Query(stmt)
+	rows, err := m.DB.Query(AllPostsQuery)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
+	defer rows.Close()
 
 	posts := []models.Post{}
 	for rows.Next() {
@@ -62,38 +61,40 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 		if err != nil {
 			return nil, err
 		}
-		likesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
-		err = m.DB.QueryRow(likesStmt, p.ID).Scan(&p.Likes)
+		err = m.fetchLikesAndDislikes(&p)
 		if err != nil {
-			log.Println("Error fetching likes count:", err)
-		}
-		dislikesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
-		err = m.DB.QueryRow(dislikesStmt, p.ID).Scan(&p.Dislikes)
-		if err != nil {
-			log.Println("Error fetching dislikes count:", err)
+			log.Println("Error fetching likes/dislikes:", err)
 		}
 		posts = append(posts, p)
 	}
-	err = rows.Err()
-	if err != nil {
+	if err := rows.Err(); err != nil {
 		log.Println(err)
 		return nil, err
 	}
 	return posts, nil
 }
 
+func (m *POSTMODEL) fetchLikesAndDislikes(p *models.Post) error {
+	err := m.DB.QueryRow(PostLikesCountQuery, p.ID).Scan(&p.Likes)
+	if err != nil {
+		return err
+	}
+	err = m.DB.QueryRow(PostDislikesCountQuery, p.ID).Scan(&p.Dislikes)
+	return err
+}
+
 func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]models.Post, error) {
-	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
 	userID, err := u.GetUserID(r)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-	rows, err := u.DB.Query(stmt, userID)
+	rows, err := u.DB.Query(AllUsersPostsQuery, userID)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
+	defer rows.Close()
 
 	posts := []models.Post{}
 	for rows.Next() {
@@ -104,8 +105,7 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mod
 		}
 		posts = append(posts, p)
 	}
-	err = rows.Err()
-	if err != nil {
+	if err := rows.Err(); err != nil {
 		log.Println(err)
 		return nil, err
 	}
@@ -114,9 +114,7 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mod
 
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
 	postID := r.URL.Query().Get("id")
-
-	stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ?`
-	row := m.DB.QueryRow(stmt, postID)
+	row := m.DB.QueryRow(PostWithCommentQuery, postID)
 
 	p := models.Post{}
 	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
@@ -125,8 +123,7 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 		return models.PostandComment{}, err
 	}
 
-	stmt2 := `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
-	rows, err := m.DB.Query(stmt2, postID)
+	rows, err := m.DB.Query(CommentsForPostQuery, postID)
 	if err != nil {
 		log.Println(err)
 		return models.PostandComment{}, err
@@ -143,18 +140,14 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 		}
 		comments = append(comments, c)
 	}
-
-	err = rows.Err()
-	if err != nil {
+	if err := rows.Err(); err != nil {
 		log.Println(err)
 		return models.PostandComment{}, err
 	}
 
-	// Construct the PostandComment struct
 	commentPost := models.PostandComment{
 		Posts:   p,
 		Comment: comments,
 	}
-
 	return commentPost, nil
 }
