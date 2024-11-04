@@ -15,6 +15,9 @@ func (app *app) routes() http.Handler {
 	mux.HandleFunc("GET /Profile-page", app.ProfilePageHandler)
 	mux.HandleFunc("POST /like", app.LikeHandler)
 	mux.HandleFunc("POST /dislike", app.DislikeHandler)
+	mux.HandleFunc("POST /comment-like", app.CommentLikeHandler)
+	mux.HandleFunc("POST /comment-dislike", app.CommentDislikeHandler)
+	
 	fs := http.FileServer(http.Dir("./assets/static"))
 	fs2 := http.FileServer(http.Dir("./assets/uploads"))
 	fs3 := http.FileServer(http.Dir("./assets/images"))

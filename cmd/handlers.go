@@ -105,7 +105,7 @@ func (app *app) ViewPostPageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
-			tmp, err := template.ParseFiles("./assets/templates/post.html")
+			tmp, err := template.ParseFiles("./assets/templates/posts.html")
 			if err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
 				log.Println(err)
@@ -326,3 +326,38 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+
+func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	commentID := r.FormValue("comment_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Fatalf("Error")
+	}
+	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, TRUE)`
+	app.posts.DB.Exec(stmt, commentID, userID)
+	postID := r.FormValue("post_id") 
+    redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
+    http.Redirect(w, r, redirectURL, http.StatusFound)
+}
+func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	commentID := r.FormValue("comment_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Fatalf("Error")
+	}
+	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, FALSE)`
+	app.posts.DB.Exec(stmt, commentID, userID)
+	postID := r.FormValue("post_id") 
+    redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
+    http.Redirect(w, r, redirectURL, http.StatusFound)
+}

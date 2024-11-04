@@ -113,41 +113,78 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) ([]mod
 }
 
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
-	postID := r.URL.Query().Get("id")
-	row := m.DB.QueryRow(PostWithCommentQuery, postID)
+    postID := r.URL.Query().Get("id")
 
-	p := models.Post{}
-	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
-	if err != nil {
-		log.Println(err)
-		return models.PostandComment{}, err
-	}
 
-	rows, err := m.DB.Query(CommentsForPostQuery, postID)
-	if err != nil {
-		log.Println(err)
-		return models.PostandComment{}, err
-	}
-	defer rows.Close()
+    stmt := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ?`
+    row := m.DB.QueryRow(stmt, postID)
 
-	comments := []models.Comment{}
-	for rows.Next() {
-		c := models.Comment{}
-		err := rows.Scan(&c.ID, &c.PostID, &c.Content, &c.CreatedAt, &c.Username)
-		if err != nil {
-			log.Println(err)
-			return models.PostandComment{}, err
-		}
-		comments = append(comments, c)
-	}
-	if err := rows.Err(); err != nil {
-		log.Println(err)
-		return models.PostandComment{}, err
-	}
+    p := models.Post{}
+    err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+    if err != nil {
+        log.Println(err)
+        return models.PostandComment{}, err
+    }
 
-	commentPost := models.PostandComment{
-		Posts:   p,
-		Comment: comments,
-	}
-	return commentPost, nil
+   
+    likesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
+    err = m.DB.QueryRow(likesStmt, p.ID).Scan(&p.Likes)
+    if err != nil {
+        log.Println("Error fetching post likes count:", err)
+    }
+
+ 
+    dislikesStmt := `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
+    err = m.DB.QueryRow(dislikesStmt, p.ID).Scan(&p.Dislikes)
+    if err != nil {
+        log.Println("Error fetching post dislikes count:", err)
+    }
+
+    stmt2 := `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
+    rows, err := m.DB.Query(stmt2, postID)
+    if err != nil {
+        log.Println(err)
+        return models.PostandComment{}, err
+    }
+    defer rows.Close()
+
+    comments := []models.Comment{}
+    for rows.Next() {
+        c := models.Comment{}
+        err := rows.Scan(&c.ID, &c.PostID, &c.Content, &c.CreatedAt, &c.Username)
+        if err != nil {
+            log.Println(err)
+            return models.PostandComment{}, err
+        }
+
+        commentLikesStmt := `SELECT COUNT(*) FROM COMMENT_LIKES WHERE comment_id = ? AND isliked = TRUE`
+        err = m.DB.QueryRow(commentLikesStmt, c.ID).Scan(&c.Likes)
+        if err != nil {
+            log.Println("Error fetching comment likes count:", err)
+        }
+
+
+        commentDislikesStmt := `SELECT COUNT(*) FROM COMMENT_LIKES WHERE comment_id = ? AND isliked = FALSE`
+        err = m.DB.QueryRow(commentDislikesStmt, c.ID).Scan(&c.Dislikes)
+        if err != nil {
+            log.Println("Error fetching comment dislikes count:", err)
+        }
+
+        comments = append(comments, c)
+    }
+
+    err = rows.Err()
+    if err != nil {
+        log.Println(err)
+        return models.PostandComment{}, err
+    }
+
+
+    commentPost := models.PostandComment{
+        Posts:    p,
+        Comments: comments,
+    }
+
+    return commentPost, nil
 }
+

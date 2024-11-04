@@ -19,9 +19,11 @@ type Comment struct {
 	PostID    int
 	Content   string
 	CreatedAt time.Time
+	Likes     string
+	Dislikes  string
 }
 
 type PostandComment struct {
-	Posts   Post
-	Comment []Comment
+	Posts    Post
+	Comments []Comment
 }
