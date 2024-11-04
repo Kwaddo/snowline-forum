@@ -46,6 +46,7 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err := app.users.DB.Exec("DELETE FROM SESSIONS WHERE cookie_value = ?", sessionID)
 	if err != nil {
+		ErrorHandle(w, 500, "Internal Server Error")
 		log.Println("Error deleting session:", err)
 	}
 

@@ -14,7 +14,7 @@
         <div class="popup-content">
             <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
             <h2 class="logtitle">LOGIN</h2>
-            <form action="/3" method="POST" class="loginForm">
+            <form action="/signin" method="POST" class="loginForm">
                 <input type="email" name="email" placeholder="Email Address" maxlength="254" minlength="9" required>
                 <input type="password" name="password" placeholder="Password" maxlength="100" minlength="0" required>
                 <input type="submit" value="Login">
@@ -27,10 +27,10 @@
         <div class="popup-content">
             <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
             <h2 class="logtitle">CREATE POST</h2>
-            <form action="/4" method="POST" class="createPostForm" enctype="multipart/form-data">
+            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
                 <input type="text" placeholder="Title" maxlength="100" name="title" required>
                 <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                <input type="file" id="image" name="image" required>
+                <input type="file" id="image" name="image">
                 <input type="submit" value="Submit Post">
             </form>
         </div>
@@ -56,13 +56,19 @@
         <div class="filters"></div>
         <div class="posts">
             {{range .Posts}}
-            <div class="post">
-                <h2 id="postTitle">{{.Title}}</h2>
-                <input type="hidden" name="post_id" value="{{.ID}}">
-                <img src="{{.ImagePath}}" alt="image">
-                <h4>{{.Content}}</h4>
-                <p id="postAuthor">@{{.ID}}</p>
-                <div class="rightSide">
+            <div class="postWithOptions">
+                <div class="post">
+                    <p class="postAuthor">@{{.ID}}</p>
+                    <h2 class="postTitle">{{.Title}}</h2>
+                    <input type="hidden" name="post_id" value="{{.ID}}">
+                    <h4 class="postContent">{{.Content}}</h4>
+                    {{if .ImagePath}}
+                    <div class="imageContainer">
+                        <img src="{{.ImagePath}}" alt="image" class="postImage">
+                    </div>
+                    {{end}}
+                </div>
+                <div class="postOptions">
                     <img src="../images/like-filled.png" class="likeIcon">
                     <p class="counters">30</p>
                     <img src="../images/dislike-filled.png" class="dislikeIcon">

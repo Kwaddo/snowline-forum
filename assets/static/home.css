@@ -93,7 +93,7 @@ body {
     border-radius: 20px;
     display: flex;
     align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space between left and right content */
+    justify-content: space-evenly; /* Space between left and right content */
     padding: 10px; /* Optional padding inside the post */
     position: relative; /* Position relative to contain the absolute child */
     animation: appear linear;
@@ -102,21 +102,51 @@ body {
     animation-range: entry 0% cover 30%;
 }
 
-#postTitle {
-    margin-top: 80px; /* Remove default margin */
-    font-size: 22px;
+.postTitle {
+    margin: 0px; 
+    font-size: 1.5em;
     text-decoration: underline; /* Underline the title */
     color: #D1D7E0; /* Ensure text color is consistent */
 }
 
+.postContent {
+    font-size: 1.2em;
+    color: #D1D7E0;
+    margin: 0px;
+}
 
+.imageContainer {
+    width: 90%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+}
 
-.rightSide {
+.postImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit:cover;
+    border-radius: 2em;
+}
+
+.postAuthor {
+    margin: 0;
+    font-size: 1.55em;
+    color: #D1D7E0;
+}
+
+.postWithOptions {
+    display: flex;
+    flex-direction: column;
+    align-items : center;
+}
+
+.postOptions {
     display: flex; /* Use flex to align icons and counters */
     align-items: center; /* Center items vertically */
     gap: 5px; /* Space between icons and counters */
     color: #D1D7E0;
-    margin: 20px; /* This margin can be adjusted or removed */
+    /* margin: 20px; This margin can be adjusted or removed */
 }
 
 .likeIcon,
