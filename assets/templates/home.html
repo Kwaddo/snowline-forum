@@ -1,104 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <title>Home Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/home.css">
-</head>
-
-<body>
-    <div>
-        <a href="/Profile-page">Profile Page</a>
-    </div>
-
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
-
-    <!-- Login Popup -->
-    <div id="login" class="popup">
-        <div class="backtrack" style="width: 100%; height: 100px; position: absolute;"></div>
-        <div class="popup-content">
-            <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
-            <h2 class="logtitle">LOGIN</h2>
-            <form action="/signin" method="POST" class="loginForm">
-                <input type="email" name="email" placeholder="Email Address" maxlength="254" minlength="9" required>
-                <input type="password" name="password" placeholder="Password" maxlength="100" minlength="0" required>
-                <input type="submit" value="Login">
-                <a href="/register" id="regred">Don't Have an Account? Register!</a>
-            </form>
+    <head>
+        <title>Home Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/home.css">
+    </head>
+    <body>
+        <!-- Login Popup -->
+        <div id="login" class="popup">
+            <div class="backtrack" style="width: 100%; height: 100px; position: absolute;"></div>
+            <div class="popup-content">
+                <a href="/" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <h2 class="logtitle">LOGIN</h2>
+                <form action="/signin" method="POST" class="loginForm">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        maxlength="254"
+                        minlength="9"
+                        required
+                    >
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        maxlength="100"
+                        minlength="0"
+                        required
+                    >
+                    <input type="submit" value="Login">
+                    <a href="/register" id="regred">Don't Have an Account? Register!</a>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <!-- Create Post Popup -->
-    <div id="createPostPopup" class="popup">
-        <div class="popup-content">
-            <a href="/" class="popup-close"><img src="../images/close-tab-svgrepo-com.png" alt="Close"></a>
-            <h2 class="logtitle">CREATE POST</h2>
-            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
-                <input type="text" placeholder="Title" maxlength="100" name="title" required>
-                <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                <input type="file" id="image" name="image">
-                <input type="submit" value="Submit Post">
-            </form>
+        <!-- Create Post Popup -->
+        <div id="createPostPopup" class="popup">
+            <div class="popup-content">
+                <a href="/" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <h2 class="logtitle">CREATE POST</h2>
+                <form
+                    action="/save-post"
+                    method="POST"
+                    class="createPostForm"
+                    enctype="multipart/form-data"
+                >
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        maxlength="100"
+                        name="title"
+                        required
+                    >
+                    <textarea
+                        placeholder="Start typing!"
+                        name="content"
+                        rows="8"
+                        maxlength="2000"
+                        required
+                    ></textarea>
+                    <input type="file" id="image" name="image">
+                    <input type="submit" value="Submit Post">
+                </form>
+            </div>
         </div>
-    </div>
-
-    <!-- Main page content -->
-    <div class="dynamic-island">
-        <div class="island-content">
-            <a href="/">
-                <img src="../images/Home.png" class="icon" title="Home">
-            </a>
-            <a href="#createPostPopup">
-                <img src="../images/Plus.png" class="icon" title="Create Post">
-            </a>
-            <a href="#login">
-                <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
-            </a>
+        <!-- Main page content -->
+        <div class="dynamic-island">
+            <div class="island-content">
+                <a href="/">
+                    <img src="../images/Home.png" class="icon" title="Home">
+                </a>
+                <a href="#createPostPopup">
+                    <img src="../images/Plus.png" class="icon" title="Create Post">
+                </a>
+                <a href="/Profile-page">
+                    <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
+                </a>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="button">
+                        <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <h1 id="title">Forum</h1>
-    <div class="containers">
-        <div class="filters"></div>
-        <div class="posts">
-            {{range .Posts}}
-            <div class="post">
-                <p class="postAuthor">@{{.Username}}</p>
-                <h2 class="postTitle">{{.Title}}</h2>
-                <input type="hidden" name="post_id" value="{{.ID}}">
-                <h4 class="postContent">{{.Content}}</h4>
-                    {{if .ImagePath}}
-                    <div class="imageContainer">
-                        <img src="{{.ImagePath}}" alt="image" class="postImage">
+        <h1 id="title">Forum</h1>
+        <div class="containers">
+            <div class="filters"></div>
+            <div class="posts">
+                {{range .Posts}}
+                <div class="postWithOptions">
+                    <div class="post">
+                        <p class="postAuthor">@{{.Username}}</p>
+                        <h2 class="postTitle">{{.Title}}</h2>
+                        <input type="hidden" name="post_id" value="{{.ID}}">
+                        <h4 class="postContent">{{.Content}}</h4>
+                        {{if .ImagePath}}
+                        <div class="imageContainer">
+                            <img src="{{.ImagePath}}" alt="image" class="postImage">
+                        </div>
+                        {{end}}
                     </div>
-                    {{end}}
+                    <div class="postOptions">
+                        <div class="option">
+                            <form action="/like" method="POST">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="button">
+                                    <img src="../images/like-filled.png" alt="" class="likeIcon">
+                                </button>
+                            </form>
+                            <p class="counters">{{.Likes}}</p>
+                        </div>
+                        <div class="option">
+                            <form action="/dislike" method="POST">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="button">
+                                    <img src="../images/dislike-filled.png" alt="" class="dislikeIcon">
+                                </button>
+                            </form>
+                            <p class="counters">{{.Dislikes}}</p>
+                        </div>
+                        <div class="option">
+                            <a href="/view-post?id={{.ID}}">
+                                <img src="../images/comments.png" class="commentIcon">
+                            </a>
+                            <p class="counters">2</p>
+                        </div>
+                    </div>
+                </div>
+                {{end}}
             </div>
-            <div class="postOptions">
-                <form action="/like" method="POST">
-                    <input type="hidden" name="post_id" value="{{.ID}}">
-                    <button type="submit" class="vote-button">
-                        <i class="fas fa-thumbs-up"></i>
-                        {{.Likes}}
-                    </button>
-                </form>
-                <form action="/dislike" method="POST">
-                    <input type="hidden" name="post_id" value="{{.ID}}">
-                    <button type="submit" class="vote-button">
-                        <i class="fas fa-thumbs-down"></i>
-                        {{.Dislikes}}
-                    </button>
-                </form>
-                <a href="/view-post?id={{.ID}}"><img src="../images/comments.png" class="commentIcon"></a>
-                <p class="counters">2</p>
-            </div>
-
-            {{end}}
         </div>
-    </div>
-</body>
-
+    </body>
 </html>
