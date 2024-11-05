@@ -89,39 +89,48 @@
         <h1 id="title">Forum</h1>
         <div class="containers">
             <div class="filters"></div>
-            <div class="posts">
-                {{range .Posts}}
-                <div class="post">
-                    <p class="postAuthor">@{{.Username}}</p>
-                    <h2 class="postTitle">{{.Title}}</h2>
-                    <input type="hidden" name="post_id" value="{{.ID}}">
-                    <h4 class="postContent">{{.Content}}</h4>
-                    {{if .ImagePath}}
-                    <div class="imageContainer">
-                        <img src="{{.ImagePath}}" alt="image" class="postImage">
+                <div class="posts">
+                    {{range .Posts}}
+                    <div class="postWithOptions">
+                        <div class="post">
+                            <p class="postAuthor">@{{.Username}}</p>
+                            <h2 class="postTitle">{{.Title}}</h2>
+                            <input type="hidden" name="post_id" value="{{.ID}}">
+                            <h4 class="postContent">{{.Content}}</h4>
+                            {{if .ImagePath}}
+                            <div class="imageContainer">
+                                <img src="{{.ImagePath}}" alt="image" class="postImage">
+                            </div>
+                            {{end}}
+                        </div>
+                        <div class="postOptions">
+                            <div class="option">
+                                <form action="/like" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button type="submit" class="button">
+                                        <img src="../images/like-filled.png" alt="" class="likeIcon">
+                                    </button>
+                                </form>
+                                <p class="counters">{{.Likes}}</p>
+                            </div>
+                            <div class="option">
+                                <form action="/dislike" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <button type="submit" class="button">
+                                        <img src="../images/dislike-filled.png" alt="" class="dislikeIcon">
+                                    </button>
+                                </form>
+                                <p class="counters">{{.Dislikes}}</p>
+                            </div>
+                            <div class="option">
+                                <a href="/#login">
+                                    <img src="../images/comments.png" class="commentIcon">
+                                </a>
+                                <p class="counters">2</p>
+                            </div>
+                        </div>
                     </div>
                     {{end}}
-                    <div class="postOptions">
-                        <form action="/like" method="POST">
-                            <input type="hidden" name="post_id" value="{{.ID}}">
-                            <button type="submit" class="vote-button">
-                                <i class="fas fa-thumbs-up"></i>
-                                {{.Likes}}
-                            </button>
-                        </form>
-                        <form action="/dislike" method="POST">
-                            <input type="hidden" name="post_id" value="{{.ID}}">
-                            <button type="submit" class="vote-button">
-                                <i class="fas fa-thumbs-down"></i>
-                                {{.Dislikes}}
-                            </button>
-                        </form>
-                        <img src="../images/comments.png" class="commentIcon">
-                        <p class="counters">2</p>
-                    </div>
-                </div>
-                <a href="/view-post?id={{.ID}}">View Comments</a>
-                {{end}}
             </div>
         </div>
     </body>
