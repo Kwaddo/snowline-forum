@@ -24,11 +24,12 @@ const (
 	CommentsForPostQuery    = `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
 	PostLikesCountQuery     = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
 	PostDislikesCountQuery   = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
+	IsAuthenticateds = `SELECT cookie_value FROM SESSIONS WHERE cookie_value = ?`
 )
 
 // Select ---> Authentication and User Retrieval
 const (
-	AuthenticateUserQuery = `SELECT user_id, password, name FROM USERS WHERE email = ?`
+	AuthenticateUserQuery = `SELECT user_id, password, name FROM USERS WHERE email = ? OR name = ?`
 	GetUserIDQuery        = `SELECT user_id FROM SESSIONS WHERE cookie_value = ?`
 	GetUserNameQuery      = `SELECT username FROM SESSIONS WHERE cookie_value = ?`
 )

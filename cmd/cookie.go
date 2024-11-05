@@ -23,26 +23,33 @@ func (app *app) CleanupExpiredSessions() {
 }
 
 func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	var sessionID string
 	cookies := r.Cookies()
-
+	var userId string
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
-			sessionID = cookie.Value
-			break
+			row := app.posts.DB.QueryRow(sqlite.IsAuthenticateds, cookie.Value)
+			row.Scan(&userId)
+			if userId != "" {
+				userId = cookie.Value
+			} else {
+				continue
+			}
 		}
 	}
 
-	if sessionID == "" {
+	
+
+	if userId == "" {
 		log.Println("No session cookie found")
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
+	
 	app.mu.Lock()
 	defer app.mu.Unlock()
 
-	_, err := app.users.DB.Exec(sqlite.DeleteSessionQuery, sessionID)
+	_, err := app.users.DB.Exec(sqlite.DeleteSessionQuery, userId)
 	if err != nil {
 		ErrorHandle(w, 500, "Internal Server Error")
 		log.Println("Error deleting session:", err)
@@ -50,7 +57,7 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "Forum-" + sessionID,
+		Name:     "Forum-" + userId,
 		Value:    "",
 		Path:     "/",
 		Expires:  time.Now().Add(-1 * time.Hour),

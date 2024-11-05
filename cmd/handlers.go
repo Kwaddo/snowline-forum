@@ -134,6 +134,10 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+	if r.PostForm.Get("password") != r.PostForm.Get("re-password") {
+		ErrorHandle(w, 400, "Passwords do not match")
+		return
+	}
 
 	err := app.users.Insert(
 		r.PostForm.Get("name"),
@@ -142,7 +146,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		log.Println(err)
-		ErrorHandle(w, 409, "Email already in use")
+		ErrorHandle(w, 409, "Email or Username already in use ")
 		return
 	}
 	http.Redirect(w, r, "/#login", http.StatusFound)
@@ -165,7 +169,9 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sessionValue := uuid.NewV5(uuid.NamespaceURL, r.PostForm.Get("email")).String()
+	email := r.PostForm.Get("email")
+	uniqueInput := email + time.Now().Format(time.RFC3339Nano)
+	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
 	http.SetCookie(w, &http.Cookie{
 		Name:     "Forum-" + sessionValue,
 		Value:    sessionValue,
@@ -177,7 +183,7 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	expiresAt := time.Now().Add(1 * time.Hour)
-	
+
 	_, err = app.users.DB.Exec(sqlite.InsertOrReplaceSession, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
@@ -185,7 +191,7 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -296,7 +302,6 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
 	_, err = app.posts.DB.Exec(sqlite.InsertOrReplaceLike, postID, userID)
 	if err != nil {
 		http.Redirect(w, r, "/#login", http.StatusFound)
@@ -326,7 +331,6 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-
 func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -340,9 +344,9 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, TRUE)`
 	app.posts.DB.Exec(stmt, commentID, userID)
-	postID := r.FormValue("post_id") 
-    redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
-    http.Redirect(w, r, redirectURL, http.StatusFound)
+	postID := r.FormValue("post_id")
+	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
+	http.Redirect(w, r, redirectURL, http.StatusFound)
 }
 func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
@@ -357,7 +361,7 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, FALSE)`
 	app.posts.DB.Exec(stmt, commentID, userID)
-	postID := r.FormValue("post_id") 
-    redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
-    http.Redirect(w, r, redirectURL, http.StatusFound)
+	postID := r.FormValue("post_id")
+	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
+	http.Redirect(w, r, redirectURL, http.StatusFound)
 }

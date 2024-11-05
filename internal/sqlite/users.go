@@ -35,7 +35,7 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 	var name string
 	var passwordHash []byte
 
-	row := u.DB.QueryRow(AuthenticateUserQuery, email)
+	row := u.DB.QueryRow(AuthenticateUserQuery, email,email)
 	err := row.Scan(&id, &passwordHash, &name)
 	if err != nil {
 		return 0, "", err
@@ -48,14 +48,22 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 }
 
 func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
-	userID, err := u.getSessionCookieValue(r)
-	if err != nil {
-		return "", err
+	cookies := r.Cookies()
+	var userId string
+	for _, cookie := range cookies {
+		if strings.HasPrefix(cookie.Name, "Forum-") {
+			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
+			row.Scan(&userId)
+			if userId != "" {
+				userId = cookie.Value
+			} else {
+				continue
+			}
+		}
 	}
-
 	var id string
-	row := u.DB.QueryRow(GetUserIDQuery, userID)
-	err = row.Scan(&id)
+	row := u.DB.QueryRow(GetUserIDQuery, userId)
+	err := row.Scan(&id)
 	if err != nil {
 		return "", err
 	}
@@ -63,14 +71,23 @@ func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 }
 
 func (u *USERMODEL) GetUserName(r *http.Request) (string, error) {
-	userID, err := u.getSessionCookieValue(r)
-	if err != nil {
-		return "", err
+	cookies := r.Cookies()
+	var userId string
+	for _, cookie := range cookies {
+		if strings.HasPrefix(cookie.Name, "Forum-") {
+			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
+			row.Scan(&userId)
+			if userId != "" {
+				userId = cookie.Value
+			} else {
+				continue
+			}
+		}
 	}
 
 	var name string
-	row := u.DB.QueryRow(GetUserNameQuery, userID)
-	err = row.Scan(&name)
+	row := u.DB.QueryRow(GetUserNameQuery, userId)
+	err := row.Scan(&name)
 	if err != nil {
 		return "", err
 	}
@@ -90,10 +107,19 @@ func (u *USERMODEL) getSessionCookieValue(r *http.Request) (string, error) {
 
 func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
 	cookies := r.Cookies()
+
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
-			return true
+			var value string
+			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
+			row.Scan(&value)
+			if value != "" {
+				return true
+			} else {
+				continue
+			}
 		}
 	}
+
 	return false
 }
