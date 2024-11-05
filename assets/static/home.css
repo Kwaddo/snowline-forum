@@ -206,7 +206,7 @@ html::-webkit-scrollbar-track {
 
 /* --- LOGIN POPUP STYLES --- */
 
-input[type="email"],
+input[name="email"],
 input[type="password"] {
     transition-duration: 0.5s;
     width: 80%;
@@ -219,24 +219,24 @@ input[type="password"] {
     border-radius: 5px;
 }
 
-input[type="email"]::placeholder,
+input[name="email"]::placeholder,
 input[type="password"]::placeholder {
     transition-duration: 0.2s;
     color: #D1D7E0;
 }
 
-input[type="email"]:focus::placeholder,
+input[name="email"]:focus::placeholder,
 input[type="password"]:focus::placeholder {
     color: #4C495D;
 }
 
-input[type="email"]:hover::placeholder,
+input[name="email"]:hover::placeholder,
 input[type="password"]:hover::placeholder {
     transition-duration: 0.2s;
     color: #564F6F;
 }
 
-input[type="email"]:hover,
+input[name="email"]:hover,
 input[type="password"]:hover {
     transition-duration: 0.2s;
     background-color: #564F6F;
