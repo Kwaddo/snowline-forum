@@ -50,13 +50,6 @@
                     class="createPostForm"
                     enctype="multipart/form-data"
                 >
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        maxlength="100"
-                        name="title"
-                        required
-                    >
                     <textarea
                         placeholder="Start typing!"
                         name="content"
@@ -67,6 +60,18 @@
                     <input type="file" id="image" name="image">
                     <input type="submit" value="Submit Post">
                 </form>
+            </div>
+        </div>
+        <!-- logout confirmation popup -->
+        <div id="logout-confirmation" class="popup">
+            <div class="popup-content">
+                <h1>ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="button">
+                        YES
+                    </button>
+                </form>
+                <h1><a href="/">NO</a></h1>
             </div>
         </div>
         <!-- Main page content -->
@@ -81,11 +86,9 @@
                 <a href="/Profile-page">
                     <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
                 </a>
-                <form action="/logout" method="POST">
-                    <button type="submit" class="button">
-                        <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
-                    </button>
-                </form>
+                <a href="/#logout-confirmation">
+                    <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
+                </a>
             </div>
         </div>
         <h1 id="title">Forum</h1>

@@ -33,18 +33,13 @@ body {
 }
 
 .icon {
-    height: 2rem;
-    width: 2rem;
-}
-
-.profile-icon {
-    height: 1.67rem;
-    width: 1.6rem;
+    height: 1.3rem;
+    width: 1.3rem;
 }
 
 .logout-icon {
-    height: 1.77rem;
-    width: 1.77rem; 
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 /* --- END --- */
@@ -285,7 +280,8 @@ input[type="submit"]:not(:hover) {
 }
 
 #login:target,
-#createPostPopup:target { 
+#createPostPopup:target,
+#logout-confirmation:target { 
     display: flex;
 }
 
@@ -307,6 +303,11 @@ input[type="submit"]:not(:hover) {
 
 #login:target .popup-content {
     display: block;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+#logout-confirmation:target .popup-content {
+    display: flex;
     animation: slideFadeIn 0.5s forwards;
 }
 
