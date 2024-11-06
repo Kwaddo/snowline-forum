@@ -172,19 +172,26 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.PostForm.Get("email")
 	uniqueInput := email + time.Now().Format(time.RFC3339Nano)
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
+
+	_, err = app.users.DB.Exec(sqlite.UpdateSimiliarSessions, id)
+	if err != nil {
+		log.Println(err)
+		ErrorHandle(w, 500, "Failed to create session")
+		return
+	}
+
+	expiresAt := time.Now().Add(1 * time.Hour)
 	http.SetCookie(w, &http.Cookie{
 		Name:     "Forum-" + sessionValue,
 		Value:    sessionValue,
 		Path:     "/",
-		Expires:  time.Now().Add(1 * time.Hour),
+		Expires:  expiresAt,
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	})
 
-	expiresAt := time.Now().Add(1 * time.Hour)
-
-	_, err = app.users.DB.Exec(sqlite.InsertOrReplaceSession, sessionValue, id, expiresAt, name)
+	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")
@@ -340,10 +347,15 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 	commentID := r.FormValue("comment_id")
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
-		log.Fatalf("Error")
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
 	}
-	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, TRUE)`
-	app.posts.DB.Exec(stmt, commentID, userID)
+	_, err = app.posts.DB.Exec(sqlite.InsertorReplaceLikeComment, commentID, userID)
+	if err != nil {
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
 	postID := r.FormValue("post_id")
 	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
 	http.Redirect(w, r, redirectURL, http.StatusFound)
@@ -357,11 +369,17 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	commentID := r.FormValue("comment_id")
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
-		log.Fatalf("Error")
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
 	}
-	stmt := `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, FALSE)`
-	app.posts.DB.Exec(stmt, commentID, userID)
+	_, err = app.posts.DB.Exec(sqlite.InsertorReplaceDisLikeComment, commentID, userID)
+	if err != nil {
+		log.Println(err)
+		http.Redirect(w, r, "/#login", http.StatusFound)
+		return
+	}
 	postID := r.FormValue("post_id")
-	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
+	redirectURL := fmt.Sprintf("http://localhost:8080/view-post	", postID)
 	http.Redirect(w, r, redirectURL, http.StatusFound)
 }

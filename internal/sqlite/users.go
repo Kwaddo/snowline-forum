@@ -3,6 +3,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"net/http"
 	"strings"
@@ -35,7 +36,7 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 	var name string
 	var passwordHash []byte
 
-	row := u.DB.QueryRow(AuthenticateUserQuery, email,email)
+	row := u.DB.QueryRow(AuthenticateUserQuery, email, email)
 	err := row.Scan(&id, &passwordHash, &name)
 	if err != nil {
 		return 0, "", err
@@ -49,20 +50,26 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 
 func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 	cookies := r.Cookies()
-	var userId string
+	var cookievalue string
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
+			var IsValid bool
 			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
-			row.Scan(&userId)
-			if userId != "" {
-				userId = cookie.Value
+			row.Scan(&cookievalue, &IsValid)
+			if cookievalue != "" && IsValid {
+				cookievalue = cookie.Value
+				break
 			} else {
-				continue
+				cookievalue = ""
 			}
 		}
 	}
+	
+	if cookievalue == "" {
+		return "", errors.New("userId cannot be empty")
+	}
 	var id string
-	row := u.DB.QueryRow(GetUserIDQuery, userId)
+	row := u.DB.QueryRow(GetUserIDQuery, cookievalue)
 	err := row.Scan(&id)
 	if err != nil {
 		return "", err
@@ -72,21 +79,26 @@ func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 
 func (u *USERMODEL) GetUserName(r *http.Request) (string, error) {
 	cookies := r.Cookies()
-	var userId string
+	var cookievalue string
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
+			var IsValid bool
 			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
-			row.Scan(&userId)
-			if userId != "" {
-				userId = cookie.Value
+			row.Scan(&cookievalue, &IsValid)
+			if cookievalue != "" && IsValid {
+				cookievalue = cookie.Value
+				break
 			} else {
-				continue
+				cookievalue = ""
 			}
 		}
 	}
+	if cookievalue == "" {
+		return "", errors.New("userId cannot be empty")
+	}
 
 	var name string
-	row := u.DB.QueryRow(GetUserNameQuery, userId)
+	row := u.DB.QueryRow(GetUserNameQuery, cookievalue)
 	err := row.Scan(&name)
 	if err != nil {
 		return "", err
@@ -94,16 +106,16 @@ func (u *USERMODEL) GetUserName(r *http.Request) (string, error) {
 	return name, nil
 }
 
-func (u *USERMODEL) getSessionCookieValue(r *http.Request) (string, error) {
-	cookies := r.Cookies()
-	for _, cookie := range cookies {
-		if strings.HasPrefix(cookie.Name, "Forum-") {
-			return cookie.Value, nil
-		}
-	}
-	log.Println("No session id found")
-	return "", nil
-}
+// func (u *USERMODEL) getSessionCookieValue(r *http.Request) (string, error) {
+// 	cookies := r.Cookies()
+// 	for _, cookie := range cookies {
+// 		if strings.HasPrefix(cookie.Name, "Forum-") {
+// 			return cookie.Value, nil
+// 		}
+// 	}
+// 	log.Println("No session id found")
+// 	return "", nil
+// }
 
 func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
 	cookies := r.Cookies()
@@ -111,9 +123,10 @@ func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
 			var value string
+			var IsValid bool
 			row := u.DB.QueryRow(IsAuthenticateds, cookie.Value)
-			row.Scan(&value)
-			if value != "" {
+			row.Scan(&value, &IsValid)
+			if value != "" && IsValid {
 				return true
 			} else {
 				continue

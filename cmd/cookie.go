@@ -13,7 +13,7 @@ func (app *app) CleanupExpiredSessions() {
 		time.Sleep(time.Minute)
 		app.mu.Lock()
 
-		_, err := app.users.DB.Exec(sqlite.DeleteExpiredSessionsQuery, time.Now())
+		_, err := app.users.DB.Exec(sqlite.UpdateExpiredSessionsQuery, time.Now())
 		if err != nil {
 			log.Println("Error deleting expired sessions:", err)
 		}
@@ -24,32 +24,31 @@ func (app *app) CleanupExpiredSessions() {
 
 func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	cookies := r.Cookies()
-	var userId string
+	var cookievalue string
 	for _, cookie := range cookies {
 		if strings.HasPrefix(cookie.Name, "Forum-") {
+			var IsValid bool
 			row := app.posts.DB.QueryRow(sqlite.IsAuthenticateds, cookie.Value)
-			row.Scan(&userId)
-			if userId != "" {
-				userId = cookie.Value
+			row.Scan(&cookievalue, &IsValid)
+			if cookievalue != "" && IsValid {
+				cookievalue = cookie.Value
+				break
 			} else {
-				continue
+				cookievalue = ""
 			}
 		}
 	}
 
-	
-
-	if userId == "" {
+	if cookievalue == "" {
 		log.Println("No session cookie found")
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
-	
 	app.mu.Lock()
 	defer app.mu.Unlock()
 
-	_, err := app.users.DB.Exec(sqlite.DeleteSessionQuery, userId)
+	_, err := app.users.DB.Exec(sqlite.UpdateSessionQuery, cookievalue)
 	if err != nil {
 		ErrorHandle(w, 500, "Internal Server Error")
 		log.Println("Error deleting session:", err)
@@ -57,7 +56,7 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "Forum-" + userId,
+		Name:     "Forum-" + cookievalue,
 		Value:    "",
 		Path:     "/",
 		Expires:  time.Now().Add(-1 * time.Hour),

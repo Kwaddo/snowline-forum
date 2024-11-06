@@ -10,8 +10,9 @@ CREATE TABLE IF NOT EXISTS SESSIONS (
     session_id INTEGER PRIMARY KEY AUTOINCREMENT,
     cookie_value VARCHAR(55) UNIQUE,
     username VARCHAR(255) NOT NULL, 
-    user_id INTEGER UNIQUE,
+    user_id INTEGER NOT NULL,
     expires_at DATETIME NOT NULL UNIQUE,
+    isValid Boolean,
     foreign key (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE
 );
 
