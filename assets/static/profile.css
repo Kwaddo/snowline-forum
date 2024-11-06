@@ -296,4 +296,71 @@ html {
     }
 }
 
+.postTitle {
+    margin: 0px; 
+    font-size: 1.5em;
+    text-decoration: underline; 
+    color: #D1D7E0; 
+}
+
+.postContent {
+    font-size: 1.2em;
+    color: #D1D7E0;
+    margin: 0px;
+}
+
+.imageContainer {
+    width: 90%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.postImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit:cover;
+    border-radius: 2em;
+}
+
+.postAuthor {
+    margin: 0;
+    font-size: 1.55em;
+    color: #D1D7E0;
+}
+
+.postWithOptions {
+    display: flex;
+    flex-direction: column;
+    align-items : center;
+    gap: 1em;
+}
+
+.postOptions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #D1D7E0;
+    gap: 1em;
+
+}
+
+.likeIcon,
+.dislikeIcon,
+.commentIcon {
+    width: 24px; 
+    height: 24px;
+    margin-right: 2px; 
+}
+
+.option {
+    display: flex;
+    gap: 0.2em;
+}
+
+.counters {
+    margin: 0;
+    margin-top: 4px;
+}
+
 /* --- END --- */

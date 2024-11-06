@@ -18,52 +18,60 @@
                         <h4 class="postContent">{{.Content}}</h4>
                         {{if .ImagePath}}
                         <div class="imageContainer">
-                            <img src="{{.ImagePath}}" alt="image" class="postImage">
+                            <img src="{{.ImagePath}}" alt="image"
+                                class="postImage">
                         </div>
                         {{end}}
                     </div>
                     <div class="postOptions">
                         <div class="option">
                             <form action="/like" method="POST">
-                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <input type="hidden" name="post_id"
+                                    value="{{.ID}}">
                                 <button type="submit" class="button">
-                                    <img src="../images/like-filled.png" alt="" class="likeIcon">
+                                    <img src="../images/like-filled.png" alt
+                                        class="likeIcon">
                                 </button>
                             </form>
                             <p class="counters">{{.Likes}}</p>
                         </div>
                         <div class="option">
                             <form action="/dislike" method="POST">
-                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <input type="hidden" name="post_id"
+                                    value="{{.ID}}">
                                 <button type="submit" class="button">
-                                    <img src="../images/dislike-filled.png" alt="" class="dislikeIcon">
+                                    <img src="../images/dislike-filled.png" alt
+                                        class="dislikeIcon">
                                 </button>
                             </form>
                             <p class="counters">{{.Dislikes}}</p>
                         </div>
                         <div class="option">
                             <a href="/#comment-popup">
-                                <img src="../images/comments.png" class="commentIcon">
+                                <img src="../images/comments.png"
+                                    class="commentIcon">
                             </a>
                             <p class="counters">2</p>
                         </div>
                     </div>
                 </div>
-                
+                {{end}}
+
             </div>
             <div class="leftBar">
                 <a href="home.html">
                     <div id="homeContainer">
-                        <img src="../images/Home.png" alt="" id="home">
+                        <img src="../images/Home.png" alt id="home">
                     </div>
                 </a>
                 <div class="pfp">
-                    <img src="../images/Profile.png" alt="">
+                    <img src="../images/Profile.png" alt>
                 </div>
                 <div class="name">
-                    <p>{{.Username}}</p>
-                </div>
+                    {{if .Posts}}
+                    <p>{{(index .Posts 0).Username}}</p> 
                 {{end}}
+                </div>
                 <hr id="content-break">
                 <div class="nav">
                     <a href="#posts" class="options-link">
@@ -78,7 +86,8 @@
                     </a>
                     <a href="#posts" class="options-link">
                         <div class="options">
-                            <img src="../images/dislike-filled.png" alt="Dislike">
+                            <img src="../images/dislike-filled.png"
+                                alt="Dislike">
                         </div>
                     </a>
                 </div>
