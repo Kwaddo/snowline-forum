@@ -143,7 +143,8 @@
                                 </a>
                                 <h1 class="logtitle">Enter Your Comment!</h1>
                                 <div class="comment-bar">
-                                    <form action="/savecomment" align="center">
+                                    <form action="/savecomment"  method="POST" align="center">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
                                         <textarea
                                             placeholder="Start typing!"
                                             name="content"
@@ -151,11 +152,11 @@
                                             maxlength="2000"
                                             required
                                         ></textarea>
+                                        <button type="submit">
+                                            Comment
+                                        </button>
                                     </form>
                                 </div>
-                                <button type="submit">
-                                    Comment
-                                </button>
                             </div>
                         </div>
                     </div>

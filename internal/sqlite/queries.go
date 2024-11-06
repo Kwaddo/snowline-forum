@@ -14,7 +14,7 @@ const (
 
 // Diactivate session statements from DB
 const (
-	UpdateExpiredSessionsQuery = `UPDATE SESSIONS SET isvalid= false WHERE expires_at < ?`
+	UpdateExpiredSessionsQuery = `UPDATE SESSIONS SET isvalid = false WHERE expires_at < ?`
 	UpdateSessionQuery         = `UPDATE SESSIONS SET isvalid = false WHERE cookie_value = ?`
 	UpdateSimiliarSessions = `UPDATE SESSIONS SET isvalid = false WHERE user_id = ?`
 )

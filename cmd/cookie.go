@@ -10,7 +10,7 @@ import (
 
 func (app *app) CleanupExpiredSessions() {
 	for {
-		time.Sleep(time.Minute)
+		time.Sleep(time.Second)
 		app.mu.Lock()
 
 		_, err := app.users.DB.Exec(sqlite.UpdateExpiredSessionsQuery, time.Now())

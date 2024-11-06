@@ -380,6 +380,6 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	redirectURL := fmt.Sprintf("http://localhost:8080/view-post	", postID)
+	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
 	http.Redirect(w, r, redirectURL, http.StatusFound)
 }
