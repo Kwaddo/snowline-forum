@@ -174,6 +174,7 @@ body {
 
 .counters {
     margin: 0;
+    margin-top: 4px;
 }
 
 
@@ -450,6 +451,64 @@ input[type="submit"]:not(:hover) {
 
 /* --- END --- */
 
+
+/* --- comment popup --- */
+
+#comment-popup:target {
+    display: flex;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+#comment-popup {
+    display: none;
+    justify-content: center;
+    align-content: center;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.comment-bar textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    transition-duration: 0.5s;
+    width: 80%;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    font-size: 15px;
+    padding: 10px;
+    margin: 7px;
+    border: 3px solid #564F6F;
+    border-radius: 5px
+}
+
+.comment-bar textarea {
+    resize: none;
+}
+
+.comment-bar textarea::placeholder {
+    transition-duration: 0.2s;
+    color: #D1D7E0;
+}
+
+.comment-bar textarea:focus::placeholder {
+    color: #4C495D;
+}
+
+.comment-bar textarea:hover::placeholder {
+    transition-duration: 0.2s;
+    color: #564F6F;
+}
+
+.comment-bar textarea:hover {
+    transition-duration: 0.2s;
+    background-color: #564F6F;
+}
+
+/* --- end --- */
 
 
 /* --- MEDIA QUERIES --- */

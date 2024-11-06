@@ -70,7 +70,9 @@
                         YES
                     </button>
                 </form>
-                <h1><a href="/">NO</a></h1>
+                <h1>
+                    <a href="/">NO</a>
+                </h1>
             </div>
         </div>
         <!-- Main page content -->
@@ -127,10 +129,34 @@
                             <p class="counters">{{.Dislikes}}</p>
                         </div>
                         <div class="option">
-                            <a href="/view-post?id={{.ID}}">
+                            <a href="/#comment-popup">
                                 <img src="../images/comments.png" class="commentIcon">
                             </a>
                             <p class="counters">2</p>
+                        </div>
+                    </div>
+                    <div id="comment-popup" class="popup">
+                        <div class="popup-content">
+                            <div class="commen-content">
+                                <a href="/" class="popup-close">
+                                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                                </a>
+                                <h1 class="logtitle">Enter Your Comment!</h1>
+                                <div class="comment-bar">
+                                    <form action="/savecomment" align="center">
+                                        <textarea
+                                            placeholder="Start typing!"
+                                            name="content"
+                                            rows="8"
+                                            maxlength="2000"
+                                            required
+                                        ></textarea>
+                                    </form>
+                                </div>
+                                <button type="submit">
+                                    Comment
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
