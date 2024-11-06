@@ -1,89 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/profile.css">
-    <title>Profile Page</title>
-</head>
-
-<body>
-    <!-- <div class="all">
-        <a href="home.html">
-            <div id="homeContainer">
-                <img src="../images/Home.png" alt="" id="home">
-            </div>
-        </a>
-        <div class="pfp">
-            <img src="../images/Profile.png" alt="">
-        </div>
-        <div class="name">
-            <p>Moa</p>
-        </div>
-        <hr id="content-break">
-        <div class="nav">
-            <a href="#posts" class="options-link">
-                <div class="options"><img src="../images/like-filled.png" alt="Like"></div>
-            </a>
-            <a href="#posts" class="options-link">
-                <div class="options"><img src="../images/comments.png" alt="Comments"></div>
-            </a>
-            <a href="#posts" class="options-link">
-                <div class="options"><img src="../images/dislike-filled.png" alt="Dislike"></div>
-            </a>
-        </div>
-
-
-        <div id="posts" class="posts">
-            <a href="#" id="close"><div class="close">Close</div></a>
-            <div id="npost">Number Of Posts: 6</div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-        </div>
-    </div> -->
-    
-    <div class="all">
-        <div id="posts" class="posts">
-            <a href="#" id="close"><div class="close">Close</div></a>
-            <div id="npost">Number Of Posts: 6</div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-            <div class="post"></div>
-        </div>
-        <div class="leftBar">
-            <a href="home.html">
-                <div id="homeContainer">
-                    <img src="../images/Home.png" alt="" id="home">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/profile.css">
+        <title>Profile Page</title>
+    </head>
+    <body>
+        <div class="all">
+            <div class="posts" id="posts">
+                {{range .Posts}}
+                <div class="postWithOptions">
+                    <div class="post">
+                        <p class="postAuthor">@{{.Username}}</p>
+                        <h2 class="postTitle">{{.Title}}</h2>
+                        <input type="hidden" name="post_id" value="{{.ID}}">
+                        <h4 class="postContent">{{.Content}}</h4>
+                        {{if .ImagePath}}
+                        <div class="imageContainer">
+                            <img src="{{.ImagePath}}" alt="image" class="postImage">
+                        </div>
+                        {{end}}
+                    </div>
+                    <div class="postOptions">
+                        <div class="option">
+                            <form action="/like" method="POST">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="button">
+                                    <img src="../images/like-filled.png" alt="" class="likeIcon">
+                                </button>
+                            </form>
+                            <p class="counters">{{.Likes}}</p>
+                        </div>
+                        <div class="option">
+                            <form action="/dislike" method="POST">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="button">
+                                    <img src="../images/dislike-filled.png" alt="" class="dislikeIcon">
+                                </button>
+                            </form>
+                            <p class="counters">{{.Dislikes}}</p>
+                        </div>
+                        <div class="option">
+                            <a href="/#comment-popup">
+                                <img src="../images/comments.png" class="commentIcon">
+                            </a>
+                            <p class="counters">2</p>
+                        </div>
+                    </div>
                 </div>
-            </a>
-            <div class="pfp">
-                <img src="../images/Profile.png" alt="">
+                {{end}}
             </div>
-            <div class="name">
-                <p>{{.Username}}</p>
+            <div class="leftBar">
+                <a href="home.html">
+                    <div id="homeContainer">
+                        <img src="../images/Home.png" alt="" id="home">
+                    </div>
+                </a>
+                <div class="pfp">
+                    <img src="../images/Profile.png" alt="">
+                </div>
+                <div class="name">
+                    <p>{{.Username}}</p>
+                </div>
+                <hr id="content-break">
+                <div class="nav">
+                    <a href="#posts" class="options-link">
+                        <div class="options">
+                            <img src="../images/like-filled.png" alt="Like">
+                        </div>
+                    </a>
+                    <a href="#posts" class="options-link">
+                        <div class="options">
+                            <img src="../images/comments.png" alt="Comments">
+                        </div>
+                    </a>
+                    <a href="#posts" class="options-link">
+                        <div class="options">
+                            <img src="../images/dislike-filled.png" alt="Dislike">
+                        </div>
+                    </a>
+                </div>
             </div>
-            <hr id="content-break">
-            <div class="nav">
-                <a href="#posts" class="options-link">
-                    <div class="options"><img src="../images/like-filled.png" alt="Like"></div>
-                </a>
-                <a href="#posts" class="options-link">
-                    <div class="options"><img src="../images/comments.png" alt="Comments"></div>
-                </a>
-                <a href="#posts" class="options-link">
-                    <div class="options"><img src="../images/dislike-filled.png" alt="Dislike"></div>
-                </a>
         </div>
-    
-    </div>
-</body>
-
+    </body>
 </html>
