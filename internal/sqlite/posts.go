@@ -254,6 +254,69 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 	return DisLikedPosts, nil
 }
 
+func (u *USERMODEL) AllUserCommenteddPosts(w http.ResponseWriter, r *http.Request) ( models.PostandMainUsername, error) {
+	userID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		return models.PostandMainUsername{}, err
+	}
+	username, err := u.GetUserName(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		return  models.PostandMainUsername{}, err
+	}
+	stmt := `SELECT post_id FROM COMMENTS WHERE user_id = ?`
+	rows, err := u.DB.Query(stmt, userID)
+	if err != nil {
+		log.Println("Error querying post IDs:", err)
+		return  models.PostandMainUsername{}, err
+	}
+	defer rows.Close()
+
+	var postIDs []int
+
+	for rows.Next() {
+		var postID int
+		if err := rows.Scan(&postID); err != nil {
+			log.Println("Error scanning post ID:", err)
+			return  models.PostandMainUsername{}, err
+		}
+		postIDs = append(postIDs, postID)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Println("Error during row iteration:", err)
+		return  models.PostandMainUsername{}, err
+	}
+
+	
+	var posts []models.Post
+	for _, postID := range postIDs {
+		stmt2 := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
+		row := u.DB.QueryRow(stmt2, postID)
+		p := models.Post{}
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				
+				continue
+			}
+			
+			log.Println("Error scanning post:", err)
+			return  models.PostandMainUsername{}, err
+		}
+
+		
+		posts = append(posts, p)
+	}
+	LikedPosts := models.PostandMainUsername{
+		Posts:    posts,
+		Username: username,
+	}
+	
+	return LikedPosts, nil
+}
+
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
 	postID := r.URL.Query().Get("id")
 
