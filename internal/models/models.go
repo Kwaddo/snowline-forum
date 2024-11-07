@@ -3,14 +3,16 @@ package models
 import "time"
 
 type Post struct {
-	Username  string
-	ID        int
-	Title     string
-	Content   string
-	ImagePath string
-	CreatedAt time.Time
-	Likes     string
-	Dislikes  string
+	Username   string
+	ID         int
+	Title      string
+	Content    string
+	ImagePath  string
+	ProfilePic string
+	CreatedAt  time.Time
+	Likes      string
+	Dislikes   string
+	Comments   string
 }
 
 type Comment struct {
@@ -21,6 +23,7 @@ type Comment struct {
 	CreatedAt time.Time
 	Likes     string
 	Dislikes  string
+	Comments  string
 }
 
 type PostandComment struct {

@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS USERS (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    image_path VARCHAR(255) DEFAULT NULL
 );
 
 
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS POSTS (
     post_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(255) NOT NULL,   
     title VARCHAR(255) NOT NULL,   
-    image_path VARCHAR(255) NOT NULL,       
+    image_path VARCHAR(255) DEFAULT NULL,       
     content TEXT NOT NULL,              
     user_id INTEGER NOT NULL,             
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -67,11 +67,17 @@
                 <div class="pfp">
                     <img src="../images/Profile.png" alt>
                 </div>
+                <form action="/profile-picture" method="POST" enctype="multipart/form-data">
+                    <label for="image">Choose a profile picture:</label>
+                    <input type="file" name="image" id="image" required>
+                    <button type="submit">Upload Picture</button>
+                </form>
                 <div class="name">
                     {{if .Posts}}
                     <p>{{(index .Posts 0).Username}}</p> 
                 {{end}}
                 </div>
+                
                 <hr id="content-break">
                 <div class="nav">
                     <a href="#posts" class="options-link">

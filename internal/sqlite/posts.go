@@ -65,6 +65,12 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 		}
+		commentsStmt := `SELECT COUNT(*) from COMMENTS WHERE post_id = ?`
+		err = m.DB.QueryRow(commentsStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
+		}
+
 		posts = append(posts, p)
 	}
 	if err := rows.Err(); err != nil {
@@ -139,6 +145,11 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
     if err != nil {
         log.Println("Error fetching post dislikes count:", err)
     }
+	commentsStmt := `SELECT COUNT(*) from COMMENTS WHERE post_id = ?`
+		err = m.DB.QueryRow(commentsStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
+		}
 
     stmt2 := `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
     rows, err := m.DB.Query(stmt2, postID)

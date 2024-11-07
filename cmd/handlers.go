@@ -208,35 +208,43 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var imagePath string
+
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 	image, _, err := r.FormFile("image")
-	if err != nil {
+	if err != nil && err.Error() != "http: no such file" {
 		ErrorHandle(w, 400, "Error retrieving the file")
 		log.Println(err)
 		return
 	}
-	defer image.Close()
+	if err == nil {
+		defer image.Close()
+		timestamp := time.Now().UnixNano()
+		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
 
-	timestamp := time.Now().UnixNano()
-	saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
-	dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
-
-	place, err := os.Create(saveImage)
-	if err != nil {
-		ErrorHandle(w, 500, "Unable to create file")
-		log.Println(err)
-		return
+		
+		dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+		
+		place, err := os.Create(saveImage)
+		if err != nil {
+			ErrorHandle(w, 500, "Unable to create file")
+			log.Println(err)
+			return
+		}
+		defer place.Close()
+		
+		if _, err := io.Copy(place, image); err != nil {
+			ErrorHandle(w, 500, "Error saving the file")
+			log.Println(err)
+			return
+		}
+		imagePath = dbimage
+	} else {
+		imagePath = ""
 	}
-	defer place.Close()
-
-	if _, err := io.Copy(place, image); err != nil {
-		ErrorHandle(w, 500, "Error saving the file")
-		log.Println(err)
-		return
-	}
-
-	err = app.posts.InsertPost(app.users, w, r, title, content, dbimage)
+		
+	err = app.posts.InsertPost(app.users, w, r, title, content, imagePath)
 	if err != nil {
 		log.Println(err)
 		http.Redirect(w, r, "#login", http.StatusFound)
@@ -382,4 +390,51 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
 	http.Redirect(w, r, redirectURL, http.StatusFound)
+}
+
+func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10 << 20)
+	var imagePath string
+	image, _, err := r.FormFile("image")
+	if err != nil && err.Error() != "http: no such file" {
+		ErrorHandle(w, 400, "Error retrieving the file")
+		log.Println(err)
+		return
+	}
+	if err == nil {
+		defer image.Close()
+		timestamp := time.Now().UnixNano()
+		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
+
+		
+		dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+		
+		place, err := os.Create(saveImage)
+		if err != nil {
+			ErrorHandle(w, 500, "Unable to create file")
+			log.Println(err)
+			return
+		}
+		defer place.Close()
+		
+		if _, err := io.Copy(place, image); err != nil {
+			ErrorHandle(w, 500, "Error saving the file")
+			log.Println(err)
+			return
+		}
+		imagePath = dbimage
+	} else {
+		imagePath = ""
+	}
+	userID, err := app.users.GetUserID(r) 
+	if err != nil {
+		log.Println(err)
+	}
+	stmt := `UPDATE USERS SET image_path = ? WHERE user_id = ?`
+	_,err = app.posts.DB.Exec(stmt,imagePath,userID)
+	if err != nil {
+		log.Println(err)
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
+
 }
