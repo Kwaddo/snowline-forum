@@ -9,7 +9,7 @@
     <body>
         <div class="all">
             <div class="posts" id="posts">
-                {{range .Posts}}
+                {{range .Users.Posts}}
                 <div class="postWithOptions">
                     <div class="post">
                         <p class="postAuthor">@{{.Username}}</p>
@@ -73,9 +73,9 @@
                     <button type="submit">Upload Picture</button>
                 </form>
                 <div class="name">
-                    {{if .Posts}}
-                    <p>{{(index .Posts 0).Username}}</p> 
-                {{end}}
+                 
+                    <p>{{.Users.Username}}</p> 
+                
                 </div>
                 
                 <hr id="content-break">

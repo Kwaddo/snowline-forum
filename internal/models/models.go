@@ -30,3 +30,8 @@ type PostandComment struct {
 	Posts    Post
 	Comments []Comment
 }
+
+type PostandMainUsername struct {
+	Posts    []Post
+	Username string
+}

@@ -276,7 +276,7 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		if r.URL.Path == "/Profile-page" {
-			posts, err := app.users.AllUsersPosts(w, r)
+			UserData, err := app.users.AllUsersPosts(w, r)
 			if err != nil {
 				http.Redirect(w, r, "/#login", http.StatusFound)
 				log.Println(err)
@@ -290,7 +290,7 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := tmp.Execute(w, map[string]any{"Posts": posts}); err != nil {
+			if err := tmp.Execute(w, map[string]any{"Users": UserData}); err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
 				log.Println(err)
 				return
