@@ -6,6 +6,7 @@ import (
 	"db/internal/models"
 	"log"
 	"net/http"
+
 )
 
 type POSTMODEL struct {
@@ -70,6 +71,19 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 		if err != nil {
 			log.Println("Error fetching post likes count:", err)
 		}
+		userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := m.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = m.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
+
+		}
 
 		posts = append(posts, p)
 	}
@@ -109,6 +123,19 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 		if err != nil {
 			return models.PostandMainUsername{}, err
 		}
+		userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := u.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = u.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
+
+		}
 		posts = append(posts, p)
 	}
 	if err := rows.Err(); err != nil {
@@ -118,16 +145,28 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 	username, err := u.GetUserName(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
-		return  models.PostandMainUsername{}, err
-	}		
+		return models.PostandMainUsername{}, err
+	}
+	var path string
+	uID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+	}
+	picStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+	err = u.DB.QueryRow(picStmt,uID).Scan(&path)
+	if err != nil {
+		log.Println("Error fetching image path", err)
+
+	}
 	Posts := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
+		ImagePath: path,
 	}
 	return Posts, nil
 }
 
-func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) ( models.PostandMainUsername, error) {
+func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (models.PostandMainUsername, error) {
 	userID, err := u.GetUserID(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
@@ -136,13 +175,13 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) ( 
 	username, err := u.GetUserName(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 	stmt := `SELECT post_id FROM POST_LIKES WHERE user_id = ? AND isliked = true`
 	rows, err := u.DB.Query(stmt, userID)
 	if err != nil {
 		log.Println("Error querying post IDs:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 	defer rows.Close()
 
@@ -152,17 +191,16 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) ( 
 		var postID int
 		if err := rows.Scan(&postID); err != nil {
 			log.Println("Error scanning post ID:", err)
-			return  models.PostandMainUsername{}, err
+			return models.PostandMainUsername{}, err
 		}
 		postIDs = append(postIDs, postID)
 	}
 
 	if err := rows.Err(); err != nil {
 		log.Println("Error during row iteration:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 
-	
 	var posts []models.Post
 	for _, postID := range postIDs {
 		stmt2 := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
@@ -171,22 +209,47 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) ( 
 		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				
+
 				continue
 			}
-			
+
 			log.Println("Error scanning post:", err)
-			return  models.PostandMainUsername{}, err
+			return models.PostandMainUsername{}, err
+		}
+		userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := u.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = u.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
+
 		}
 
-		
 		posts = append(posts, p)
+		
+	}
+	var path string
+	uID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+	}
+	picStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+	err = u.DB.QueryRow(picStmt,uID).Scan(&path)
+	if err != nil {
+		log.Println("Error fetching image path", err)
+
 	}
 	LikedPosts := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
+		ImagePath: path,
 	}
-	
+
 	return LikedPosts, nil
 }
 
@@ -220,7 +283,6 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 		return models.PostandMainUsername{}, err
 	}
 
-	
 	var posts []models.Post
 	for _, postID := range postIDs {
 		stmt2 := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
@@ -230,31 +292,42 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				continue
-			}			
+			}
 			log.Println("Error scanning post:", err)
 			return models.PostandMainUsername{}, err
 		}
+		userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := u.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = u.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
 
-		
+		}
 		posts = append(posts, p)
 	}
 
 	username, err := u.GetUserName(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 
-	DisLikedPosts := models.PostandMainUsername{
+	DislikedPosts := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
 	}
 
-	
-	return DisLikedPosts, nil
+	return DislikedPosts, nil
 }
 
-func (u *USERMODEL) AllUserCommenteddPosts(w http.ResponseWriter, r *http.Request) ( models.PostandMainUsername, error) {
+// typo below
+func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request) (models.PostandMainUsername, error) {
 	userID, err := u.GetUserID(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
@@ -263,13 +336,13 @@ func (u *USERMODEL) AllUserCommenteddPosts(w http.ResponseWriter, r *http.Reques
 	username, err := u.GetUserName(r)
 	if err != nil {
 		log.Println("Error getting user ID:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 	stmt := `SELECT post_id FROM COMMENTS WHERE user_id = ?`
 	rows, err := u.DB.Query(stmt, userID)
 	if err != nil {
 		log.Println("Error querying post IDs:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 	defer rows.Close()
 
@@ -279,17 +352,16 @@ func (u *USERMODEL) AllUserCommenteddPosts(w http.ResponseWriter, r *http.Reques
 		var postID int
 		if err := rows.Scan(&postID); err != nil {
 			log.Println("Error scanning post ID:", err)
-			return  models.PostandMainUsername{}, err
+			return models.PostandMainUsername{}, err
 		}
 		postIDs = append(postIDs, postID)
 	}
 
 	if err := rows.Err(); err != nil {
 		log.Println("Error during row iteration:", err)
-		return  models.PostandMainUsername{}, err
+		return models.PostandMainUsername{}, err
 	}
 
-	
 	var posts []models.Post
 	for _, postID := range postIDs {
 		stmt2 := `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
@@ -298,22 +370,34 @@ func (u *USERMODEL) AllUserCommenteddPosts(w http.ResponseWriter, r *http.Reques
 		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				
+
 				continue
 			}
-			
+
 			log.Println("Error scanning post:", err)
-			return  models.PostandMainUsername{}, err
+			return models.PostandMainUsername{}, err
+		}
+		userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := u.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = u.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
+
 		}
 
-		
 		posts = append(posts, p)
 	}
 	LikedPosts := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
 	}
-	
+
 	return LikedPosts, nil
 }
 
@@ -346,6 +430,19 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 	if err != nil {
 		log.Println("Error fetching post likes count:", err)
 	}
+	userIDstmt := `SELECT user_id FROM POSTS WHERE post_id = ?`
+		userID := m.DB.QueryRow(userIDstmt, p.ID)
+		id := ""
+		err = userID.Scan(&id)
+		if err != nil {
+			log.Println("Error fetching user_id")
+		}
+		pfpStmt := `SELECT image_path FROM USERS WHERE user_id = ?`
+		err = m.DB.QueryRow(pfpStmt,id).Scan(&p.ProfilePic)
+		if err != nil {
+			log.Println("Error fetching image path", err)
+
+		}
 
 	stmt2 := `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
 	rows, err := m.DB.Query(stmt2, postID)

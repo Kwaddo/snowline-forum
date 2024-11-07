@@ -282,7 +282,7 @@ func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
-
+			
 			tmp, err := template.ParseFiles("./assets/templates/profile.html")
 			if err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
