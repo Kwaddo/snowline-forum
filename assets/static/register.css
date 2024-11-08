@@ -9,6 +9,7 @@ body {
     background-image: url(../images/back.png);
     background-size: center;
     background-attachment: fixed;
+    backdrop-filter: blur(10px);
     animation: scrollBackground 120s linear infinite;
     font-family: Arial, sans-serif;
 }

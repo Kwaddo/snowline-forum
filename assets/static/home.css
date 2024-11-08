@@ -18,15 +18,31 @@ body {
 
 #header-container {
     display: flex;
-    align-items: center; /* Vertically center the logo and dynamic island */
-    justify-content: center; 
+    align-items: center;
+    /* Vertically center the logo and dynamic island */
+    justify-content: center;
     width: 100%;
 }
 
+.logo {
+    position: fixed;
+    z-index: 1;
+    width: 250px;
+    height: auto;
+    margin-top: 45px;
+}
+
+.logo2 {
+    position: fixed;
+    z-index: 1;
+    width: 200px;
+    height: auto;
+    margin-top: 47.5px;
+}
 
 .dynamic-island {
     position: fixed;
-    top: 35px;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #802BB1;
@@ -62,39 +78,70 @@ body {
 
 .containers {
     display: flex;
-    flex-direction: row; /* Side-by-side layout for larger screens */
+    flex-direction: row;
+    /* Side-by-side layout for larger screens */
     margin-top: 200px;
     align-items: flex-start;
     gap: 3rem;
+    padding-left: 0;
 }
 
+/* Hide the checkbox visually, but it still controls the toggle */
+.filter-checkbox {
+    display: none;
+}
+
+/* Style the toggle button */
+.filter-toggle-button {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #802BB1;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Sidebar is hidden by default */
 .filters {
-    position: sticky;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 250px;
+    height: 90%;
     background-color: #352d4d;
-    width: 30%; /* Takes up 30% of the screen on larger screens */
-    height: 400px;
+    padding: 20px;
     border-radius: 3rem;
-    top: 35px;
-    /* Optional: Add padding or margin if needed */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Show filters when checkbox is checked */
+.filter-checkbox:checked~.containers .filters {
+    transform: translateX(0);
 }
 
 .posts {
-    width: 70%; /* Takes up 70% of the screen on larger screens */
+    width: 70%;
+    /* Dynamic width for larger screens */
     border-radius: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: #352d4d;
-    margin-bottom: 3rem;
-    padding-bottom: 4rem;
-    padding-top: 3rem;
+    padding: 3rem 0 4rem 0;
     gap: 2rem;
+    margin: 0 auto;
+    /* Center the posts section */
 }
 
 .post {
     background-color: #564F6F;
-    width: 700px;
+    width: 650px;
     height: 500px;
     /* Adjust height as needed */
     border-radius: 20px;
@@ -570,12 +617,43 @@ input[type="submit"]:not(:hover) {
     }
 
     .post {
-        width: 550px;
+        width: 400px;
     }
 }
 
 /* -- TABLET -- */
 @media (max-width:768px) {
+
+    /* Fix the filter toggle button to the top center of the screen */
+    .filter-toggle-button {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Filters panel styles for header-like drop-down */
+    .filters {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* Optional limit to allow scrolling */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        border-radius: 0 0 0rem 0rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* Display the filters panel as a header-like drop-down */
+    .filter-checkbox:checked~.containers .filters {
+        transform: translateY(0);
+    }
+
     .dynamic-island {
         top: auto;
         /* Reset top position */
@@ -587,18 +665,38 @@ input[type="submit"]:not(:hover) {
         /* Adjust padding for smaller screens */
     }
 
-    .filters {
-        position: sticky;
-        top: 0;
-        height: 100vh; /* Make the sidebar sticky to the left */
+    .logo {
+        position: fixed;
+        bottom: 75px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 225px;
+        /* Resize for smaller screens */
+        height: auto;
     }
 
-    .posts {
-        margin-left: 0;
+    .logo2 {
+        position: fixed;
+        bottom: 75px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        /* Resize for smaller screens */
+        height: auto;
+        z-index: 1;
+    }
+
+    .containers {
+        flex-direction: column;
+        /* Stack items on top of each other */
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: 60px;
     }
 
     .post {
-        width: 300px;
+        width: 500px;
+        height: 500px;
     }
 }
 
@@ -610,6 +708,15 @@ input[type="submit"]:not(:hover) {
 
 /* -- MOBILE L -- */
 @media (max-width:515px) {
+
+    .logo {
+        bottom: 85px;
+    }
+
+    .logo2 {
+        bottom: 82.5px;
+    }
+
     .dynamic-island {
         bottom: 35px;
         /* Further down for smaller screen */
@@ -618,15 +725,10 @@ input[type="submit"]:not(:hover) {
     }
 
     .containers {
-        flex-direction: column; /* Stack items on top of each other */
+        flex-direction: column;
+        /* Stack items on top of each other */
         gap: 2rem;
         align-items: center;
-    }
-
-    .filters {
-        width: 100%;
-        position: sticky;
-        top: 0;
     }
 
     #title {
@@ -634,11 +736,13 @@ input[type="submit"]:not(:hover) {
     }
 
     .posts {
-        width: 100%; /* Full width for posts */
+        width: 100%;
+        /* Full width for posts */
     }
 
     .post {
-        width: 270px;
+        width: 300px;
+        height: 300px;
     }
 }
 
@@ -669,6 +773,7 @@ input[type="submit"]:not(:hover) {
 
     .post {
         width: 270px;
+        height: 270px;
     }
 }
 
