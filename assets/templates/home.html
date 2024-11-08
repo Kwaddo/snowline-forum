@@ -7,35 +7,6 @@
         <link rel="stylesheet" href="../static/home.css">
     </head>
     <body>
-        <!-- Login Popup -->
-        <div id="login" class="popup">
-            <div class="backtrack" style="width: 100%; height: 100px; position: absolute;"></div>
-            <div class="popup-content">
-                <a href="/" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <h2 class="logtitle">LOGIN</h2>
-                <form action="/signin" method="POST" class="loginForm">
-                    <input
-                        name="email"
-                        placeholder="Email Address or Username"
-                        maxlength="254"
-                        minlength="9"
-                        required
-                    >
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Passwords"
-                        maxlength="100"
-                        minlength="0"
-                        required
-                    >
-                    <input type="submit" value="Login">
-                    <a href="/register" id="regred">Don't Have an Account? Register!</a>
-                </form>
-            </div>
-        </div>
         <!-- Create Post Popup -->
         <div id="createPostPopup" class="popup">
             <div class="popup-content">
@@ -64,15 +35,24 @@
         <!-- logout confirmation popup -->
         <div id="logout-confirmation" class="popup">
             <div class="popup-content">
-                <h1>ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-                <form action="/logout" method="POST">
-                    <button type="submit" class="button">
-                        YES
-                    </button>
-                </form>
-                <h1>
-                    <a href="/">NO</a>
-                </h1>
+                <a href="/" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <div class="inside-popup">
+                    <h1 class="logout-title">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+                    <div class="logout-options-container">
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="logout-options">
+                                YES
+                            </button>
+                        </form>
+                        <form action="/">
+                            <button type="submit" class="logout-options">
+                                NO
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Main page content -->
@@ -144,7 +124,7 @@
                                 </a>
                                 <h1 class="logtitle">Enter Your Comment!</h1>
                                 <div class="comment-bar">
-                                    <form action="/savecomment"  method="POST" align="center">
+                                    <form action="/savecomment" method="POST" align="center">
                                         <input type="hidden" name="post_id" value="{{.ID}}">
                                         <textarea
                                             placeholder="Start typing!"

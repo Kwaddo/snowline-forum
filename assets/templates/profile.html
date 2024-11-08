@@ -7,6 +7,30 @@
         <title>Profile Page</title>
     </head>
     <body>
+        <!-- logout confirmation popup -->
+        <div id="logout-confirmation" class="popup">
+            <div class="popup-content">
+                <a href="/Profile-page" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <div class="inside-popup">
+                    <h1 class="logout-title">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+                    <div class="logout-options-container">
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="logout-options">
+                                YES
+                            </button>
+                        </form>
+                        <form action="/Profile-page">
+                            <button type="submit" class="logout-options">
+                                NO
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit profile popup -->
         <div id="edit-profile" class="popup">
             <div class="popup-content">
                 <a href="/Profile-page" class="popup-close">
@@ -30,8 +54,7 @@
         </div>
         <div class="all">
             <div class="posts" id="posts">
-               <img src="{{.Users.ImagePath}}" alt=""> 
-
+                <img src="{{.Users.ImagePath}}" alt="">
                 {{range .Users.Posts}}
                 <div class="postWithOptions">
                     <div class="post">
@@ -76,13 +99,18 @@
             </div>
             <div class="leftBar">
                 <a href="/">
-                    <div id="homeContainer">
-                        <img src="../images/Home.png" alt id="home">
+                    <div class="homeContainer container-hover">
+                        <img src="../images/Home.png" alt="Home Page" id="home">
                     </div>
                 </a>
                 <a href="#edit-profile">
-                    <div id="editContainer">
-                        <img src="../images/edit.png" alt id="edit">
+                    <div class="editContainer container-hover">
+                        <img src="../images/edit.png" alt="Edit Profile" id="edit">
+                    </div>
+                </a>
+                <a href="#logout-confirmation">
+                    <div class="logoutConfirmationContainer container-hover">
+                        <img src="../images/logout.png" alt="Logout" id="logoutConfirmation">
                     </div>
                 </a>
                 <div class="pfp">

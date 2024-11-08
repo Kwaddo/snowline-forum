@@ -1,10 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
     background-color: #2D283E;
 }
 
 html {
     scroll-behavior: smooth;
+    font-family: sans-serif, Arial;
 }
 
 
@@ -39,36 +39,58 @@ html::-webkit-scrollbar-track {
     grid-template-columns: 30vw 70vw;
 }
 
-#home {
-    height: 2em;
-    width: 2em;
+.container-hover:hover {
+    transform: scale(1.05);
 }
 
-#homeContainer {
-    height: 3em;
-    width: 3em;
+#home {
+    height: 1em;
+    width: 1em;
+}
+
+.homeContainer {
+    height: 2em;
+    width: 2em;
     background-color: #802BB1;
     position: absolute;
     left: 8px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #edit {
-    height: 2em;
-    width: 2em;
+    height: 1em;
+    width: 1em;
 }
 
 
-#editContainer {
-    height: 3em;
-    width: 3em;
+.editContainer {
+    height: 2em;
+    width: 2em;
     background-color: #802BB1;
     position: absolute;
-    left: 4.5em;
-    border-radius: 1em;
+    left: 3em;
+    border-radius: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#logoutConfirmation {
+    height: 1em;
+    width: 1em;
+}
+
+
+.logoutConfirmationContainer {
+    height: 2em;
+    width: 2em;
+    background-color: #802BB1;
+    position: absolute;
+    left: 5.5em;
+    border-radius: 0.5em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -333,6 +355,8 @@ html::-webkit-scrollbar-track {
     margin-top: 3em;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .popup-close {
@@ -354,6 +378,41 @@ html::-webkit-scrollbar-track {
 
 /* --- END --- */
 
+
+/* --- LOGOUT CONFIRMATION POPUP STYLES --- */
+
+#logout-confirmation:target {
+    display: flex;
+}
+
+#logout-confirmation:target .popup-content {
+    display: flex;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+.logout-title {
+    color: #802BB1;
+    font-size: 1.7em;
+    font-family: fantasy;
+
+}
+
+.logout-options-container {
+    display: flex;
+    gap: 2em;
+    margin-top: 2em
+}
+
+.logout-options {
+    background-color: #352d4d;
+    width: 7em;
+    height: 4em;
+    border: 2px solid #802BB1;
+    color: #802BB1;
+    border-radius: 2em;
+}
+
+/* --- END --- */
 
 
 /* --- EDIT PROFILE POPUP STYLES --- */

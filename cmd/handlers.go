@@ -128,6 +128,10 @@ func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "./assets/templates/register.html", "/register")
 }
 
+func (app *app) SigninPageHandler(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "./assets/templates/signin.html", "/signin")
+}
+
 func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		ErrorHandle(w, 400, "Failed to parse form")

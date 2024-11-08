@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: sans-serif, Arial;
     background-color: #2D283E;
 }
 
@@ -44,6 +44,36 @@ body {
 
 /* --- END --- */
 
+
+/* --- LOGOUT CONFIRMATION POPUP STYLES --- */
+
+#logout-confirmation:target {
+    display: flex;
+}
+
+.logout-title {
+    color: #802BB1;
+    font-size: 1.7em;
+    font-family: fantasy;
+
+}
+
+.logout-options-container {
+    display: flex;
+    gap: 2em;
+    margin-top: 2em
+}
+
+.logout-options {
+    background-color: #352d4d;
+    width: 7em;
+    height: 4em;
+    border: 2px solid #802BB1;
+    color: #802BB1;
+    border-radius: 2em;
+}
+
+/* --- END --- */
 
 
 /* --- TITLE STYLES --- */
@@ -278,6 +308,14 @@ input[type="submit"]:not(:hover) {
     justify-content: center;
     align-items: center;
     z-index: 999;
+}
+
+.inside-popup {
+    margin-top: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #login:target,

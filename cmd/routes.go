@@ -8,6 +8,7 @@ func (app *app) routes() http.Handler {
 	mux.HandleFunc("POST /logout", app.LogoutHandler)
 	mux.HandleFunc("POST /savecomment", app.SaveCommentHandler)
 	mux.HandleFunc("POST /signin", app.SignInHandler)
+	mux.HandleFunc("GET /signin", app.SigninPageHandler)
 	mux.HandleFunc("GET /register", app.SignupPageHandler)
 	mux.HandleFunc("POST /register", app.StoreUserHandler)
 	mux.HandleFunc("POST /save-post", app.SavePostHandler)
