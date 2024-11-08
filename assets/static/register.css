@@ -9,6 +9,7 @@ body {
     background-image: url(../images/back.png);
     background-size: center;
     background-attachment: fixed;
+    backdrop-filter: blur(5px);
     animation: scrollBackground 120s linear infinite;
     font-family: Arial, sans-serif;
 }
@@ -40,7 +41,7 @@ body {
 .login-container {
     position: relative;
     transition-duration: 0.5s;
-    padding: 150px;
+    padding: 120px;
     background-color: #2D283E;
     border-radius: 10px;
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
@@ -48,21 +49,19 @@ body {
 }
 
 .title {
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-variant: small-caps;
+    width: 250px;
+    height: auto;
     transition-duration: 0.5s;
-    font-size: 35px;
-    text-align: center;
     color: #802BB1;
     position: relative;
-    top: -65px;
+    top: -50px;
 }
 
 input[type="email"],
 input[type="username"],
 input[type="password"] {
     transition-duration: 0.5s;
-    width: 100%;
+    width: 120%;
     color: #D1D7E0;
     background-color: #4C495D;
     font-size: 15px;
@@ -102,7 +101,7 @@ input[type="password"]:hover {
 input[type="submit"] {
     transition-duration: 0.5s;
     position: absolute;
-    top: 85%;
+    top: 82.5%;
     font-size: 15px;
     width: 35%;
     padding: 7.5px;
@@ -156,17 +155,33 @@ input[type="submit"]:not(:hover) {
     width: 1.7rem;
 }
 
+#regred {
+    text-decoration: none;
+    margin-top: 20px;
+    color: #802BB1;
+}
+
+#regred:hover {
+    color: #9ca0a7;
+}
+
+
 @media (max-width: 1000px) {
     .login-container {
         transition-duration: 0.5s;
-        padding: 100px;
+        padding: 80px;
     }
 
     .title {
+        width: 225px;
+        height: auto;
+        padding:50px;
         transition-duration: 0.5s;
-        font-size: 35px;
         position: relative;
         top: -35px;
+    }
+    input[type="submit"] {
+        top: 85.5%;
     }
 }
 
@@ -177,8 +192,10 @@ input[type="submit"]:not(:hover) {
     }
 
     .title {
+        width: 200px;
+        height: auto;
+        padding:15px;
         transition-duration: 0.5s;
-        font-size: 35px;
         position: relative;
         top:-5px;
     }
@@ -192,6 +209,7 @@ input[type="submit"]:not(:hover) {
     input[type="email"],
     input[type="username"],
     input[type="password"] {
+        width: 100%;
         transition-duration: 0.5s;
         margin: 7px;
     }
