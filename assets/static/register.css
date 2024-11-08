@@ -9,7 +9,7 @@ body {
     background-image: url(../images/back.png);
     background-size: center;
     background-attachment: fixed;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     animation: scrollBackground 120s linear infinite;
     font-family: Arial, sans-serif;
 }
@@ -162,7 +162,7 @@ input[type="submit"]:not(:hover) {
     }
 
     .title {
-        width: 175px;
+        width: 225px;
         height: auto;
         padding:50px;
         transition-duration: 0.5s;
@@ -181,9 +181,9 @@ input[type="submit"]:not(:hover) {
     }
 
     .title {
-        width: 150px;
+        width: 200px;
         height: auto;
-        padding:50px;
+        padding:15px;
         transition-duration: 0.5s;
         position: relative;
         top:-5px;
