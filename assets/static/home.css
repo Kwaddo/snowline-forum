@@ -9,6 +9,13 @@ body {
     padding: 0; 
     cursor: pointer;
 }
+/* AHMED TEMP PFP CSS */
+.PFP {
+    height: 30x;
+    width: 30px;
+    border-radius: 15px;
+  
+}
 
 /* --- DYNAMIC ISLAND STYLES --- */
 
