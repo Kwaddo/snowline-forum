@@ -66,7 +66,27 @@
     <label for="filter-toggle" class="filter-toggle-button">Filters</label>
     <!-- Main page content (posts, etc.) -->
     <div class="containers">
-        <div class="filters"></div>
+        <div class="filters">
+            <fieldset class="category-checkboxes-filters">
+                <input type="checkbox" id="sports" name="category" value="Sports">
+                <label for="sports">Sports</label>
+
+                <input type="checkbox" id="gaming" name="category" value="Gaming">
+                <label for="gaming">Gaming</label>
+
+                <input type="checkbox" id="art" name="category" value="Art">
+                <label for="art">Art</label>
+
+                <input type="checkbox" id="music" name="category" value="Music">
+                <label for="music">Music</label>
+
+                <input type="checkbox" id="food" name="category" value="Food">
+                <label for="food">Food</label>
+
+                <input type="checkbox" id="random" name="category" value="Random">
+                <label for="random">Random</label>
+            </fieldset>
+        </div>
         <div class="posts">
             {{range .Posts}}
             <div class="postWithOptions">
@@ -76,7 +96,6 @@
                         <div class="postHeader">
                             <img src="{{.ProfilePic}}" alt="" class="postPFP">
                             <p class="postAuthor">@{{.Username}}</p>
-                            <p class="postDate"></p>
                         </div>
                         <div class="postContentContainer">
                             <p class="postContent">{{.Content}}</p>
@@ -113,6 +132,7 @@
                             <p class="counters">{{.Comments}}</p>
                         </div>
                     </div>
+                    <p class="postDate">{{.CreatedAt}}</p>
                 </div>
                 <div id="comment-popup" class="popup">
                     <div class="popup-content">

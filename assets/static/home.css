@@ -5,6 +5,7 @@ body {
     background-size: 100% auto;
     background-repeat: no-repeat;
     background-color: #564F6F;
+    overflow: auto;
 }
 
 .button {
@@ -98,30 +99,85 @@ body {
     flex-direction: column;
     justify-content: center;
     background-color: #802BB1;
+    top: 50%;
     color: #ffffff;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
 }
 
+
+/* Move the filter button to the center of the screen when the checkbox is checked */
+.filter-checkbox:checked~.filter-toggle-button {
+    top: 50%;
+    left: 10%;
+    background-color: #802BB1; /* Optional: Change background on toggle */
+    color: #fff; /* Optional: Change text color */
+}
+
 /* Sidebar is hidden by default */
 .filters {
     position: fixed;
-    top: 60px;
+    top: 37.5%;
     left: 0;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    width: 250px;
-    height: 90%;
-    background-color: #352d4d;
+    width: auto;
+    height: auto;
+    background-color: #352d4d9f;
+    border: 2px solid #352d4d;
     padding: 20px;
     border-radius: 3rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+    display: block;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Show filters when checkbox is checked */
 .filter-checkbox:checked~.containers .filters {
     transform: translateX(0);
+    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.filters fieldset {
+    display: block;
+}
+
+/* Label styling */
+.category-checkboxes-filters label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    transition: 0.3s;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    border: 3px solid #564F6F;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.category-checkboxes-filters label:hover {
+    background-color: #564F6F;
+    text-align: center;
+}
+
+/* Hide the checkbox inputs visually but keep them functional */
+.category-checkboxes-filters input[type="checkbox"] {
+    display: none;
+}
+
+/* Change appearance when checkbox is checked */
+.category-checkboxes-filters input[type="checkbox"]:checked+label {
+    color: #FFFFFF;
+    background-color: #802BB1;
+    border-color: #802BB1;
 }
 
 .posts {
@@ -134,7 +190,6 @@ body {
     flex-direction: column;
     background-color: #352d4d9f;
     border: 2px solid #352d4d;
-    backdrop-filter: blur(8px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     padding: 3rem 0 4rem 0;
     gap: 2rem;
@@ -751,11 +806,6 @@ fieldset {
         width: 2rem;
     }
 
-    .filters {
-        width: 600px;
-        height: 300px;
-    }
-
     .posts {
         width: 700px;
     }
@@ -768,9 +818,9 @@ fieldset {
     /* Fix the filter toggle button to the top center of the screen */
     .filter-toggle-button {
         position: fixed;
-        top: 0;
+        top: 40px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateY(-100%);
         z-index: 1001;
         padding: 10px 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -780,19 +830,43 @@ fieldset {
     .filters {
         position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
-        /* Optional limit to allow scrolling */
-        transform: translateY(-100%);
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        width: auto;
+        height: auto;
+        max-width: 600px;
         transition: transform 0.3s ease;
         border-radius: 0 0 0rem 0rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
         z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        display: block;
+    }
+
+    .category-checkboxes-filters {
+        position: relative;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center; 
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        text-align: center; 
+    }
+
+    .category-checkboxes-filters label {
+        display: inline-block;
+    }
+
+    .filter-checkbox:checked~.filter-toggle-button {
+        top: 40px;
+        left: 50%;
     }
 
     /* Display the filters panel as a header-like drop-down */
     .filter-checkbox:checked~.containers .filters {
-        transform: translateY(0);
+        transform: translate(-50%, 5%);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 
     .dynamic-island {
@@ -864,6 +938,10 @@ fieldset {
         /* Smaller padding for mobile */
     }
 
+    .filter-checkbox:checked~.containers .filters {
+        transform: translate(-50%, 10%);
+    }
+
     .containers {
         flex-direction: column;
         /* Stack items on top of each other */
@@ -903,7 +981,7 @@ fieldset {
     }
 
     .filters {
-        width: 300px;
+        width: auto;
     }
 
     .posts {
