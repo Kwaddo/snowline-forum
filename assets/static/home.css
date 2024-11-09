@@ -111,8 +111,10 @@ body {
 .filter-checkbox:checked~.filter-toggle-button {
     top: 50%;
     left: 10%;
-    background-color: #802BB1; /* Optional: Change background on toggle */
-    color: #fff; /* Optional: Change text color */
+    background-color: #802BB1;
+    /* Optional: Change background on toggle */
+    color: #fff;
+    /* Optional: Change text color */
 }
 
 /* Sidebar is hidden by default */
@@ -226,14 +228,22 @@ body {
 }
 
 .postContentContainer {
-    background-color: #4C495D; /* Darker background for contrast */
-    border-radius: 8px; /* Rounded corners */
-    padding: 10px; /* Padding around content */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    max-width: calc(100% - 70px); /* Adjust width to leave space for the profile picture */
-    white-space: normal; /* Allow text to wrap normally */
-    word-wrap: break-word; /* Ensure long words break correctly */
-    overflow-wrap: break-word; /* Make sure long words break to avoid overflow */
+    background-color: #4C495D;
+    /* Darker background for contrast */
+    border-radius: 8px;
+    /* Rounded corners */
+    padding: 10px;
+    /* Padding around content */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    /* Shadow effect */
+    max-width: calc(100% - 70px);
+    /* Adjust width to leave space for the profile picture */
+    white-space: normal;
+    /* Allow text to wrap normally */
+    word-wrap: break-word;
+    /* Ensure long words break correctly */
+    overflow-wrap: break-word;
+    /* Make sure long words break to avoid overflow */
 }
 
 /* Post content text */
@@ -242,16 +252,26 @@ body {
     color: #D1D7E0;
     margin-top: 0;
     margin-bottom: 0;
-    word-wrap: break-word; /* Ensures long words break correctly */
-    max-width: 100%; /* Make sure it takes up available width */
-    white-space: normal; /* Allow content to wrap properly in multiple lines */
-    overflow-wrap: break-word; /* Ensure words break to avoid overflow */
-    display: -webkit-box; /* Necessary for truncation */
-    -webkit-line-clamp: 5; /* Number of lines to display before truncating */
-    -webkit-box-orient: vertical; /* Required for multiline truncation */
-    text-align: left; /* Align text to the left */
-    overflow: hidden; /* Hide the overflowing text */
-    text-overflow: ellipsis; /* Add ellipsis (...) at the end */
+    word-wrap: break-word;
+    /* Ensures long words break correctly */
+    max-width: 100%;
+    /* Make sure it takes up available width */
+    white-space: normal;
+    /* Allow content to wrap properly in multiple lines */
+    overflow-wrap: break-word;
+    /* Ensure words break to avoid overflow */
+    display: -webkit-box;
+    /* Necessary for truncation */
+    -webkit-line-clamp: 5;
+    /* Number of lines to display before truncating */
+    -webkit-box-orient: vertical;
+    /* Required for multiline truncation */
+    text-align: left;
+    /* Align text to the left */
+    overflow: hidden;
+    /* Hide the overflowing text */
+    text-overflow: ellipsis;
+    /* Add ellipsis (...) at the end */
 }
 
 
@@ -279,12 +299,18 @@ body {
 }
 
 .imageContainer {
-    width: 90%;
-    height: auto;
-    max-height: 70%;
-    display: inline-flex;
+    width: 80%;
+    /* Set container width */
+    height: 0;
+    /* Set height to 0 */
+    padding-top: 80%;
+    /* Use padding-top to enforce 1:1 aspect ratio (percentage padding based on width) */
+    position: relative;
+    /* Position relative to allow absolute positioning of the image */
     align-items: center;
+    /* Align the image in the center */
     justify-content: center;
+    /* Center the image inside the container */
     border-radius: 1em;
     border: 2px solid #D1D7E0;
     overflow: hidden;
@@ -292,9 +318,18 @@ body {
 }
 
 .postImage {
-    max-width: 100%;
-    max-height: 100%;
+    position: absolute;
+    /* Position the image absolutely within the container */
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Image spans the full width of the container */
+    height: 100%;
+    /* Image spans the full height of the container */
     object-fit: cover;
+    /* Ensures the image scales to cover the 1:1 box, cropping if necessary */
+    object-position: center;
+    /* Centers the image in the container */
     border-radius: 1em;
 }
 
@@ -847,11 +882,11 @@ fieldset {
     .category-checkboxes-filters {
         position: relative;
         grid-template-columns: repeat(3, 1fr);
-        justify-items: center; 
+        justify-items: center;
         align-items: center;
         padding: 0;
         margin: 0;
-        text-align: center; 
+        text-align: center;
     }
 
     .category-checkboxes-filters label {
