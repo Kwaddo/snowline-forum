@@ -55,8 +55,34 @@
             </a>
             <h2 class="logtitle">CREATE POST</h2>
             <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
-                <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                <input type="file" id="image" name="image">
+                <div class="textarea-container">
+                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
+                    <input type="file" id="image" name="image" hidden>
+                    <label for="image" class="upload-icon">
+                        <img src="../images/paperclip-vertical.png" alt="Upload">
+                    </label>
+                </div>
+                <input type="checkbox" id="toggleCategories" hidden>
+                <label for="toggleCategories" class="upload-button">Categories</label>
+                <fieldset class="category-checkboxes">
+                    <input type="checkbox" id="sports" name="category" value="Sports">
+                    <label for="sports">Sports</label>
+    
+                    <input type="checkbox" id="gaming" name="category" value="Gaming">
+                    <label for="gaming">Gaming</label>
+    
+                    <input type="checkbox" id="art" name="category" value="Art">
+                    <label for="art">Art</label>
+    
+                    <input type="checkbox" id="music" name="category" value="Music">
+                    <label for="music">Music</label>
+    
+                    <input type="checkbox" id="food" name="category" value="Food">
+                    <label for="food">Food</label>
+    
+                    <input type="checkbox" id="random" name="category" value="Random" checked required>
+                    <label for="random">Random</label>
+                </fieldset>
                 <input type="submit" value="Submit Post">
             </form>
         </div>
@@ -79,7 +105,7 @@
 
     <!-- Hidden checkbox to control the toggle -->
     <input type="checkbox" id="filter-toggle" class="filter-checkbox">
-    
+
     <!-- Main page content (posts, etc.) -->
     <label for="filter-toggle" class="filter-toggle-button">Filters</label>
     <!-- Label that acts as the button for showing/hiding the filters -->
