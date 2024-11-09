@@ -91,15 +91,26 @@
     <!-- Logout confirmation popup -->
     <div id="logout-confirmation" class="popup">
         <div class="popup-content">
-            <h1>ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-            <form action="/logout" method="POST">
-                <button type="submit" class="button">
-                    YES
-                </button>
-            </form>
-            <h1>
-                <a href="/">NO</a>
-            </h1>
+            <a href="/" class="popup-close">
+                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+            </a>
+            <div class="inside-popup">
+                <h1 class="logout-title">
+                    ARE YOU SURE YOU WANT TO LOGOUT?
+                </h1>
+                <div class="logout-options-container">
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="logout-options">
+                            YES
+                        </button>
+                    </form>
+                    <form action="/">
+                        <button type="submit" class="logout-options">
+                            NO
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

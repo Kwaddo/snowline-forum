@@ -13,7 +13,7 @@ import (
 func (app *app) ProfilePageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		if r.URL.Path == "/Profile-page" {
-			userData, err := app.users.AllUserLikedPosts(w, r)
+			userData, err := app.users.AllUsersPosts(w, r)
 			if err != nil {
 				http.Redirect(w, r, "/signin", http.StatusFound) // redirect to signin if there's an error
 				log.Println(err)

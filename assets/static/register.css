@@ -59,7 +59,8 @@ body {
 
 input[type="email"],
 input[type="username"],
-input[type="password"] {
+input[type="password"],
+input[name="email"] {
     transition-duration: 0.5s;
     width: 120%;
     color: #D1D7E0;
@@ -72,6 +73,7 @@ input[type="password"] {
 }
 
 input[type="email"]::placeholder,
+input[name="email"]::placeholder,
 input[type="username"]::placeholder,
 input[type="password"]::placeholder {
     transition-duration: 0.2s;
@@ -79,12 +81,14 @@ input[type="password"]::placeholder {
 }
 
 input[type="email"]:focus::placeholder,
+input[name="email"]:focus::placeholder,
 input[type="username"]:focus::placeholder,
 input[type="password"]:focus::placeholder {
     color: #4C495D;
 }
 
 input[type="email"]:hover::placeholder,
+input[name="email"]:hover::placeholder,
 input[type="username"]:hover::placeholder,
 input[type="password"]:hover::placeholder {
     transition-duration: 0.2s;
@@ -92,6 +96,7 @@ input[type="password"]:hover::placeholder {
 }
 
 input[type="email"]:hover,
+input[name="email"]:hover,
 input[type="username"]:hover,
 input[type="password"]:hover {
     transition-duration: 0.2s;

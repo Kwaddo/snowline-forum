@@ -342,8 +342,7 @@ input[type="submit"]:not(:hover) {
 }
 
 #login:target,
-#createPostPopup:target,
-#logout-confirmation:target {
+#createPostPopup:target {
     display: flex;
 }
 
@@ -364,16 +363,18 @@ input[type="submit"]:not(:hover) {
     padding-bottom: 6vh;
 }
 
+.inside-popup {
+    margin-top: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #login:target .popup-content {
     display: block;
     animation: slideFadeIn 0.5s forwards;
 }
-
-#logout-confirmation:target .popup-content {
-    display: flex;
-    animation: slideFadeIn 0.5s forwards;
-}
-
 
 .logtitle {
     font-family: fantasy, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -422,6 +423,44 @@ input[type="submit"]:not(:hover) {
 }
 
 /* --- END --- */
+
+
+/* --- LOGOUT CONFIRMATION POPUP STYLES --- */
+
+#logout-confirmation:target {
+    display: flex;
+}
+
+#logout-confirmation:target .popup-content {
+    display: flex;
+    animation: slideFadeIn 0.5s forwards;
+}
+
+.logout-title {
+    color: #802BB1;
+    font-size: 1.7em;
+    font-family: fantasy;
+
+}
+
+.logout-options-container {
+    display: flex;
+    gap: 2em;
+    margin-top: 2em
+}
+
+.logout-options {
+    background-color: #352d4d;
+    width: 7em;
+    height: 4em;
+    border: 2px solid #802BB1;
+    color: #802BB1;
+    border-radius: 2em;
+    cursor: pointer;
+}
+
+/* --- END --- */
+
 
 
 /* --- CREATE POST POPUP STYLES --- */
