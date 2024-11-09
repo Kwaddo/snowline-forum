@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS USERS (
     name VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    image_path VARCHAR(255) DEFAULT "../uploads/DefaultPFP.jpg"
+    image_path VARCHAR(255) DEFAULT ""
 );
 
 
@@ -56,26 +56,6 @@ CREATE TABLE IF NOT EXISTS COMMENT_LIKES (
     FOREIGN KEY (comment_id) REFERENCES COMMENTS(comment_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE
     
-);
-
-CREATE TABLE IF NOT EXISTS FILTERS (
-    filter_id INTEGER PRIMARY KEY,
-    filter_name TEXT NOT NULL UNIQUE
-);
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (1, 'Sports');
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (2, 'Gaming');
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (3, 'Art');
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (4, 'Music');
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (5, 'Food');
-INSERT OR REPLACE INTO FILTERS (filter_id, filter_name) VALUES (6, 'Random');
-
-
-CREATE TABLE IF NOT EXISTS POST_FILTERS (
-    post_id INTEGER,
-    filter_id INTEGER,
-    PRIMARY KEY (post_id, filter_id),
-    FOREIGN KEY (post_id) REFERENCES POSTS(post_id) ON DELETE CASCADE,
-    FOREIGN KEY (filter_id) REFERENCES FILTERS(filter_id) ON DELETE CASCADE
 );
 
 

@@ -23,11 +23,20 @@ const (
 const (
 	AllPostsQuery          = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS ORDER BY post_id DESC`
 	AllUsersPostsQuery     = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
-	PostWithCommentQuery   = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ?`
+	PostWithCommentQuery   = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
 	CommentsForPostQuery   = `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
 	PostLikesCountQuery    = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
 	PostDislikesCountQuery = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`
 	IsAuthenticateds       = `SELECT cookie_value, isvalid FROM SESSIONS WHERE cookie_value = ?`
+	AllUserCommentedPostsQuery = `SELECT post_id FROM COMMENTS WHERE user_id = ?`
+	AllUserLikedPostsQuery    = `SELECT post_id FROM POST_LIKES WHERE user_id = ? AND isliked = true` 
+	AllUserDisLikedPostsQuery = `SELECT post_id FROM POST_LIKES WHERE user_id = ? AND isliked = false` 
+	PostCommentsCountStmt = `SELECT COUNT(*) FROM COMMENTS WHERE post_id = ?`
+	UserIDByPostStmt = `SELECT user_id FROM POSTS WHERE post_id = ?`
+	UserNAMEByPostStmt = `SELECT username FROM POSTS WHERE post_id = ?`
+	UserProfilePicStmt = `SELECT image_path FROM USERS WHERE user_id = ?`
+	CommentLikesCountStmt = `SELECT COUNT(*) FROM COMMENT_LIKES WHERE comment_id = ? AND isliked = TRUE`
+	CommentDislikesCountStmt = `SELECT COUNT(*) FROM COMMENT_LIKES WHERE comment_id = ? AND isliked = FALSE`
 )
 
 // Select ---> Authentication and User Retrieval
@@ -36,3 +45,5 @@ const (
 	GetUserIDQuery        = `SELECT user_id FROM SESSIONS WHERE cookie_value = ?`
 	GetUserNameQuery      = `SELECT username FROM SESSIONS WHERE cookie_value = ?`
 )
+
+

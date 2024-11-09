@@ -209,7 +209,7 @@ html::-webkit-scrollbar-track {
     float: right;
     width: 80%;
     border-radius: 3rem;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;

@@ -1,27 +1,48 @@
 body {
-    font-family: sans-serif, Arial;
-    background-color: #2D283E;
+    font-family: Arial, sans-serif;
+    background-image: url(../images/backgroundhome.png);
+    background-position: top center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-color: #564F6F;
 }
 
 .button {
-    background: none; 
-    border: none; 
-    padding: 0; 
+    background: none;
+    border: none;
+    padding: 0;
     cursor: pointer;
-}
-/* AHMED TEMP PFP CSS */
-.PFP {
-    height: 30x;
-    width: 30px;
-    border-radius: 15px;
-  
 }
 
 /* --- DYNAMIC ISLAND STYLES --- */
 
+#header-container {
+    display: flex;
+    align-items: center;
+    /* Vertically center the logo and dynamic island */
+    justify-content: center;
+    width: 100%;
+}
+
+.logo {
+    position: fixed;
+    z-index: 1;
+    width: 250px;
+    height: auto;
+    margin-top: 45px;
+}
+
+.logo2 {
+    position: fixed;
+    z-index: 1;
+    width: 200px;
+    height: auto;
+    margin-top: 47.5px;
+}
+
 .dynamic-island {
     position: fixed;
-    top: 35px;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
     background-color: #802BB1;
@@ -40,58 +61,13 @@ body {
 }
 
 .icon {
-    height: 1.3rem;
-    width: 1.3rem;
+    height: 1.8rem;
+    width: 1.8rem;
 }
 
 .logout-icon {
-    height: 1.5rem;
-    width: 1.5rem;
-}
-
-/* --- END --- */
-
-
-/* --- LOGOUT CONFIRMATION POPUP STYLES --- */
-
-#logout-confirmation:target {
-    display: flex;
-}
-
-.logout-title {
-    color: #802BB1;
-    font-size: 1.7em;
-    font-family: fantasy;
-
-}
-
-.logout-options-container {
-    display: flex;
-    gap: 2em;
-    margin-top: 2em
-}
-
-.logout-options {
-    background-color: #352d4d;
-    width: 7em;
-    height: 4em;
-    border: 2px solid #802BB1;
-    color: #802BB1;
-    border-radius: 2em;
-}
-
-/* --- END --- */
-
-
-/* --- TITLE STYLES --- */
-
-#title {
-    color: #802BB1;
-    font-family: fantasy;
-    font-weight: 100;
-    text-align: center;
-    margin-top: 15rem;
-    font-size: 10rem;
+    height: 2rem;
+    width: 2rem;
 }
 
 /* --- END --- */
@@ -102,44 +78,82 @@ body {
 
 .containers {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    /* Side-by-side layout for larger screens */
     margin-top: 200px;
-    align-items: center;
+    align-items: flex-start;
     gap: 3rem;
+    padding-left: 0;
 }
 
+/* Hide the checkbox visually, but it still controls the toggle */
+.filter-checkbox {
+    display: none;
+}
+
+/* Style the toggle button */
+.filter-toggle-button {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #802BB1;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Sidebar is hidden by default */
 .filters {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 250px;
+    height: 90%;
     background-color: #352d4d;
-    width: 800px;
-    height: 400px;
+    padding: 20px;
     border-radius: 3rem;
-    top: 35px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Show filters when checkbox is checked */
+.filter-checkbox:checked~.containers .filters {
+    transform: translateX(0);
 }
 
 .posts {
-    width: 800px;
+    width: 70%;
+    /* Dynamic width for larger screens */
     border-radius: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: #352d4d;
-    margin-bottom: 3rem;
-    padding-bottom: 4rem;
-    padding-top: 3rem;
+    padding: 3rem 0 4rem 0;
     gap: 2rem;
+    margin: 0 auto;
+    /* Center the posts section */
 }
 
 .post {
     background-color: #564F6F;
-    width: 700px;
-    height: 500px; /* Adjust height as needed */
+    width: 650px;
+    height: 500px;
+    /* Adjust height as needed */
     border-radius: 20px;
     display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: space-evenly; /* Space between left and right content */
-    padding: 10px; /* Optional padding inside the post */
-    position: relative; /* Position relative to contain the absolute child */
+    align-items: center;
+    /* Center items vertically */
+    justify-content: space-evenly;
+    /* Space between left and right content */
+    padding: 10px;
+    /* Optional padding inside the post */
+    position: relative;
+    /* Position relative to contain the absolute child */
     animation: appear linear;
     flex-direction: column;
     animation-timeline: view();
@@ -147,10 +161,12 @@ body {
 }
 
 .postTitle {
-    margin: 0px; 
+    margin: 0px;
     font-size: 1.5em;
-    text-decoration: underline; /* Underline the title */
-    color: #D1D7E0; /* Ensure text color is consistent */
+    text-decoration: underline;
+    /* Underline the title */
+    color: #D1D7E0;
+    /* Ensure text color is consistent */
 }
 
 .postContent {
@@ -169,7 +185,7 @@ body {
 .postImage {
     max-width: 100%;
     max-height: 100%;
-    object-fit:cover;
+    object-fit: cover;
     border-radius: 2em;
 }
 
@@ -182,26 +198,31 @@ body {
 .postWithOptions {
     display: flex;
     flex-direction: column;
-    align-items : center;
+    align-items: center;
     gap: 1em;
 }
 
 .postOptions {
-    display: flex; /* Use flex to align icons and counters */
-    align-items: center; /* Center items vertically */
-    gap: 5px; /* Space between icons and counters */
+    display: flex;
+    /* Use flex to align icons and counters */
+    align-items: center;
+    /* Center items vertically */
+    gap: 5px;
+    /* Space between icons and counters */
     color: #D1D7E0;
     /* margin: 20px; This margin can be adjusted or removed */
     gap: 1em;
-
 }
 
 .likeIcon,
 .dislikeIcon,
 .commentIcon {
-    width: 24px; /* Adjust icon size */
-    height: 24px; /* Adjust icon size */
-    margin-right: 2px; /* Space between icon and counter */
+    width: 24px;
+    /* Adjust icon size */
+    height: 24px;
+    /* Adjust icon size */
+    margin-right: 2px;
+    /* Space between icon and counter */
 }
 
 .option {
@@ -213,6 +234,9 @@ body {
     margin: 0;
     margin-top: 4px;
 }
+
+
+/* --- END --- */
 
 
 /* --- END --- */
@@ -311,23 +335,15 @@ input[type="submit"]:not(:hover) {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none; 
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 999;
 }
 
-.inside-popup {
-    margin-top: 3em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 #login:target,
 #createPostPopup:target,
-#logout-confirmation:target { 
+#logout-confirmation:target {
     display: flex;
 }
 
@@ -336,6 +352,7 @@ input[type="submit"]:not(:hover) {
     display: flex;
     flex-direction: column;
     justify-items: center;
+    justify-content: center;
     align-items: center;
     transition-duration: 0.5s;
     width: 500px;
@@ -344,7 +361,7 @@ input[type="submit"]:not(:hover) {
     border-radius: 10px;
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
     margin-top: -75px;
-    padding-bottom: 9vh;
+    padding-bottom: 6vh;
 }
 
 #login:target .popup-content {
@@ -412,10 +429,15 @@ input[type="submit"]:not(:hover) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Ensures content is centered vertically */
     width: 90%;
+    max-width: 600px; /* Optional to limit the maximum width */
     margin-top: 2vh;
+    border-radius: 10px;
+    padding: 20px;
 }
 
+/* Ensure input fields and textarea remain centered */
 .createPostForm input[type="text"],
 .createPostForm textarea {
     font-family: Arial, Helvetica, sans-serif;
@@ -428,6 +450,34 @@ input[type="submit"]:not(:hover) {
     margin: 7px;
     border: 3px solid #564F6F;
     border-radius: 5px;
+}
+
+.textarea-container {
+    position: relative;
+    display: flex;
+    width: 90%;
+}
+
+.textarea-container textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upload-icon {
+    position: absolute;
+    bottom: 14px;
+    right: 12px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.upload-icon:hover {
+    opacity: 0.7;
+}
+
+.upload-icon img {
+    width: 2rem;
+    height: 2rem;
 }
 
 .createPostForm textarea {
@@ -467,11 +517,11 @@ input[type="submit"]:not(:hover) {
 }
 
 .createPostForm input[type="submit"] {
+    position: relative;
     transition-duration: 0.5s;
     font-size: 15px;
     width: 60%;
     padding: 10px;
-    margin-top: 30px;
     background-color: #802BB1;
     color: #D1D7E0;
     border: 3px solid #802BB1;
@@ -494,6 +544,82 @@ input[type="submit"]:not(:hover) {
     color: #9ca0a7;
 }
 
+fieldset {
+    border: none;
+}
+
+
+.upload-button {
+    display: flex;
+    transition-duration: 0.5s;
+    font-size: 15px;
+    padding: 10px;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    border: 3px solid #564F6F;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin: 5px;
+}
+
+.upload-button:hover {
+    background-color: #564F6F;
+}
+
+#toggleCategories:checked + .upload-button {
+    background-color: #802BB1;  /* New background color */
+    color: #FFFFFF;  /* Text color change */
+    border-color: #802BB1;  /* Border color change */
+}
+
+.category-checkboxes {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 10px;
+    width: 80%;
+    transition: all 0.3s ease;
+}
+
+/* Display category checkboxes when the toggle is checked */
+#toggleCategories:checked ~ .category-checkboxes {
+    display: grid;
+}
+
+/* Label styling */
+.category-checkboxes label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    transition: 0.3s;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    border: 3px solid #564F6F;
+    text-align: center;
+}
+
+.category-checkboxes label:hover {
+    background-color: #564F6F;
+    text-align: center;
+}
+
+/* Hide the checkbox inputs visually but keep them functional */
+.category-checkboxes input[type="checkbox"] {
+    display: none;
+}
+
+/* Change appearance when checkbox is checked */
+.category-checkboxes input[type="checkbox"]:checked + label {
+    color: #FFFFFF;
+    background-color: #802BB1;
+    border-color: #802BB1;
+}
 /* --- END --- */
 
 
@@ -564,26 +690,31 @@ input[type="submit"]:not(:hover) {
     .logtitle {
         font-size: 4em;
     }
-    
+
     .loginForm {
         margin-top: 10vh;
     }
 }
 
 /* -- LAPTOP 1024PX -- */
-@media (max-width:1024px) { 
+@media (max-width:1024px) {
     #title {
         font-size: 110px;
     }
 
     .icon {
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1.8rem;
+        width: 1.8rem;
     }
 
     .profile-icon {
-        height: 1.2rem;
-        width: 1.2rem;
+        height: 1.8rem;
+        width: 1.8rem;
+    }
+
+    .logout-icon {
+        height: 2rem;
+        width: 2rem;
     }
 
     .filters {
@@ -596,24 +727,86 @@ input[type="submit"]:not(:hover) {
     }
 
     .post {
-        width: 550px;
+        width: 400px;
     }
 }
 
 /* -- TABLET -- */
 @media (max-width:768px) {
-    .filters {
-        position: static;
-        width: 500px;
-        height: 250px;
+
+    /* Fix the filter toggle button to the top center of the screen */
+    .filter-toggle-button {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1001;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
-    .posts {
-        width: 500px;
+    /* Filters panel styles for header-like drop-down */
+    .filters {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* Optional limit to allow scrolling */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        border-radius: 0 0 0rem 0rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* Display the filters panel as a header-like drop-down */
+    .filter-checkbox:checked~.containers .filters {
+        transform: translateY(0);
+    }
+
+    .dynamic-island {
+        top: auto;
+        /* Reset top position */
+        bottom: 20px;
+        /* Position at the bottom of the screen */
+        transform: translateX(-50%);
+        /* Center horizontally */
+        padding: 15px 25px;
+        /* Adjust padding for smaller screens */
+    }
+
+    .logo {
+        position: fixed;
+        bottom: 75px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 225px;
+        /* Resize for smaller screens */
+        height: auto;
+    }
+
+    .logo2 {
+        position: fixed;
+        bottom: 75px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        /* Resize for smaller screens */
+        height: auto;
+        z-index: 1;
+    }
+
+    .containers {
+        flex-direction: column;
+        /* Stack items on top of each other */
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: 60px;
     }
 
     .post {
-        width: 400px;
+        width: 500px;
+        height: 500px;
     }
 }
 
@@ -625,16 +818,27 @@ input[type="submit"]:not(:hover) {
 
 /* -- MOBILE L -- */
 @media (max-width:515px) {
-    .containers {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
+
+    .logo {
+        bottom: 85px;
     }
 
-    .filters {
-        position: static;
-        width: 340px;
-        height: 350px;
+    .logo2 {
+        bottom: 82.5px;
+    }
+
+    .dynamic-island {
+        bottom: 35px;
+        /* Further down for smaller screen */
+        padding: 12px 20px;
+        /* Smaller padding for mobile */
+    }
+
+    .containers {
+        flex-direction: column;
+        /* Stack items on top of each other */
+        gap: 2rem;
+        align-items: center;
     }
 
     #title {
@@ -642,11 +846,13 @@ input[type="submit"]:not(:hover) {
     }
 
     .posts {
-        width: 340px;
+        width: 100%;
+        /* Full width for posts */
     }
 
     .post {
-        width: 270px;
+        width: 300px;
+        height: 300px;
     }
 }
 
@@ -677,6 +883,7 @@ input[type="submit"]:not(:hover) {
 
     .post {
         width: 270px;
+        height: 270px;
     }
 }
 
@@ -702,6 +909,7 @@ input[type="submit"]:not(:hover) {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);

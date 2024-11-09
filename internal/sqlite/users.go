@@ -106,17 +106,6 @@ func (u *USERMODEL) GetUserName(r *http.Request) (string, error) {
 	return name, nil
 }
 
-// func (u *USERMODEL) getSessionCookieValue(r *http.Request) (string, error) {
-// 	cookies := r.Cookies()
-// 	for _, cookie := range cookies {
-// 		if strings.HasPrefix(cookie.Name, "Forum-") {
-// 			return cookie.Value, nil
-// 		}
-// 	}
-// 	log.Println("No session id found")
-// 	return "", nil
-// }
-
 func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
 	cookies := r.Cookies()
 
