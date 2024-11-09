@@ -67,19 +67,19 @@
                 <fieldset class="category-checkboxes">
                     <input type="checkbox" id="sports" name="category" value="Sports">
                     <label for="sports">Sports</label>
-    
+
                     <input type="checkbox" id="gaming" name="category" value="Gaming">
                     <label for="gaming">Gaming</label>
-    
+
                     <input type="checkbox" id="art" name="category" value="Art">
                     <label for="art">Art</label>
-    
+
                     <input type="checkbox" id="music" name="category" value="Music">
                     <label for="music">Music</label>
-    
+
                     <input type="checkbox" id="food" name="category" value="Food">
                     <label for="food">Food</label>
-    
+
                     <input type="checkbox" id="random" name="category" value="Random" checked required>
                     <label for="random">Random</label>
                 </fieldset>
@@ -115,11 +115,16 @@
             {{range .Posts}}
             <div class="postWithOptions">
                 <div class="post">
-                    <img src="{{.ProfilePic}}" alt="" class="postPFP">
-                    <p class="postAuthor">@{{.Username}}</p>
-                    <h2 class="postTitle">{{.Title}}</h2>
                     <input type="hidden" name="post_id" value="{{.ID}}">
-                    <h4 class="postContent">{{.Content}}</h4>
+                    <div class="postTop">
+                        <div class="postHeader">
+                            <img src="{{.ProfilePic}}" alt="" class="postPFP">
+                            <p class="postAuthor">@{{.Username}}</p>
+                        </div>
+                        <div class="postContentContainer">
+                            <p class="postContent">{{.Content}}</p>
+                        </div>
+                    </div>
                     {{if .ImagePath}}
                     <div class="imageContainer">
                         <img src="{{.ImagePath}}" alt="image" class="postImage">

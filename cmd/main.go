@@ -32,10 +32,10 @@ func main() {
 	}
 	go app.CleanupExpiredSessions()
 	server := http.Server{
-		Addr:    ":3333",
+		Addr:    ":3535",
 		Handler: app.routes(),
 	}
-	log.Println("Server Start at :3333")
+	log.Println("Server Start at :3535")
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Server failed: %v", err)
 	}

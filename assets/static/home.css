@@ -132,7 +132,10 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #352d4d;
+    background-color: #352d4d9f;
+    border: 2px solid #352d4d;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     padding: 3rem 0 4rem 0;
     gap: 2rem;
     margin: 0 auto;
@@ -142,118 +145,124 @@ body {
 .post {
     background-color: #564F6F;
     width: 500px;
-    height: 500px;
-    /* Adjust height as needed */
+    height: auto;
+    /* Adjust height based on content */
     border-radius: 20px;
-    display: flex;
-    align-items: center;
-    /* Center items vertically */
-    justify-content: space-evenly;
-    /* Space between left and right content */
     padding: 10px;
-    /* Optional padding inside the post */
     position: relative;
-    /* Position relative to contain the absolute child */
-    animation: appear linear;
-    flex-direction: column;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-}
-
-.postTitle {
-    margin: 0px;
-    font-size: 1.5em;
-    text-decoration: underline;
-    /* Underline the title */
-    color: #D1D7E0;
-    /* Ensure text color is consistent */
-}
-
-.postContent {
-    font-size: 1.2em;
-    color: #D1D7E0;
-    margin: 0px;
-}
-
-.imageContainer {
-    width: 90%;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-}
-
-.postPFP {
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    position: absolute;
-    top: 20px; 
-    left: 20px;
-    border: 2px solid #fff;
-    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.8); 
-}
-
-.postImage {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    border-radius: 2em;
-}
-
-.postAuthor {
-    margin: 0;
-    font-size: 1.55em;
-    color: #D1D7E0;
-}
-
-.postWithOptions {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
 }
 
+.postTop {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.postHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.postContentContainer {
+    background-color: #4C495D; /* Darker background for contrast */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Padding around content */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    max-width: calc(100% - 70px); /* Adjust width to leave space for the profile picture */
+    white-space: normal; /* Allow text to wrap normally */
+    word-wrap: break-word; /* Ensure long words break correctly */
+    overflow-wrap: break-word; /* Make sure long words break to avoid overflow */
+}
+
+/* Post content text */
+.postContent {
+    font-size: 1.2em;
+    color: #D1D7E0;
+    margin-top: 0;
+    margin-bottom: 0;
+    word-wrap: break-word; /* Ensures long words break correctly */
+    max-width: 100%; /* Make sure it takes up available width */
+    white-space: normal; /* Allow content to wrap properly in multiple lines */
+    overflow-wrap: break-word; /* Ensure words break to avoid overflow */
+    display: -webkit-box; /* Necessary for truncation */
+    -webkit-line-clamp: 5; /* Number of lines to display before truncating */
+    -webkit-box-orient: vertical; /* Required for multiline truncation */
+    text-align: left; /* Align text to the left */
+    overflow: hidden; /* Hide the overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis (...) at the end */
+}
+
+
+.postPFP {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #D1D7E0;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.postAuthor {
+    position: relative;
+    font-size: 12px;
+    color: #D1D7E0;
+    margin: 0;
+}
+
+.imageContainer {
+    width: 90%;
+    height: auto;
+    max-height: 70%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1em;
+    border: 2px solid #D1D7E0;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.postImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 1em;
+}
+
 .postOptions {
     display: flex;
-    /* Use flex to align icons and counters */
+    justify-content: center;
     align-items: center;
-    /* Center items vertically */
-    gap: 5px;
-    /* Space between icons and counters */
-    color: #D1D7E0;
-    /* margin: 20px; This margin can be adjusted or removed */
     gap: 1em;
+    color: #D1D7E0;
 }
 
 .likeIcon,
 .dislikeIcon,
 .commentIcon {
     width: 24px;
-    /* Adjust icon size */
     height: 24px;
-    /* Adjust icon size */
-    margin-right: 2px;
-    /* Space between icon and counter */
 }
 
 .option {
     display: flex;
+    align-items: center;
     gap: 0.2em;
 }
 
 .counters {
     margin: 0;
-    margin-top: 4px;
+    font-size: 0.9em;
 }
 
-
 /* --- END --- */
-
-
-/* --- END --- */
-
-
 
 /* --- SCROLL BAR STYLES --- */
 
@@ -441,9 +450,11 @@ input[type="submit"]:not(:hover) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Ensures content is centered vertically */
+    justify-content: center;
+    /* Ensures content is centered vertically */
     width: 90%;
-    max-width: 600px; /* Optional to limit the maximum width */
+    max-width: 600px;
+    /* Optional to limit the maximum width */
     margin-top: 2vh;
     border-radius: 10px;
     padding: 20px;
@@ -579,10 +590,13 @@ fieldset {
     background-color: #564F6F;
 }
 
-#toggleCategories:checked + .upload-button {
-    background-color: #802BB1;  /* New background color */
-    color: #FFFFFF;  /* Text color change */
-    border-color: #802BB1;  /* Border color change */
+#toggleCategories:checked+.upload-button {
+    background-color: #802BB1;
+    /* New background color */
+    color: #FFFFFF;
+    /* Text color change */
+    border-color: #802BB1;
+    /* Border color change */
 }
 
 .category-checkboxes {
@@ -595,7 +609,7 @@ fieldset {
 }
 
 /* Display category checkboxes when the toggle is checked */
-#toggleCategories:checked ~ .category-checkboxes {
+#toggleCategories:checked~.category-checkboxes {
     display: grid;
 }
 
@@ -627,11 +641,12 @@ fieldset {
 }
 
 /* Change appearance when checkbox is checked */
-.category-checkboxes input[type="checkbox"]:checked + label {
+.category-checkboxes input[type="checkbox"]:checked+label {
     color: #FFFFFF;
     background-color: #802BB1;
     border-color: #802BB1;
 }
+
 /* --- END --- */
 
 
@@ -815,7 +830,6 @@ fieldset {
 
     .post {
         width: 500px;
-        height: 500px;
     }
 }
 
@@ -861,7 +875,6 @@ fieldset {
 
     .post {
         width: 300px;
-        height: 300px;
     }
 }
 
@@ -892,7 +905,6 @@ fieldset {
 
     .post {
         width: 270px;
-        height: 270px;
     }
 }
 
