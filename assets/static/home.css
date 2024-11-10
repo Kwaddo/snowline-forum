@@ -100,6 +100,7 @@ body {
     justify-content: center;
     background-color: #802BB1;
     top: 50%;
+    transform: translateY(-50%);
     color: #ffffff;
     padding: 10px;
     border-radius: 5px;
@@ -130,7 +131,7 @@ body {
     position: fixed;
     top: 50%;
     left: 0;
-    transform: translate(-100%, -45%);
+    transform: translate(-100%, -50%);
     transition: transform 0.3s ease;
     width: auto;
     height: auto;
@@ -147,7 +148,7 @@ body {
 
 /* Show filters when .filter-checkbox is checked */
 .filter-checkbox:checked ~.containers .filters {
-    transform: translate(50%, -45%); /* Slide in */
+    transform: translate(50%, -50%); /* Slide in */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
