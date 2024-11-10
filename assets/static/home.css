@@ -1,6 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url(../images/backgroundhome.png);
+    background:
+        linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8)),
+        url(../images/backgroundhome.png);
     background-position: top center;
     background-size: 100% auto;
     background-repeat: no-repeat;
@@ -113,8 +115,9 @@ body {
     width: 1.8rem;
 }
 
-.filter-checkbox:checked + .filter-toggle-button img {
-    transform: rotate(180deg); /* Rotate the image by 180 degrees */
+.filter-checkbox:checked+.filter-toggle-button img {
+    transform: rotate(180deg);
+    /* Rotate the image by 180 degrees */
 }
 
 /* Move the filter button to the center of the screen when the checkbox is checked */
@@ -147,8 +150,9 @@ body {
 }
 
 /* Show filters when .filter-checkbox is checked */
-.filter-checkbox:checked ~.containers .filters {
-    transform: translate(50%, -50%); /* Slide in */
+.filter-checkbox:checked~.containers .filters {
+    transform: translate(50%, -50%);
+    /* Slide in */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
@@ -880,11 +884,12 @@ fieldset {
         width: 1rem;
         transform: rotate(90deg);
     }
-    
-    .filter-checkbox:checked + .filter-toggle-button img {
-        transform: rotate(270deg); /* Rotate the image by 180 degrees */
+
+    .filter-checkbox:checked+.filter-toggle-button img {
+        transform: rotate(270deg);
+        /* Rotate the image by 180 degrees */
     }
-    
+
 
     /* Filters panel styles for header-like drop-down */
     .filters {
@@ -977,9 +982,11 @@ fieldset {
     .popup-content {
         width: 350px;
     }
+
     .filters {
         width: 75%;
     }
+
     .filter-checkbox:checked~.containers .filters {
         transform: translate(-50%, 10%);
     }
@@ -1048,6 +1055,7 @@ fieldset {
     .popup-content {
         width: 280px;
     }
+
     .posts {
         width: 300px;
     }
