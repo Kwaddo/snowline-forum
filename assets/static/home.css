@@ -105,12 +105,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
-
-
 /* Move the filter button to the center of the screen when the checkbox is checked */
 .filter-checkbox:checked~.filter-toggle-button {
-    top: 50%;
-    left: 10%;
+    display: grid;
     background-color: #802BB1;
     /* Optional: Change background on toggle */
     color: #fff;
@@ -120,9 +117,9 @@ body {
 /* Sidebar is hidden by default */
 .filters {
     position: fixed;
-    top: 37.5%;
+    top: 50%;
     left: 0;
-    transform: translateX(-100%);
+    transform: translate(-100%, -45%);
     transition: transform 0.3s ease;
     width: auto;
     height: auto;
@@ -131,20 +128,25 @@ body {
     padding: 20px;
     border-radius: 3rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
-    display: block;
+    display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
 }
 
-/* Show filters when checkbox is checked */
-.filter-checkbox:checked~.containers .filters {
-    transform: translateX(0);
-    transition: transform 0.3s ease;
+/* Show filters when .filter-checkbox is checked */
+.filter-checkbox:checked ~.containers .filters {
+    transform: translate(50%, -45%); /* Slide in */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 .filters fieldset {
     display: block;
+}
+
+.category-checkboxes-filters {
+    display: flex;
+    align-items: center;
 }
 
 /* Label styling */
@@ -867,9 +869,8 @@ fieldset {
         top: 0;
         left: 50%;
         transform: translateX(-50%) translateY(-100%);
-        width: auto;
+        width: 50%;
         height: auto;
-        max-width: 600px;
         transition: transform 0.3s ease;
         border-radius: 0 0 0rem 0rem;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
@@ -900,7 +901,7 @@ fieldset {
 
     /* Display the filters panel as a header-like drop-down */
     .filter-checkbox:checked~.containers .filters {
-        transform: translate(-50%, 5%);
+        transform: translate(-50%, 20%);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 
@@ -953,6 +954,12 @@ fieldset {
     .popup-content {
         width: 350px;
     }
+    .filters {
+        width: 75%;
+    }
+    .filter-checkbox:checked~.containers .filters {
+        transform: translate(-50%, 10%);
+    }
 }
 
 /* -- MOBILE L -- */
@@ -973,8 +980,12 @@ fieldset {
         /* Smaller padding for mobile */
     }
 
+    .filters {
+        width: 90%;
+    }
+
     .filter-checkbox:checked~.containers .filters {
-        transform: translate(-50%, 10%);
+        transform: translate(-50%, 20%);
     }
 
     .containers {
@@ -1014,11 +1025,6 @@ fieldset {
     .popup-content {
         width: 280px;
     }
-
-    .filters {
-        width: auto;
-    }
-
     .posts {
         width: 300px;
     }
