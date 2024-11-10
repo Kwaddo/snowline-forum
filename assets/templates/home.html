@@ -144,6 +144,11 @@
                             <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
                                 <p class="postContent">{{.Content}}</p>
                             </div>
+                            {{if .ImagePath}}
+                            <div class="imageContainer">
+                                <img src="{{.ImagePath}}" alt="image" class="postImage">
+                            </div>
+                            {{end}}
                             <div class="postOptions">
                                 <div class="option">
                                     <form action="/like" method="POST">
@@ -174,11 +179,6 @@
                         </div>
                         
                         <!-- Optional image container -->
-                        {{if .ImagePath}}
-                        <div class="imageContainer">
-                            <img src="{{.ImagePath}}" alt="image" class="postImage">
-                        </div>
-                        {{end}}
                     </div>
                 </div>
             
