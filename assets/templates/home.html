@@ -131,53 +131,61 @@
         <div class="posts">
             {{range .Posts}}
             <div class="postWithOptions">
-                <div class="post">
+                <div class="post {{if not .ImagePath}}noImage{{end}}">
                     <input type="hidden" name="post_id" value="{{.ID}}">
-                    <div class="postTop">
-                        <div class="postHeader">
-                            <img src="{{.ProfilePic}}" alt="" class="postPFP">
-                            <p class="postAuthor">@{{.Username}}</p>
+            
+                    <!-- Body of the post, with profile, content, and image side-by-side -->
+                    <div class="postBody">
+                        <div class="postTop">
+                            <div class="postHeader">
+                                <img src="{{.ProfilePic}}" alt="" class="postPFP">
+                                <p class="postAuthor">@{{.Username}}</p>
+                            </div>
+                            <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                <p class="postContent">{{.Content}}</p>
+                            </div>
+                            <div class="postOptions">
+                                <div class="option">
+                                    <form action="/like" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Likes}}</p>
+                                </div>
+                                <div class="option">
+                                    <form action="/dislike" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Dislikes}}</p>
+                                </div>
+                                <div class="option">
+                                    <a href="/#comment-popup">
+                                        <img src="../images/comments.png" class="commentIcon" alt="Comments">
+                                    </a>
+                                    <p class="counters">{{.Comments}}</p>
+                                </div>
+                            </div>
+                            <p class="postDate">{{.CreatedAt}}</p>
                         </div>
-                        <div class="postContentContainer">
-                            <p class="postContent">{{.Content}}</p>
+                        
+                        <!-- Optional image container -->
+                        {{if .ImagePath}}
+                        <div class="imageContainer">
+                            <img src="{{.ImagePath}}" alt="image" class="postImage">
                         </div>
+                        {{end}}
                     </div>
-                    {{if .ImagePath}}
-                    <div class="imageContainer">
-                        <img src="{{.ImagePath}}" alt="image" class="postImage">
-                    </div>
-                    {{end}}
-                    <div class="postOptions">
-                        <div class="option">
-                            <form action="/like" method="POST">
-                                <input type="hidden" name="post_id" value="{{.ID}}">
-                                <button type="submit" class="button">
-                                    <img src="../images/like-filled.png" alt="" class="likeIcon">
-                                </button>
-                            </form>
-                            <p class="counters">{{.Likes}}</p>
-                        </div>
-                        <div class="option">
-                            <form action="/dislike" method="POST">
-                                <input type="hidden" name="post_id" value="{{.ID}}">
-                                <button type="submit" class="button">
-                                    <img src="../images/dislike-filled.png" alt="" class="dislikeIcon">
-                                </button>
-                            </form>
-                            <p class="counters">{{.Dislikes}}</p>
-                        </div>
-                        <div class="option">
-                            <a href="/#comment-popup">
-                                <img src="../images/comments.png" class="commentIcon">
-                            </a>
-                            <p class="counters">{{.Comments}}</p>
-                        </div>
-                    </div>
-                    <p class="postDate">{{.CreatedAt}}</p>
                 </div>
+            
+                <!-- Popup for adding a comment -->
                 <div id="comment-popup" class="popup">
                     <div class="popup-content">
-                        <div class="commen-content">
+                        <div class="comment-content">
                             <a href="/" class="popup-close">
                                 <img src="../images/close-tab-svgrepo-com.png" alt="Close">
                             </a>
@@ -185,8 +193,7 @@
                             <div class="comment-bar">
                                 <form action="/savecomment" method="POST" align="center">
                                     <input type="hidden" name="post_id" value="{{.ID}}">
-                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000"
-                                        required></textarea>
+                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
                                     <button type="submit">
                                         Comment
                                     </button>
@@ -195,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>   
             {{end}}
         </div>
     </div>
