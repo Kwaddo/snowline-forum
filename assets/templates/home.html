@@ -53,7 +53,7 @@
             <a href="/" class="popup-close">
                 <img src="../images/close-tab-svgrepo-com.png" alt="Close">
             </a>
-            <h2 class="logtitle">CREATE POST</h2>
+            <img src="../images/blog-pencil.png" alt="Create" class="createPostIcon">
             <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
                 <div class="textarea-container">
                     <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
@@ -88,21 +88,22 @@
         </div>
     </div>
 
-    <!-- Logout confirmation popup -->
-    <div id="logout-confirmation" class="popup">
-        <div class="popup-content">
-            <h1>ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-            <form action="/logout" method="POST">
-                <button type="submit" class="button">
-                    YES
-                </button>
-            </form>
-            <h1>
-                <a href="/">NO</a>
-            </h1>
+<div id="logout-confirmation" class="popup">
+    <div class="popup-content">
+        <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+        <form action="/logout" method="POST">
+            <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
+        </form>
+        <form action="/">
+            <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
+        </form>
+        <div class="button-row">
+            <label for="yes-toggle" class="confirmLabel">YES</label>
+            <label for="no-toggle" class="confirmLabel">NO</label>
         </div>
     </div>
-    
+</div>
+
     <input type="checkbox" id="filter-toggle" class="filter-checkbox">
     <label for="filter-toggle" class="filter-toggle-button">
         <img src="../images/settings-sliders.png" alt="Close">

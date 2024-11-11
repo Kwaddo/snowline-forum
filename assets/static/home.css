@@ -383,6 +383,8 @@ html::-webkit-scrollbar-track {
     background-color: #48355E;
 }
 
+
+
 /* --- END --- */
 
 
@@ -603,6 +605,12 @@ input[type="submit"]:not(:hover) {
     height: 2rem;
 }
 
+.createPostIcon {
+    margin-top: 50px;
+    width: 5rem;
+    height: 5rem;
+}
+
 .createPostForm textarea {
     resize: none;
 }
@@ -808,6 +816,52 @@ fieldset {
 
 /* --- end --- */
 
+/* LOGOUT POPUP */
+.hidden-button{
+    display: none;
+}
+
+.logoutTitle {
+    align-items: center;
+    color: #D1D7E0;
+    text-align: center;
+    width: 80%;
+    font-size: 1.5em;
+}
+
+/* Style the labels to look like buttons */
+.confirmLabel {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    border: 3px solid #564F6F;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+/* Hover effect for labels */
+.confirmLabel:hover {
+    background-color: #564F6F;
+}
+
+/* Focus effect */
+.confirmLabel:focus {
+    outline: none;
+    background-color: #802BB1;
+    border-color: #802BB1;
+}
+
+.popup-content h1 {
+    margin-top: 70px; /* Adjust this value as needed */
+}
+
+/* --- end --- */
 
 /* --- MEDIA QUERIES --- */
 
@@ -864,7 +918,7 @@ fieldset {
         top: 50px;
         left: 50%;
         transform: translateX(-50%) translateY(-100%);
-        z-index: 1001;
+        z-index: 21;
         padding: 10px 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
@@ -893,7 +947,7 @@ fieldset {
         transition: transform 0.3s ease;
         border-radius: 0 0 0rem 0rem;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
-        z-index: 1000;
+        z-index: 20;
         align-items: center;
         justify-content: center;
         display: block;
