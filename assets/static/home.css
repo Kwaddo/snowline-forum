@@ -219,7 +219,7 @@ body {
 
 .post {
     background-color: #564F6F;
-    width: 600px;
+    width: 700px;
     border-radius: 20px;
     padding: 30px;
     display: flex;
@@ -238,8 +238,8 @@ body {
 
 /* Make content container centered and full width when no image */
 .postContentContainer.noImage {
-    text-align: center;
-    width: 100%;
+    text-align: left;
+    width: 400px;
 }
 
 .postBody {
@@ -256,7 +256,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 30%;
+    width: 80%;
 }
 
 .postHeader {
@@ -322,14 +322,18 @@ body {
 }
 
 .postOptions {
+    background-color: #4C495D;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1em;
     color: #D1D7E0;
-    width: 100%;
+    width: auto;
+    padding: 10px;
     text-align: center;
     margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .postDate {
@@ -855,18 +859,20 @@ fieldset {
 
     /* Fix the filter toggle button to the top center of the screen */
     .filter-toggle-button {
+        opacity: 0.85;
         position: fixed;
-        top: 40px;
+        top: 50px;
         left: 50%;
         transform: translateX(-50%) translateY(-100%);
         z-index: 1001;
-        padding: 10px 20px;
+        padding: 10px 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .filter-toggle-button img {
-        height: 1rem;
-        width: 1rem;
+        opacity: 0.85;
+        height: 1.6rem;
+        width: 1.6rem;
         transform: rotate(90deg);
     }
 
@@ -908,13 +914,13 @@ fieldset {
     }
 
     .filter-checkbox:checked~.filter-toggle-button {
-        top: 40px;
+        top: 50px;
         left: 50%;
     }
 
     /* Display the filters panel as a header-like drop-down */
     .filter-checkbox:checked~.containers .filters {
-        transform: translate(-50%, 20%);
+        transform: translate(-50%, 40%);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 
@@ -1033,7 +1039,7 @@ fieldset {
     }
 
     .postContentContainer.noImage {
-        width: 80%;
+        width: 400px;
     }
     .imageContainer {
         width: 400px;
@@ -1055,7 +1061,10 @@ fieldset {
     }
 
     .filter-checkbox:checked~.containers .filters {
-        transform: translate(-50%, 10%);
+        transform: translate(-50%, 20%);
+    }
+    .postContentContainer.noImage {
+        width: 250px;
     }
     .imageContainer {
         width: 250px;
@@ -1089,7 +1098,7 @@ fieldset {
     }
 
     .filter-checkbox:checked~.containers .filters {
-        transform: translate(-50%, 20%);
+        transform: translate(-50%, 25%);
     }
 
     .containers {
@@ -1141,6 +1150,9 @@ fieldset {
         width: 270px;
         height: 270px;
     } 
+    .postContentContainer.noImage {
+        width: 250px;
+    }
 }
 
 /* --- END --- */

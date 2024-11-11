@@ -102,9 +102,10 @@
             </h1>
         </div>
     </div>
+    
     <input type="checkbox" id="filter-toggle" class="filter-checkbox">
     <label for="filter-toggle" class="filter-toggle-button">
-        <img src="../images/right.png" alt="Close">
+        <img src="../images/settings-sliders.png" alt="Close">
     </label>
     <div class="containers">
         <div class="filters">
@@ -124,7 +125,7 @@
                 <input type="checkbox" id="food" name="category" value="Food">
                 <label for="food">Food</label>
 
-                <input type="checkbox" id="random" name="category" value="Random" checked required>
+                <input type="checkbox" id="random" name="category" value="Random">
                 <label for="random">Random</label>
             </fieldset>
         </div>
@@ -133,7 +134,7 @@
             <div class="postWithOptions">
                 <div class="post {{if not .ImagePath}}noImage{{end}}">
                     <input type="hidden" name="post_id" value="{{.ID}}">
-            
+
                     <!-- Body of the post, with profile, content, and image side-by-side -->
                     <div class="postBody">
                         <div class="postTop">
@@ -177,11 +178,11 @@
                             </div>
                             <p class="postDate">{{.CreatedAt}}</p>
                         </div>
-                        
+
                         <!-- Optional image container -->
                     </div>
                 </div>
-            
+
                 <!-- Popup for adding a comment -->
                 <div id="comment-popup" class="popup">
                     <div class="popup-content">
@@ -193,7 +194,8 @@
                             <div class="comment-bar">
                                 <form action="/savecomment" method="POST" align="center">
                                     <input type="hidden" name="post_id" value="{{.ID}}">
-                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
+                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000"
+                                        required></textarea>
                                     <button type="submit">
                                         Comment
                                     </button>
@@ -202,7 +204,7 @@
                         </div>
                     </div>
                 </div>
-            </div>   
+            </div>
             {{end}}
         </div>
     </div>
