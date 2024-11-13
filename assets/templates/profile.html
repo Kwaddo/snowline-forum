@@ -7,10 +7,63 @@
         <title>Profile Page</title>
     </head>
     <body>
+        <!-- logout confirmation popup -->
+        <div id="logout-confirmation" class="popup">
+            <div class="popup-content">
+                <a href="/Profile-page" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <div class="inside-popup">
+                    <h1 class="logout-title">
+                        ARE YOU SURE YOU WANT TO
+                        LOGOUT?
+                    </h1>
+                    <div class="logout-options-container">
+                        <form action="/logout" method="POST">
+                            <button type="submit" class="logout-options">
+                                YES
+                            </button>
+                        </form>
+                        <form action="/Profile-page">
+                            <button type="submit" class="logout-options">
+                                NO
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit profile popup -->
+        <div id="edit-profile" class="popup">
+            <div class="popup-content">
+                <a href="/Profile-page" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <div class="inside-popup">
+                    <h1 class="upload-title">
+                        Upload Your Profile Picture!
+                    </h1>
+                    <div class="container">
+                        <div class="button-wrap">
+                            <form action="/profile-picture" method="POST" enctype="multipart/form-data">
+                                <label class="buttonn" for="upload">
+                                    Upload
+                                    File
+                                </label>
+                                <input id="upload" type="file">
+                            </form>
+                        </div>
+                    </div>
+                    <button type="submit" id="upload-button">
+                        Set Profile
+                        Picture!
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="all">
             <div class="posts" id="posts">
-               <img src="{{.Users.ImagePath}}" alt=""> 
-
+                <img src="{{.Users.ImagePath}}" alt>
                 {{range .Users.Posts}}
                 <div class="postWithOptions">
                     <div class="post">
@@ -20,84 +73,80 @@
                         <h4 class="postContent">{{.Content}}</h4>
                         {{if .ImagePath}}
                         <div class="imageContainer">
-                            <img src="{{.ImagePath}}" alt="image"
-                                class="postImage">
+                            <img src="{{.ImagePath}}" alt="image" class="postImage">
                         </div>
                         {{end}}
                     </div>
                     <div class="postOptions">
                         <div class="option">
                             <form action="/like" method="POST">
-                                <input type="hidden" name="post_id"
-                                    value="{{.ID}}">
-                                <button type="submit" class="button">
-                                    <img src="../images/like-filled.png" alt
-                                        class="likeIcon">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="post-option">
+                                    <img src="../images/like-filled.png" alt class="likeIcon">
                                 </button>
                             </form>
                             <p class="counters">{{.Likes}}</p>
                         </div>
                         <div class="option">
                             <form action="/dislike" method="POST">
-                                <input type="hidden" name="post_id"
-                                    value="{{.ID}}">
-                                <button type="submit" class="button">
-                                    <img src="../images/dislike-filled.png" alt
-                                        class="dislikeIcon">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <button type="submit" class="post-option">
+                                    <img src="../images/dislike-filled.png" alt class="dislikeIcon">
                                 </button>
                             </form>
                             <p class="counters">{{.Dislikes}}</p>
                         </div>
                         <div class="option">
                             <a href="/#comment-popup">
-                                <img src="../images/comments.png"
-                                    class="commentIcon">
+                                <img src="../images/comments.png" class="commentIcon">
                             </a>
                             <p class="counters">2</p>
                         </div>
                     </div>
                 </div>
                 {{end}}
-
             </div>
             <div class="leftBar">
                 <a href="/">
-                    <div id="homeContainer">
-                        <img src="../images/Home.png" alt id="home">
+                    <div class="homeContainer container-hover">
+                        <img src="../images/Home.png" alt="Home Page" id="home">
+                    </div>
+                </a>
+                <a href="#edit-profile">
+                    <div class="editContainer container-hover">
+                        <img src="../images/edit.png" alt="Edit Profile" id="edit">
+                    </div>
+                </a>
+                <a href="#logout-confirmation">
+                    <div class="logoutConfirmationContainer container-hover">
+                        <img src="../images/logout.png" alt="Logout" id="logoutConfirmation">
                     </div>
                 </a>
                 <div class="pfp">
                     <img src="../images/Profile.png" alt>
                 </div>
-                <form action="/profile-picture" method="POST" enctype="multipart/form-data">
-                    <label for="image">Choose a profile picture:</label>
-                    <input type="file" name="image" id="image" required>
-                    <button type="submit">Upload Picture</button>
-                </form>
                 <div class="name">
-                 
-                    <p>{{.Users.Username}}</p> 
-                
+                    <p>@{{.Users.Username}}</p>
                 </div>
-                
                 <hr id="content-break">
                 <div class="nav">
-                    <a href="#posts" class="options-link">
-                        <div class="options">
-                            <img src="../images/like-filled.png" alt="Like">
+                    <!-- Form for filter actions -->
+                    <form action="/filter" method="post" id="filterForm">
+                        <div class="nav">
+                            <button type="submit" name="action" value="like" class="options button">
+                                <img src="../images/like-filled.png" alt="Like">
+                            </button>
+                            <button type="submit" name="action" value="dislike" class="options button">
+                                <img src="../images/dislike-filled.png" alt="Dislike">
+                            </button>
+                            <button type="submit" name="action" value="created" class="options button">
+                                <img src="../images/uploaded.png" alt="Created">
+                            </button>
+                            <button type="submit" name="action" value="comment" class="options button">
+                                <img src="../images/comments.png" alt="comment">
+                            </button>
                         </div>
-                    </a>
-                    <a href="#posts" class="options-link">
-                        <div class="options">
-                            <img src="../images/comments.png" alt="Comments">
-                        </div>
-                    </a>
-                    <a href="#posts" class="options-link">
-                        <div class="options">
-                            <img src="../images/dislike-filled.png"
-                                alt="Dislike">
-                        </div>
-                    </a>
+                    </form>
                 </div>
             </div>
         </div>
