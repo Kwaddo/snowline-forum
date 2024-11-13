@@ -87,8 +87,30 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		RenderingErrorMsg(w, "Email or Username already in use ", "./assets/templates/register.html", r)
 		return
 	}
+	id, name, _ := app.users.Authentication(
+		r.PostForm.Get("email"),
+		r.PostForm.Get("password"),
+	)
 
-	http.Redirect(w, r, "/signin", http.StatusFound)
+	uniqueInput := r.PostForm.Get("email") + time.Now().Format(time.RFC3339Nano)
+	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
+	expiresAt := time.Now().Add(1 * time.Hour)
+	http.SetCookie(w, &http.Cookie{
+		Name:     "Forum-" + sessionValue,
+		Value:    sessionValue,
+		Path:     "/",
+		Expires:  expiresAt,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	})
+	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
+	if err != nil {
+		log.Println("Error inserting session:", err)
+		ErrorHandle(w, 500, "Failed to create session")
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Request) {

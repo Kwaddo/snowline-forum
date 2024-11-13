@@ -1,9 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
 type Post struct {
 	Username   string
 	ID         int
@@ -11,7 +7,7 @@ type Post struct {
 	Content    string
 	ImagePath  string
 	ProfilePic string
-	CreatedAt  time.Time
+	CreatedAt  string
 	Likes      string
 	Dislikes   string
 	Comments   string
@@ -22,7 +18,7 @@ type Comment struct {
 	ID        int
 	PostID    int
 	Content   string
-	CreatedAt time.Time
+	CreatedAt string
 	Likes     string
 	Dislikes  string
 	Comments  string

@@ -65,5 +65,5 @@ func (app *app) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteLaxMode,
 	})
 
-	http.Redirect(w, r, "/signin", http.StatusFound)
+	http.Redirect(w, r, "/", http.StatusFound)
 }

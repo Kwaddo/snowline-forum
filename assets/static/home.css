@@ -81,6 +81,7 @@ body {
 
 .containers {
     display: flex;
+    height: 100%;
     flex-direction: row;
     /* Side-by-side layout for larger screens */
     margin-top: 200px;

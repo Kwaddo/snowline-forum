@@ -17,45 +17,13 @@
                 <a href="/">
                     <img src="../images/Home.png" class="icon" title="Home">
                 </a>
-                <a href="#createPostPopup">
+                <a href="/signin">
                     <img src="../images/Plus.png" class="icon" title="Create Post">
                 </a>
-                <a href="#login">
+                <a href="/signin">
                     <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
                 </a>
             </div>
-        </div>
-    </div>
-
-    <!-- Popups for login, create post, and logout confirmation -->
-    <div id="login" class="popup">
-        <div class="popup-content">
-            <a href="/" class="popup-close">
-                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-            </a>
-            <h2 class="logtitle">LOGIN</h2>
-            <form action="/signin" method="POST" class="loginForm">
-                <input name="email" placeholder="Email Address or Username" maxlength="254" minlength="3" required>
-                <input type="password" name="password" placeholder="Password" maxlength="100" minlength="0" required>
-                <input type="submit" value="Login">
-                <a href="/register" id="regred">Don't Have an Account? Register!</a>
-            </form>
-        </div>
-    </div>
-
-    <!-- Create Post Popup -->
-    <div id="createPostPopup" class="popup">
-        <div class="popup-content">
-            <a href="/" class="popup-close">
-                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-            </a>
-            <h2 class="logtitle">CREATE POST</h2>
-            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
-                <input type="text" placeholder="Title" maxlength="100" name="title" required>
-                <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                <input type="file" id="image" name="image" required>
-                <input type="submit" value="Submit Post">
-            </form>
         </div>
     </div>
 
@@ -66,23 +34,23 @@
     <div class="containers">
         <div class="filters">
             <fieldset class="category-checkboxes-filters">
-                <input type="checkbox" id="sports" name="category" value="Sports">
-                <label for="sports">Sports</label>
-    
-                <input type="checkbox" id="gaming" name="category" value="Gaming">
-                <label for="gaming">Gaming</label>
-    
-                <input type="checkbox" id="art" name="category" value="Art">
-                <label for="art">Art</label>
-    
-                <input type="checkbox" id="music" name="category" value="Music">
-                <label for="music">Music</label>
-    
-                <input type="checkbox" id="food" name="category" value="Food">
-                <label for="food">Food</label>
-    
-                <input type="checkbox" id="random" name="category" value="Random">
-                <label for="random">Random</label>
+                <input type="checkbox" id="sports-filter" name="category" value="Sports">
+                <label for="sports-filter">Sports</label>
+        
+                <input type="checkbox" id="gaming-filter" name="category" value="Gaming">
+                <label for="gaming-filter">Gaming</label>
+        
+                <input type="checkbox" id="art-filter" name="category" value="Art">
+                <label for="art-filter">Art</label>
+        
+                <input type="checkbox" id="music-filter" name="category" value="Music">
+                <label for="music-filter">Music</label>
+        
+                <input type="checkbox" id="food-filter" name="category" value="Food">
+                <label for="food-filter">Food</label>
+        
+                <input type="checkbox" id="random-filter" name="category" value="Random">
+                <label for="random-filter">Random</label>
             </fieldset>
         </div>
         <div class="posts">

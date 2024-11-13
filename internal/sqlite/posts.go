@@ -3,9 +3,9 @@ package sqlite
 import (
 	"database/sql"
 	"db/internal/models"
-
 	"log"
 	"net/http"
+	"time"
 )
 
 type POSTMODEL struct {
@@ -23,7 +23,7 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		log.Println(err)
 		return err
 	}
-	_, err = m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName)
+	_, err = m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"))
 	return err
 }
 
@@ -38,7 +38,7 @@ func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r
 		log.Println(err)
 		return err
 	}
-	_, err = m.DB.Exec(InsertCommentQuery, post_id, userID, content, userName)
+	_, err = m.DB.Exec(InsertCommentQuery, post_id, userID, content, userName, time.Now().Format("2006-01-02 03:04:05"))
 	if err != nil {
 		log.Println(err)
 		return err

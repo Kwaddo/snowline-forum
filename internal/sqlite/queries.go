@@ -2,8 +2,8 @@ package sqlite
 
 // Insert statements to save in DB
 const (
-	InsertPostQuery        = `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))`
-	InsertCommentQuery     = `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
+	InsertPostQuery        = `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, ?)`
+	InsertCommentQuery     = `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, ?, ?)`
 	InsertUserQuery        = `INSERT INTO USERS (name, email, password) VALUES (?, ?, ?)`
 	InsertSession          = `INSERT INTO SESSIONS (cookie_value, user_id, expires_at, username, isvalid) VALUES (?, ?, ?, ?, true);`
 	InsertOrReplaceLike    = `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE);`
