@@ -77,7 +77,7 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
 }
 
 func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {

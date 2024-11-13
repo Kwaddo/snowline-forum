@@ -98,7 +98,7 @@ func (app *app) ViewPostPageHandler(w http.ResponseWriter, r *http.Request) {
 				log.Println(err)
 				return
 			}
-			tmp, err := template.ParseFiles("./assets/templates/posts.html")
+			tmp, err := template.ParseFiles("./assets/templates/post.html")
 			if err != nil {
 				ErrorHandle(w, 500, "Internal Server Error")
 				log.Println(err)

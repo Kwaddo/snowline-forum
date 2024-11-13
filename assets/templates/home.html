@@ -88,21 +88,21 @@
         </div>
     </div>
 
-<div id="logout-confirmation" class="popup">
-    <div class="popup-content">
-        <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-        <form action="/logout" method="POST">
-            <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
-        </form>
-        <form action="/">
-            <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
-        </form>
-        <div class="button-row">
-            <label for="yes-toggle" class="confirmLabel">YES</label>
-            <label for="no-toggle" class="confirmLabel">NO</label>
+    <div id="logout-confirmation" class="popup">
+        <div class="popup-content">
+            <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+            <form action="/logout" method="POST">
+                <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
+            </form>
+            <form action="/">
+                <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
+            </form>
+            <div class="button-row">
+                <label for="yes-toggle" class="confirmLabel">YES</label>
+                <label for="no-toggle" class="confirmLabel">NO</label>
+            </div>
         </div>
     </div>
-</div>
 
     <input type="checkbox" id="filter-toggle" class="filter-checkbox">
     <label for="filter-toggle" class="filter-toggle-button">
@@ -113,19 +113,19 @@
             <fieldset class="category-checkboxes-filters">
                 <input type="checkbox" id="sports-filter" name="category" value="Sports">
                 <label for="sports-filter">Sports</label>
-        
+
                 <input type="checkbox" id="gaming-filter" name="category" value="Gaming">
                 <label for="gaming-filter">Gaming</label>
-        
+
                 <input type="checkbox" id="art-filter" name="category" value="Art">
                 <label for="art-filter">Art</label>
-        
+
                 <input type="checkbox" id="music-filter" name="category" value="Music">
                 <label for="music-filter">Music</label>
-        
+
                 <input type="checkbox" id="food-filter" name="category" value="Food">
                 <label for="food-filter">Food</label>
-        
+
                 <input type="checkbox" id="random-filter" name="category" value="Random">
                 <label for="random-filter">Random</label>
             </fieldset>
@@ -143,15 +143,17 @@
                                 <img src="{{.ProfilePic}}" alt="" class="postPFP">
                                 <p class="postAuthor">@{{.Username}}</p>
                             </div>
-                            <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                <p class="postContent">{{.Content}}</p>
-                            </div>
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                    <p class="postContent">{{.Content}}</p>
+                                </div>
+                            </a>
                             {{if .ImagePath}}
-                            <div class="imageContainer">
-                                <a href="/view-post>">
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="imageContainer">
                                     <img src="{{.ImagePath}}" alt="image" class="postImage">
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                             {{end}}
                             <div class="postOptions">
                                 <div class="option">
@@ -173,7 +175,7 @@
                                     <p class="counters">{{.Dislikes}}</p>
                                 </div>
                                 <div class="option">
-                                    <a href="/#comment-popup">
+                                    <a href="/view-post?id={{.ID}}">
                                         <img src="../images/comments.png" class="commentIcon" alt="Comments">
                                     </a>
                                     <p class="counters">{{.Comments}}</p>
@@ -187,7 +189,7 @@
                 </div>
 
                 <!-- Popup for adding a comment -->
-                <div id="comment-popup" class="popup">
+                <div id="comment-popup-{{.ID}}" class="popup">
                     <div class="popup-content">
                         <div class="comment-content">
                             <a href="/" class="popup-close">

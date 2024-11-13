@@ -66,13 +66,17 @@
                                 <img src="{{.ProfilePic}}" alt="" class="postPFP">
                                 <p class="postAuthor">@{{.Username}}</p>
                             </div>
-                            <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                <p class="postContent">{{.Content}}</p>
-                            </div>
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                    <p class="postContent">{{.Content}}</p>
+                                </div>
+                            </a>
                             {{if .ImagePath}}
-                            <div class="imageContainer">
-                                <img src="{{.ImagePath}}" alt="image" class="postImage">
-                            </div>
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="imageContainer">
+                                    <img src="{{.ImagePath}}" alt="image" class="postImage">
+                                </div>
+                            </a>
                             {{end}}
                             <div class="postOptions">
                                 <div class="option">
@@ -94,7 +98,7 @@
                                     <p class="counters">{{.Dislikes}}</p>
                                 </div>
                                 <div class="option">
-                                    <a href="/#comment-popup">
+                                    <a href="/view-post?id={{.ID}}">
                                         <img src="../images/comments.png" class="commentIcon" alt="Comments">
                                     </a>
                                     <p class="counters">{{.Comments}}</p>

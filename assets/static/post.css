@@ -5,6 +5,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
     /* Ensure the body takes full height */
 }
 
@@ -14,21 +17,35 @@ body {
     background-color: #352d4d;
     border-radius: 20px;
     padding: 20px;
-    margin: 20px auto;
+    margin-top: 20px;
     width: 80%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    /* Allow stacking of children */
-    flex: 1;
-    /* Allow the post to take up remaining space */
+    flex-grow: 1; /* Allow the post to take up remaining space */
+    min-height: 0; /* Ensure the post height doesn’t grow beyond the available space */
+    overflow: hidden; /* Hide overflow if needed */
+}
+
+.postPFP {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #D1D7E0;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .postAuthor {
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
-    color: #802BB1;
+    margin-top: 0px;
+    color: #D1D7E0;
 }
 
 .postTitle {
@@ -42,22 +59,132 @@ body {
 .postContent {
     font-size: 26px;
     text-align: center;
-    margin-bottom: 20px;
-    flex: 1;
-    /* Allow content to grow */
+    margin: 10px 0; /* Adds top and bottom margins for spacing */
+    word-wrap: break-word; /* Ensures long words will wrap onto the next line */
+    white-space: normal; /* Allows text to wrap instead of staying on one line */
+    overflow-wrap: break-word; /* Breaks words at the end of the container if necessary */
+    flex-shrink: 1; /* Allows content to shrink if needed to prevent overflow */
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 30%; /* Adjust the width of the image container */
+    height: 30%; /* Set a specific height for the container */
+    border-radius: 1em;
+    border: 2px solid #D1D7E0;
+    overflow: hidden;
+    margin-top: 20px; /* Space between content and image */
+}
+
+.postImage {
+    width: 100%; /* Image scales to fit within the container's width */
+    height: 100%; /* Image takes the full height of the container */
+    object-fit: contain; /* Ensures the image covers the container without distorting */
+    border-radius: 0.5em; /* Slight rounding for the image itself */
+}
+
+.textarea-container button{
+    transition-duration: 0.5s;
+    font-size: 15px;
+    width: 100px;
+    padding: 10px;
+    margin-top: 30px;
+    background-color: #802BB1;
+    color: #D1D7E0;
+    border: 3px solid #802BB1;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+.textarea-container button:hover {
+    transition-duration: 0.5s;
+    background-color: #802bb1c0;
+    color: #D1D7E0;
+    border: 3px solid #802bb100;
+}
+
+.textarea-container button:not(:hover) {
+    transition-duration: 0.5s;
 }
 
 /* --- COMMENTS STYLES --- */
 
 .comments {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     background-color: #564F6F;
-    border-radius: 10px;
+    border-radius: 20px;
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+    align-self: center;
+    margin-bottom: 20px;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.textarea-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #352d4d;
+    border-radius: 20px;
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+    align-self: center;     
+}
+
+.textarea-container input[type="text"],
+.textarea-container textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    transition-duration: 0.5s;
+    width: 80%;
+    color: #D1D7E0;
+    background-color: #4C495D;
+    font-size: 15px;
     padding: 10px;
-    margin-left: -10px;
-    margin-top: 20px;
+    margin: 0 auto;
+    border: 3px solid #564F6F;
+    border-radius: 5px;
+    border-radius: 20px;
+    height: 75px;
+}
+
+.textarea-container textarea {
     width: 100%;
-    /* Center comments section */
-    box-shadow: 10px 2px 15px rgba(0, 0, 0, 0.55);
+    box-sizing: border-box;
+    resize: none;
+}
+.textarea-container input[type="text"]::placeholder,
+.textarea-container textarea::placeholder {
+    transition-duration: 0.2s;
+    color: #D1D7E0;
+}
+
+.textarea-container input[type="text"]:focus::placeholder,
+.textarea-container textarea:focus::placeholder {
+    color: #4C495D;
+}
+
+.textarea-container input[type="text"]:hover::placeholder,
+.textarea-container textarea:hover::placeholder {
+    transition-duration: 0.2s;
+    color: #564F6F;
+}
+
+.textarea-container input[type="text"]:hover,
+.textarea-container textarea:hover {
+    transition-duration: 0.2s;
+    background-color: #564F6F;
 }
 
 .comment {
@@ -92,7 +219,7 @@ body {
 
 @media (max-width: 768px) {
     .postAll {
-        width: 95%;
+        width: 80%;
         padding: 15px;
     }
 
@@ -114,9 +241,11 @@ body {
     }
 
     .comments {
-        width: 95%;
-        /* Adjust width for smaller screens */
-        margin-left: 0px;
-        margin-top: 20px;
+        width: 80%;
+    }
+    .imageContainer {
+        width: 50%;
+        height: 50%;
+        margin-top: 0;
     }
 }
