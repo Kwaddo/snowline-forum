@@ -169,9 +169,9 @@ html::-webkit-scrollbar-track {
     max-height: 100%;
     object-fit: cover;
     position: absolute;
-    left: 0; 
-    right: 0; 
-    margin-inline: auto; 
+    left: 0;
+    right: 0;
+    margin-inline: auto;
     width: fit-content;
 }
 
@@ -208,120 +208,170 @@ html::-webkit-scrollbar-track {
 
 /* --- POSTS POPUP STYLES --- */
 
-#posts:target {
-    display: flex;
-}
 
-#posts {
-    float: right;
-    width: 80%;
+.posts {
+    width: 70%;
+    /* Dynamic width for larger screens */
     border-radius: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #352d4d;
-    margin-bottom: 3rem;
-    padding-bottom: 4rem;
-    padding-top: 3rem;
+    background-color: #352d4d9f;
+    border: 2px solid #352d4d;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    padding: 3rem 0 4rem 0;
     gap: 2rem;
-    animation-duration: 2s;
-    margin-top: 5em;
+    margin: 0 auto;
+    /* Center the posts section */
     grid-column: 2/-1;
-    justify-self: center;
-    align-self: center;
+    margin-top: 4em;
 }
 
 .post {
     background-color: #564F6F;
-    width: 100%;
-    height: 500px; /* Adjust height as needed */
+    width: 700px;
     border-radius: 20px;
+    padding: 30px;
     display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: space-evenly; /* Space between left and right content */
-    padding: 10px; /* Optional padding inside the post */
-    position: relative; /* Position relative to contain the absolute child */
-    animation: appear linear;
     flex-direction: column;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
-.post-option {
-    background: none; 
-    border: none; 
-    padding: 0; 
-    cursor: pointer;
+/* Center all content in the post when there's no image */
+.post.noImage .postBody {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.postTitle {
-    margin: 0px;
-    font-size: 1.5em;
-    text-decoration: underline;
-    color: #D1D7E0;
+/* Make content container centered and full width when no image */
+.postContentContainer.noImage {
+    text-align: left;
+    width: 400px;
+}
+
+.postBody {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.postTop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 80%;
+}
+
+.postHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.postContentContainer {
+    background-color: #4C495D;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
 }
 
 .postContent {
     font-size: 1.2em;
     color: #D1D7E0;
-    margin: 0px;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.imageContainer {
-    width: 90%;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-}
-
-.postImage {
-    max-width: 100%;
-    max-height: 100%;
+.postPFP {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     object-fit: cover;
-    border-radius: 2em;
+    border: 2px solid #D1D7E0;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .postAuthor {
-    margin: 0;
-    font-size: 1.55em;
+    font-size: 12px;
     color: #D1D7E0;
+    margin: 0;
 }
 
-.postWithOptions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
-    width: 80%;
+.imageContainer {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    border-radius: 1em;
+    border: 2px solid #D1D7E0;
+    overflow: hidden;
+}
+
+.postImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 1em;
 }
 
 .postOptions {
+    background-color: #4C495D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    color: #D1D7E0;
+    width: auto;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.postDate {
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: center;
+    color: #D1D7E0;
+}
+
+.option {
     display: flex;
     align-items: center;
-    gap: 5px;
-    color: #D1D7E0;
-    gap: 1em;
-
+    gap: 0.2em;
 }
 
 .likeIcon,
 .dislikeIcon,
 .commentIcon {
-    width: 24px;
-    height: 24px;
-    margin-right: 2px;
-}
-
-.option {
-    display: flex;
-    gap: 0.2em;
+    width: 34px;
+    height: 34px;
 }
 
 .counters {
     margin: 0;
-    margin-top: 4px;
+    font-size: 0.9em;
 }
+
 
 /* --- END --- */
 
