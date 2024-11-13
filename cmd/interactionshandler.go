@@ -67,16 +67,19 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
+	_, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/signin", http.StatusFound)
+		return
+	}
 	content := r.FormValue("content")
 	postID := r.FormValue("post_id")
-
 	if err := app.posts.InsertComment(app.users, w, r, content, postID); err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Failed to save comment")
 		return
 	}
-
 	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
 }
 
@@ -144,8 +147,7 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
-	http.Redirect(w, r, redirectURL, http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
 }
 
 func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
@@ -168,6 +170,5 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
-	http.Redirect(w, r, redirectURL, http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
 }

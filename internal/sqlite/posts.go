@@ -546,7 +546,7 @@ func (m *POSTMODEL) ToggleCommentDislike(w http.ResponseWriter, r *http.Request,
 		log.Println("Error checking like status:", err)
 		return err
 	}
-	if isLiked != nil && *isLiked {
+	if isLiked != nil && !*isLiked {
 		_, err = m.DB.Exec(RemoveCommentIsLikedQuery, commentID, userID)
 		if err != nil {
 			log.Println("Error removing comment like:", err)

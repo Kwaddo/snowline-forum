@@ -13,7 +13,7 @@
         <img src="{{.info.Posts.ProfilePic}}" alt="Post Image" class="postPFP">
         <p class="postAuthor">@{{.info.Posts.Username}}</p>
         <p class="postContent">{{.info.Posts.Content}}</p>
-    
+
         {{if .info.Posts.ImagePath}}
         <div class="imageContainer">
             <img src="{{.info.Posts.ImagePath}}" alt="Post Image" class="postImage">
@@ -23,9 +23,8 @@
     <div class="textarea-container">
         <form action="/savecomment" method="POST" align="center">
             <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
-            <input type="hidden" name="conent" value="{{.info.Posts.Content}}">
-            <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000"
-                required></textarea>
+            <input type="hidden" name="content" value="{{.info.Posts.Content}}">
+            <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
             <button type="submit">
                 Comment
             </button>
@@ -34,13 +33,32 @@
     <div class="comments">
         {{range .info.Comments}}
         <div class="comment">
-            <img src="../uploads/DefaultPFP.jpg" alt="User Icon" class="commentIcon">
-            <p class="commentUsername">@{{.Username}}</p>
-            <p class="commentText">{{.Content}} ]</p>
-            <p class="commentTime">{{.CreatedAt}}</p>
-            <p class="commentTime">{{.Likes}}</p>
-            <p class="commentTime">{{.Dislikes}}</p>
-            <p class="commentTime">{{.Comments}}</p>
+            <div class = "commentStuff">
+                <img src="../uploads/DefaultPFP.jpg" alt="User Icon" class="commentIcon">
+                <p class="commentUsername">@{{.Username}}</p>
+                <p class="commentText">{{.Content}}</p>
+            </div>
+            <div class="commentDetails">
+                <p class="commentTime">{{.CreatedAt}}</p>
+                <div class="commentOptions">
+                    <form action="/comment-like" method="POST">
+                        <input type="hidden" name="comment_id" value="{{.ID}}">
+                        <input type="hidden" name="post_id" value="{{.PostID}}">
+                        <button type="submit">
+                            <img src="../images/like-filled.png" alt="Like" class="commentLikeIcon">
+                        </button>
+                        <span class="commentLikeCount">{{.Likes}}</span>
+                    </form>
+                    <form action="/comment-dislike" method="POST">
+                        <input type="hidden" name="comment_id" value="{{.ID}}">
+                        <input type="hidden" name="post_id" value="{{.PostID}}">
+                        <button type="submit">
+                            <img src="../images/dislike-filled.png" alt="Dislike" class="commentDislikeIcon">
+                        </button>
+                        <span class="commentDislikeCount">{{.Dislikes}}</span>
+                    </form>
+                </div>
+            </div>
         </div>
         {{end}}
     </div>

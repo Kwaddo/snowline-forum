@@ -8,7 +8,6 @@ body {
     align-items: center;
     justify-content: flex-start;
     margin: 0;
-    /* Ensure the body takes full height */
 }
 
 /* --- POST STYLES --- */
@@ -22,9 +21,9 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Allow the post to take up remaining space */
-    min-height: 0; /* Ensure the post height doesn’t grow beyond the available space */
-    overflow: hidden; /* Hide overflow if needed */
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .postPFP {
@@ -59,11 +58,11 @@ body {
 .postContent {
     font-size: 26px;
     text-align: center;
-    margin: 10px 0; /* Adds top and bottom margins for spacing */
-    word-wrap: break-word; /* Ensures long words will wrap onto the next line */
-    white-space: normal; /* Allows text to wrap instead of staying on one line */
-    overflow-wrap: break-word; /* Breaks words at the end of the container if necessary */
-    flex-shrink: 1; /* Allows content to shrink if needed to prevent overflow */
+    margin: 10px 0;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    flex-shrink: 1;
 }
 
 .imageContainer {
@@ -71,22 +70,22 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    width: 30%; /* Adjust the width of the image container */
-    height: 30%; /* Set a specific height for the container */
+    width: 30%;
+    height: 30%;
     border-radius: 1em;
     border: 2px solid #D1D7E0;
     overflow: hidden;
-    margin-top: 20px; /* Space between content and image */
+    margin-top: 20px;
 }
 
 .postImage {
-    width: 100%; /* Image scales to fit within the container's width */
-    height: 100%; /* Image takes the full height of the container */
-    object-fit: contain; /* Ensures the image covers the container without distorting */
-    border-radius: 0.5em; /* Slight rounding for the image itself */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.5em;
 }
 
-.textarea-container button{
+.textarea-container button {
     transition-duration: 0.5s;
     font-size: 15px;
     width: 100px;
@@ -100,14 +99,9 @@ body {
 }
 
 .textarea-container button:hover {
-    transition-duration: 0.5s;
     background-color: #802bb1c0;
     color: #D1D7E0;
     border: 3px solid #802bb100;
-}
-
-.textarea-container button:not(:hover) {
-    transition-duration: 0.5s;
 }
 
 /* --- COMMENTS STYLES --- */
@@ -124,6 +118,7 @@ body {
     margin-top: 10px;
     align-self: center;
     margin-bottom: 20px;
+    position: relative;
 }
 
 body::-webkit-scrollbar {
@@ -140,7 +135,7 @@ body::-webkit-scrollbar {
     width: 80%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     margin-top: 10px;
-    align-self: center;     
+    align-self: center;
 }
 
 .textarea-container input[type="text"],
@@ -154,7 +149,6 @@ body::-webkit-scrollbar {
     padding: 10px;
     margin: 0 auto;
     border: 3px solid #564F6F;
-    border-radius: 5px;
     border-radius: 20px;
     height: 75px;
 }
@@ -164,9 +158,9 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
     resize: none;
 }
+
 .textarea-container input[type="text"]::placeholder,
 .textarea-container textarea::placeholder {
-    transition-duration: 0.2s;
     color: #D1D7E0;
 }
 
@@ -177,42 +171,120 @@ body::-webkit-scrollbar {
 
 .textarea-container input[type="text"]:hover::placeholder,
 .textarea-container textarea:hover::placeholder {
-    transition-duration: 0.2s;
     color: #564F6F;
 }
 
 .textarea-container input[type="text"]:hover,
 .textarea-container textarea:hover {
-    transition-duration: 0.2s;
     background-color: #564F6F;
 }
 
 .comment {
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #7a728c;
+    position: relative;
+    width: 100%;
 }
 
 .comment:last-child {
     border-bottom: none;
-    /* Remove border for last comment */
+}
+
+.commentStuff {
+    display: flex;
+    align-items: center; /* Vertically center all items within this div */
+    justify-content: flex-start; /* Align items to the left (you can change to center if needed) */
+    gap: 15px; /* Add space between items */
+    width: 90%;
+    background-color: #2D283E;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 20px;
 }
 
 .commentIcon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-bottom: 0; /* Remove bottom margin */
+    flex-shrink: 0;
 }
 
 .commentUsername {
     font-weight: bold;
-    margin-right: 10px;
+    margin: 0; /* Remove bottom margin */
+    display: flex;
+    align-items: center; /* Vertically center the username with the icon */
+    justify-content: flex-start; /* Keep it aligned to the left next to the icon */
 }
 
 .commentText {
     font-size: 16px;
+    text-align: left;
+    flex-grow: 1; /* Allow the text to grow to take available space */
+    display: block; /* Change to block for normal text flow */
+    word-wrap: break-word; /* Allows long words to break onto the next line */
+    white-space: normal; /* Ensures that the text wraps correctly */
+    overflow-wrap: break-word; /* Ensures long words break when necessary */
+    width: 100%; /* Ensure the width takes up available space */
+    word-break: break-word; /* Forcing the word to break if it's too long */
+}
+
+.commentDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    text-align: center;
+    margin-top: 10px;
+    background-color: #4C495D;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.commentTime {
+    font-size: 12px;
+    color: #D1D7E0;
+    margin-bottom: 5px;
+}
+
+.commentOptions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.commentOptions img {
+    margin-left: 5px;
+    width: 20px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.commentOptions button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.commentLike,
+.commentDislike {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    color: #D1D7E0;
+}
+
+.commentLikeIcon,
+.commentDislikeIcon {
+    display: inline-block;
+    cursor: pointer;
 }
 
 /* --- MEDIA QUERIES --- */
@@ -236,16 +308,27 @@ body::-webkit-scrollbar {
         font-size: 20px;
     }
 
-    .commentText {
-        font-size: 14px;
-    }
-
-    .comments {
-        width: 80%;
-    }
     .imageContainer {
         width: 50%;
         height: 50%;
-        margin-top: 0;
+    }
+    
+    .comments {
+        width: 80%; /* Adjust width for better centering */
+    }
+
+    .commentStuff {
+        flex-direction: column; /* Stack elements vertically on mobile */
+        align-items: center; /* Center the elements vertically */
+        justify-content: center; /* Center the content horizontally */
+    }
+
+    .commentUsername {
+        text-align: center; /* Center the username text */
+    }
+
+    .commentText {
+        text-align: center; /* Center the comment text */
+        font-size: 14px; /* Adjust font size for smaller screens */
     }
 }
