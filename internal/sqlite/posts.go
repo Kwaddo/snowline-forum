@@ -468,3 +468,96 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 
 	return commentPost, nil
 }
+
+func (m *POSTMODEL) ToggleLike(w http.ResponseWriter, r *http.Request, postID string, userID string) error {
+	var isLiked *bool
+	err := m.DB.QueryRow(PostIsLikedQuery, postID, userID).Scan(&isLiked)
+	if err != nil && err.Error() != "sql: no rows in result set" {
+		log.Println("Error checking like status:", err)
+		return err
+	}
+	if isLiked != nil && *isLiked {
+		_, err = m.DB.Exec(RemoveIsLikedQuery, postID, userID)
+		if err != nil {
+			log.Println("Error removing like:", err)
+			return err
+		}
+	} else {
+		_, err = m.DB.Exec(InsertOrReplaceLike, postID, userID)
+		if err != nil {
+			log.Println("Error adding like:", err)
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *POSTMODEL) ToggleDislike(w http.ResponseWriter, r *http.Request, postID string, userID string) error {
+	var isLiked *bool
+	err := m.DB.QueryRow(PostIsLikedQuery, postID, userID).Scan(&isLiked)
+	if err != nil && err.Error() != "sql: no rows in result set" {
+		log.Println("Error checking like status:", err)
+		return err
+	}
+	if isLiked != nil && !*isLiked {
+		_, err = m.DB.Exec(RemoveIsLikedQuery, postID, userID)
+		if err != nil {
+			log.Println("Error removing like:", err)
+			return err
+		}
+	} else {
+		_, err = m.DB.Exec(InsertOrReplaceDislike, postID, userID)
+		if err != nil {
+			log.Println("Error adding like:", err)
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *POSTMODEL) ToggleCommentLike(w http.ResponseWriter, r *http.Request, commentID string, userID string) error {
+	var isLiked *bool
+	err := m.DB.QueryRow(CommentIsLikedQuery, commentID, userID).Scan(&isLiked)
+	if err != nil && err != sql.ErrNoRows {
+		log.Println("Error checking like status:", err)
+		return err
+	}
+
+	if isLiked != nil && *isLiked {
+		_, err = m.DB.Exec(RemoveCommentIsLikedQuery, commentID, userID)
+		if err != nil {
+			log.Println("Error removing comment like:", err)
+			return err
+		}
+	} else {
+		_, err = m.DB.Exec(InsertOrReplaceLikeComment, commentID, userID)
+		if err != nil {
+			log.Println("Error adding comment like:", err)
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *POSTMODEL) ToggleCommentDislike(w http.ResponseWriter, r *http.Request, commentID string, userID string) error {
+	var isLiked *bool
+	err := m.DB.QueryRow(CommentIsLikedQuery, commentID, userID).Scan(&isLiked)
+	if err != nil && err != sql.ErrNoRows {
+		log.Println("Error checking like status:", err)
+		return err
+	}
+	if isLiked != nil && *isLiked {
+		_, err = m.DB.Exec(RemoveCommentIsLikedQuery, commentID, userID)
+		if err != nil {
+			log.Println("Error removing comment like:", err)
+			return err
+		}
+	} else {
+		_, err = m.DB.Exec(InsertOrReplaceDislikeComment, commentID, userID)
+		if err != nil {
+			log.Println("Error adding comment like:", err)
+			return err
+		}
+	}
+	return nil
+}

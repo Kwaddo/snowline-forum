@@ -1,7 +1,6 @@
 package main
 
 import (
-	"db/internal/sqlite"
 	"fmt"
 	"io"
 	"log"
@@ -94,10 +93,10 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-
-	_, err = app.posts.DB.Exec(sqlite.InsertOrReplaceLike, postID, userID)
+	err = app.posts.ToggleLike(w, r, postID, userID)
 	if err != nil {
-		http.Redirect(w, r, "/signin", http.StatusFound)
+		log.Println("Error toggling like:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusFound)
@@ -116,9 +115,10 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-	_, err = app.posts.DB.Exec(sqlite.InsertOrReplaceDislike, postID, userID)
+	err = app.posts.ToggleDislike(w, r, postID, userID)
 	if err != nil {
-		http.Redirect(w, r, "/signin", http.StatusFound)
+		log.Println("Error toggling dislike:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusFound)
@@ -137,15 +137,17 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-	_, err = app.posts.DB.Exec(sqlite.InsertorReplaceLikeComment, commentID, userID)
+	err = app.posts.ToggleCommentLike(w, r, commentID, userID)
 	if err != nil {
-		http.Redirect(w, r,"/signin", http.StatusFound)
+		log.Println("Error toggling comment like:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	postID := r.FormValue("post_id")
 	redirectURL := fmt.Sprintf("http://localhost:8080/view-post?id=%s", postID)
 	http.Redirect(w, r, redirectURL, http.StatusFound)
 }
+
 func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -159,10 +161,10 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
-	_, err = app.posts.DB.Exec(sqlite.InsertorReplaceDisLikeComment, commentID, userID)
+	err = app.posts.ToggleCommentDislike(w, r, commentID, userID)
 	if err != nil {
-		log.Println(err)
-		http.Redirect(w, r, "/signin", http.StatusFound)
+		log.Println("Error toggling comment like:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	postID := r.FormValue("post_id")
