@@ -80,12 +80,13 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 400, "Comment is too long")
 		return
 	}
-	if err := app.posts.InsertComment(app.users, w, r, content, postID); err != nil {
+	commentID, err := app.posts.InsertComment(app.users, w, r, content, postID);
+	if err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Failed to save comment")
 		return
 	}
-	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID+"#comment-"+commentID, http.StatusFound)
 }
 
 func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {

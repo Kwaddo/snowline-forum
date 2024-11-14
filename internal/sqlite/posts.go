@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"fmt"
 )
 
 type POSTMODEL struct {
@@ -27,23 +28,28 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 	return err
 }
 
-func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, content, post_id string) error {
+func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, content, post_id string) (string, error) {
 	userID, err := userModel.GetUserID(r)
 	if err != nil {
 		log.Println(err)
-		return err
+		return "", err
 	}
 	userName, err := userModel.GetUserName(r)
 	if err != nil {
 		log.Println(err)
-		return err
+		return "", err
 	}
-	_, err = m.DB.Exec(InsertCommentQuery, post_id, userID, content, userName, time.Now().Format("2006-01-02 03:04:05"))
+	result, err := m.DB.Exec(InsertCommentQuery, post_id, userID, content, userName, time.Now().Format("2006-01-02 03:04:05"))
 	if err != nil {
 		log.Println(err)
-		return err
+		return "", err
 	}
-	return nil
+	commentID, err := result.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+	return fmt.Sprintf("%d", commentID), nil
 }
 
 func (m *POSTMODEL) AllPosts() ([]models.Post, error) {

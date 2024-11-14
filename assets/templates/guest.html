@@ -110,27 +110,6 @@
                         <!-- Optional image container -->
                     </div>
                 </div>
-            
-                <!-- Popup for adding a comment -->
-                <div id="comment-popup" class="popup">
-                    <div class="popup-content">
-                        <div class="comment-content">
-                            <a href="/" class="popup-close">
-                                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                            </a>
-                            <h1 class="logtitle">Enter Your Comment!</h1>
-                            <div class="comment-bar">
-                                <form action="/savecomment" method="POST" align="center">
-                                    <input type="hidden" name="post_id" value="{{.ID}}">
-                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                                    <button type="submit">
-                                        Comment
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>                    
             {{end}}
         </div>        
