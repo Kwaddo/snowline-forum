@@ -19,11 +19,13 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		log.Println(err)
 		return 0, err
 	}
-	userName, err := userModel.GetUserName(r)
+	var userName string
+	err = m.DB.QueryRow(UserNamefromUserID, userID).Scan(&userName)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error fetching username:", err)
 		return 0, err
 	}
+
 	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"))
 	if err != nil {
 		log.Println(err)
@@ -82,6 +84,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 			log.Println("Error fetching likes/dislikes:", err)
 			return nil, err
 		}
+
 		err = m.DB.QueryRow(PostCommentsCountStmt, p.ID).Scan(&p.Comments)
 		if err != nil {
 			log.Println("Error fetching post likes count:", err)
@@ -198,10 +201,13 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 		return models.PostandMainUsername{}, err
 	}
 
+	imgPath := "../uploads/delete-button.png"
+
 	result := models.PostandMainUsername{
 		Posts:     posts,
 		Username:  username,
 		ImagePath: path,
+		Delete:    imgPath,
 	}
 
 	return result, nil

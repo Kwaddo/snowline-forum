@@ -33,4 +33,5 @@ type PostandMainUsername struct {
 	Posts     []Post
 	Username  string
 	ImagePath string
+	Delete    string
 }

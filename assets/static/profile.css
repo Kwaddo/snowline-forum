@@ -16,6 +16,7 @@ html {
 
 
 
+
 /* --- SCROLL BAR STYLES --- */
 
 html::-webkit-scrollbar {
@@ -54,7 +55,7 @@ html::-webkit-scrollbar-track {
     height: 1em;
     width: 1em;
 }
-
+/* --- AHMED SHIT --- */
 .homeContainer {
     height: 2em;
     width: 2em;
@@ -66,6 +67,23 @@ html::-webkit-scrollbar-track {
     align-items: center;
     justify-content: center;
 }
+
+.deleteButton {
+    height: 2em;
+    width: 2em;
+    background-color: #802BB1;
+    padding: 5px;
+    border-radius: 0.5em;   
+}
+.username-container input {
+    display: none; /* Hide the input field initially */
+}
+
+.username-container:focus-within input {
+    display: inline-block; /* Show the input field when button is focused */
+}
+
+/* --- END --- */
 
 #edit {
     height: 1em;

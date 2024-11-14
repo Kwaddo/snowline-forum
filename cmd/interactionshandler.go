@@ -318,3 +318,20 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+ 
+	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post", err)
+		return
+	}
+	http.Redirect(w,r,"/Profile-page", http.StatusFound)
+	
+}

@@ -113,6 +113,39 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+func(app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+	}
+	username := r.PostForm.Get("name")
+	
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+		return
+	}
+
+	_, err = app.users.DB.Exec(sqlite.ChangeUsernameQuery,username,userID)
+	if err != nil {
+		log.Println("Error changing Username", err)
+		return
+	}
+	_, err = app.users.DB.Exec(sqlite.ChangeUserNameInSessionsQuery,username,userID)
+	if err != nil {
+		log.Println("Error changing Username", err)
+		return
+	}
+	_, err = app.users.DB.Exec(sqlite.ChangeUsernameInPostsQuery, username, userID)
+	if err != nil {
+		log.Println("Error changing Username in posts table", err)
+		return
+	}
+	
+	http.Redirect(w,r,"/Profile-page", http.StatusFound)
+	
+}
+
 func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Request) {
 	data := struct {
 		ErrorMsg string
@@ -134,3 +167,4 @@ func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Req
 	}
 
 }
+

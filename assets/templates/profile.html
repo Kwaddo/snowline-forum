@@ -74,6 +74,12 @@
                                     <img src="{{.ProfilePic}}" alt="" class="postPFP">
                                     <p class="postAuthor">@{{.Username}}</p>
                                 </div>
+                                <form action="/delete-post" method="POST">
+                                    <input type="hidden" name = "post_id" value="{{.ID}}">
+                                    <button type = "submit" class = "delButton">
+                                        <img class = "deleteButton" src="{{$.Users.Delete}}">
+                                    </button>
+                                </form>
                                 <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
                                     <p class="postContent">{{.Content}}</p>
                                 </div>
@@ -125,11 +131,11 @@
                                     <form action="/savecomment" method="POST" align="center">
                                         <input type="hidden" name="post_id" value="{{.ID}}">
                                         <textarea
-                                            placeholder="Start typing!"
-                                            name="content"
-                                            rows="8"
-                                            maxlength="2000"
-                                            required
+                                        placeholder="Start typing!"
+                                        name="content"
+                                        rows="8"
+                                        maxlength="2000"
+                                        required
                                         ></textarea>
                                         <button type="submit">
                                             Comment
@@ -163,6 +169,15 @@
                 </div>
                 <div class="name">
                     <p>@{{.Users.Username}}</p>
+                    <form action="/edit-username" method="POST">
+                        <div class="username-container">
+                            <button type="button" class="usernameButton">
+                                <img src="../images/edit.png" alt="Edit Profile" id="edit">
+                            </button>
+                            <input type="text" placeholder="Username" name="name" required>
+                            <button type = "save">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
                 <hr id="content-break">
                 <div class="nav">

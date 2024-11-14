@@ -13,7 +13,7 @@ const (
 	InsertIntoCategory            = `INSERT INTO POST_CATEGORIES (category_id, post_id) VALUES (?, ?)`
 )
 
-// Diactivate session statements from DB
+// Deactivate session statements from DB
 const (
 	UpdateExpiredSessionsQuery = `UPDATE SESSIONS SET isvalid = false WHERE expires_at < ?`
 	UpdateSessionQuery         = `UPDATE SESSIONS SET isvalid = false WHERE cookie_value = ?`
@@ -41,12 +41,21 @@ const (
 	PostIsLikedQuery           = `SELECT isliked FROM POST_LIKES WHERE post_id = ? AND user_id = ?`
 	CommentIsLikedQuery        = `SELECT isliked FROM COMMENT_LIKES WHERE comment_id = ? AND user_id = ?`
 	PostCategory               = `SELECT post_id FROM post_categories WHERE category_id = ? ORDER BY post_id DESC`
+	UserNamefromUserID         = `SELECT name FROM USERS WHERE user_id = ?`
 )
 
 // Update statements
 const (
-	RemoveIsLikedQuery        = `UPDATE POST_LIKES SET isliked = NULL WHERE post_id = ? AND user_id = ?`
-	RemoveCommentIsLikedQuery = `UPDATE COMMENT_LIKES SET isliked = NULL WHERE comment_id = ? AND user_id = ?`
+	RemoveIsLikedQuery            = `UPDATE POST_LIKES SET isliked = NULL WHERE post_id = ? AND user_id = ?`
+	RemoveCommentIsLikedQuery     = `UPDATE COMMENT_LIKES SET isliked = NULL WHERE comment_id = ? AND user_id = ?`
+	ChangeUsernameQuery           = `UPDATE USERS SET name = ? WHERE user_id = ?`
+	ChangeUserNameInSessionsQuery = `UPDATE SESSIONS SET username = ? WHERE user_id = ?`
+	ChangeUsernameInPostsQuery    = `UPDATE POSTS SET username = ? WHERE user_id = ?`
+)
+
+// Delete statements
+const (
+	DeletePostQuery = `DELETE FROM POSTS WHERE POST_ID = ?`
 )
 
 // Select ---> Authentication and User Retrieval
