@@ -75,6 +75,11 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	content := r.FormValue("content")
 	postID := r.FormValue("post_id")
+	const maxContentLength = 2000 // Example: 10,000 characters
+	if len(content) > maxContentLength {
+		ErrorHandle(w, 400, "Comment is too long")
+		return
+	}
 	if err := app.posts.InsertComment(app.users, w, r, content, postID); err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Failed to save comment")

@@ -23,7 +23,6 @@
     <div class="textarea-container">
         <form action="/savecomment" method="POST" align="center">
             <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
-            <input type="hidden" name="content" value="{{.info.Posts.Content}}">
             <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
             <button type="submit">
                 Comment
