@@ -133,10 +133,8 @@
         <div class="posts">
             {{range .Posts}}
             <div class="postWithOptions">
-                <div class="post {{if not .ImagePath}}noImage{{end}}">
+                <div class="post {{if not .ImagePath}}noImage{{end}}" id="post-{{.ID}}">
                     <input type="hidden" name="post_id" value="{{.ID}}">
-
-                    <!-- Body of the post, with profile, content, and image side-by-side -->
                     <div class="postBody">
                         <div class="postTop">
                             <div class="postHeader">

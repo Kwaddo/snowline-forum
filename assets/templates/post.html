@@ -32,7 +32,7 @@
     </div>
     <div class="comments">
         {{range .info.Comments}}
-        <div class="comment">
+        <div class="comment" id="comment-{{.ID}}">
             <div class = "commentStuff">
                 <img src="../uploads/DefaultPFP.jpg" alt="User Icon" class="commentIcon">
                 <p class="commentUsername">@{{.Username}}</p>

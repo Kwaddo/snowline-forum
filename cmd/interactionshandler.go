@@ -102,7 +102,7 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/#post-"+postID, http.StatusFound)
 }
 
 func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,7 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/#post-"+postID, http.StatusFound)
 }
 
 func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
@@ -147,7 +147,7 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID+"#comment-"+commentID, http.StatusFound)
 }
 
 func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
@@ -170,5 +170,5 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
-	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
+	http.Redirect(w, r, "/view-post?id="+postID+"#comment-"+commentID, http.StatusFound)
 }
