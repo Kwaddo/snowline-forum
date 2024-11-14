@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-
+	"strings"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -19,6 +19,18 @@ func (app *app) SigninPageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
+	cookies := r.Cookies()
+	var sessionCookie *http.Cookie
+	for _, cookie := range cookies {
+		if strings.HasPrefix(cookie.Name, "Forum-") {
+			sessionCookie = cookie
+			break
+		}
+	}
+	if sessionCookie != nil {
+		ErrorHandle(w, 400, "You are already signed in.")
+		return
+	}
 	if err := r.ParseForm(); err != nil {
 		ErrorHandle(w, 400, "Failed to parse form")
 		log.Println(err)
