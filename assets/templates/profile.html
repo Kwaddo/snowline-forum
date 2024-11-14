@@ -74,12 +74,14 @@
                                     <img src="{{.ProfilePic}}" alt="" class="postPFP">
                                     <p class="postAuthor">@{{.Username}}</p>
                                 </div>
+                                {{if $.Users.Delete}}
                                 <form action="/delete-post" method="POST">
                                     <input type="hidden" name = "post_id" value="{{.ID}}">
                                     <button type = "submit" class = "delButton">
                                         <img class = "deleteButton" src="{{$.Users.Delete}}">
                                     </button>
                                 </form>
+                                {{end}}
                                 <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
                                     <p class="postContent">{{.Content}}</p>
                                 </div>

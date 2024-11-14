@@ -283,10 +283,21 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 
 		posts = append(posts, p)
 	}
-
+	var path string
+	uID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+		return models.PostandMainUsername{}, err
+	}
+	err = u.DB.QueryRow(UserProfilePicStmt, uID).Scan(&path)
+	if err != nil {
+		log.Println("Error fetching image path", err)
+		return models.PostandMainUsername{}, err
+	}
 	result := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
+		ImagePath: path,
 	}
 
 	return result, nil
@@ -362,10 +373,21 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 
 		posts = append(posts, p)
 	}
-
+	var path string
+	uID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+		return models.PostandMainUsername{}, err
+	}
+	err = u.DB.QueryRow(UserProfilePicStmt, uID).Scan(&path)
+	if err != nil {
+		log.Println("Error fetching image path", err)
+		return models.PostandMainUsername{}, err
+	}
 	result := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
+		ImagePath: path,
 	}
 
 	return result, nil
@@ -441,10 +463,21 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 
 		posts = append(posts, p)
 	}
-
+	var path string
+	uID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching userID", err)
+		return models.PostandMainUsername{}, err
+	}
+	err = u.DB.QueryRow(UserProfilePicStmt, uID).Scan(&path)
+	if err != nil {
+		log.Println("Error fetching image path", err)
+		return models.PostandMainUsername{}, err
+	}
 	result := models.PostandMainUsername{
 		Posts:    posts,
 		Username: username,
+		ImagePath: path,
 	}
 
 	return result, nil
