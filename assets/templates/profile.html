@@ -44,26 +44,26 @@
                         Upload Your Profile Picture!
                     </h1>
                     <div class="container">
+                        <form action="/profile-picture" method="POST" enctype="multipart/form-data">
                         <div class="button-wrap">
-                            <form action="/profile-picture" method="POST" enctype="multipart/form-data">
                                 <label class="buttonn" for="upload">
                                     Upload
                                     File
                                 </label>
-                                <input id="upload" type="file">
-                            </form>
+                                <input id="upload" name = "image" type="file">
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" id="upload-button">
-                        Set Profile
-                        Picture!
-                    </button>
+                        <button type="submit" id="upload-button">
+                            Set Profile
+                            Picture!
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
         <div class="all">
             <div class="posts">
-                {{range .Posts}}
+                {{range .Users.Posts}}
                 <div class="postWithOptions">
                     <div class="post {{if not .ImagePath}}noImage{{end}}">
                         <input type="hidden" name="post_id" value="{{.ID}}">

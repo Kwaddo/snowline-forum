@@ -3,29 +3,39 @@ package sqlite
 import (
 	"database/sql"
 	"db/internal/models"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
-	"fmt"
 )
 
 type POSTMODEL struct {
 	DB *sql.DB
 }
 
-func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path string) error {
+func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path string) (int64, error) {
 	userID, err := userModel.GetUserID(r)
 	if err != nil {
 		log.Println(err)
-		return err
+		return 0, err
 	}
 	userName, err := userModel.GetUserName(r)
 	if err != nil {
 		log.Println(err)
-		return err
+		return 0, err
 	}
-	_, err = m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"))
-	return err
+	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"))
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	postID, err := post_id.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return postID, err
 }
 
 func (m *POSTMODEL) InsertComment(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, content, post_id string) (string, error) {
@@ -109,6 +119,15 @@ func (m *POSTMODEL) fetchLikesAndDislikes(p *models.Post) error {
 	return err
 }
 
+func (u *USERMODEL) fetchLikesAndDislikes(p *models.Post) error {
+	err := u.DB.QueryRow(PostLikesCountQuery, p.ID).Scan(&p.Likes)
+	if err != nil {
+		return err
+	}
+	err = u.DB.QueryRow(PostDislikesCountQuery, p.ID).Scan(&p.Dislikes)
+	return err
+}
+
 func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (models.PostandMainUsername, error) {
 	userID, err := u.GetUserID(r)
 	if err != nil {
@@ -134,6 +153,16 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 		err = u.DB.QueryRow(UserNAMEByPostStmt, p.ID).Scan(&p.Username)
 		if err != nil {
 			log.Println("Error fetching user_id")
+			return models.PostandMainUsername{}, err
+		}
+		err = u.fetchLikesAndDislikes(&p)
+		if err != nil {
+			log.Println("Error fetching likes/dislikes:", err)
+			return models.PostandMainUsername{}, err
+		}
+		err = u.DB.QueryRow(PostCommentsCountStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
 			return models.PostandMainUsername{}, err
 		}
 
@@ -230,7 +259,16 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 			log.Println("Error fetching user_id:", err)
 			return models.PostandMainUsername{}, err
 		}
-
+		err = u.fetchLikesAndDislikes(&p)
+		if err != nil {
+			log.Println("Error fetching likes/dislikes:", err)
+			return models.PostandMainUsername{}, err
+		}
+		err = u.DB.QueryRow(PostCommentsCountStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
+			return models.PostandMainUsername{}, err
+		}
 		err = u.DB.QueryRow(UserProfilePicStmt, postUserID).Scan(&p.ProfilePic)
 		if err != nil {
 			log.Println("Error fetching profile picture:", err)
@@ -300,7 +338,16 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 			log.Println("Error fetching user_id:", err)
 			return models.PostandMainUsername{}, err
 		}
-
+		err = u.fetchLikesAndDislikes(&p)
+		if err != nil {
+			log.Println("Error fetching likes/dislikes:", err)
+			return models.PostandMainUsername{}, err
+		}
+		err = u.DB.QueryRow(PostCommentsCountStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
+			return models.PostandMainUsername{}, err
+		}
 		err = u.DB.QueryRow(UserProfilePicStmt, postUserID).Scan(&p.ProfilePic)
 		if err != nil {
 			log.Println("Error fetching profile picture:", err)
@@ -370,7 +417,16 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 			log.Println("Error fetching user ID:", err)
 			return models.PostandMainUsername{}, err
 		}
-
+		err = u.fetchLikesAndDislikes(&p)
+		if err != nil {
+			log.Println("Error fetching likes/dislikes:", err)
+			return models.PostandMainUsername{}, err
+		}
+		err = u.DB.QueryRow(PostCommentsCountStmt, p.ID).Scan(&p.Comments)
+		if err != nil {
+			log.Println("Error fetching post likes count:", err)
+			return models.PostandMainUsername{}, err
+		}
 		err = u.DB.QueryRow(UserProfilePicStmt, postUserID).Scan(&p.ProfilePic)
 		if err != nil {
 			log.Println("Error fetching profile picture:", err)

@@ -16,6 +16,9 @@
             <input placeholder="Email Address or Username"  name="email" required>
             <input type="password" placeholder="Password" name="password" required>
             <input type="submit" value="Sign In">
+            {{ if .ErrorMsg}}
+            {{.ErrorMsg}}
+            {{end}}
             <a href="/register" id="regred">Don't Have an Account? Register!</a>
         </form>
     </div>

@@ -10,6 +10,7 @@ const (
 	InsertOrReplaceDislike        = `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE);`
 	InsertOrReplaceLikeComment    = `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, TRUE)`
 	InsertOrReplaceDislikeComment = `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, FALSE)`
+	InsertIntoCategory            = `INSERT INTO POST_CATEGORIES (category_id, post_id) VALUES (?, ?)`
 )
 
 // Diactivate session statements from DB
@@ -39,6 +40,7 @@ const (
 	CommentDislikesCountStmt   = `SELECT COUNT(*) FROM COMMENT_LIKES WHERE comment_id = ? AND isliked = FALSE`
 	PostIsLikedQuery           = `SELECT isliked FROM POST_LIKES WHERE post_id = ? AND user_id = ?`
 	CommentIsLikedQuery        = `SELECT isliked FROM COMMENT_LIKES WHERE comment_id = ? AND user_id = ?`
+	PostCategory               = `SELECT post_id FROM post_categories WHERE category_id = ? ORDER BY post_id DESC`
 )
 
 // Update statements

@@ -20,6 +20,7 @@ func (app *app) routes() http.Handler {
     mux.HandleFunc("POST /comment-like", app.CommentLikeHandler)
     mux.HandleFunc("POST /comment-dislike", app.CommentDislikeHandler)
     mux.HandleFunc("POST /profile-picture", app.ProfilePictureHandler)
+    mux.HandleFunc("POST /filterposts", app.FilterPosts)
 
     fs := http.FileServer(http.Dir("./assets/static"))
     fs2 := http.FileServer(http.Dir("./assets/uploads"))
