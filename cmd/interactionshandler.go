@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"db/internal/models"
 	"db/internal/sqlite"
 	"fmt"
@@ -320,11 +321,20 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		for rows.Next() {
-			err = rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+			cat := ""
+			err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 			if err != nil {
-				ErrorHandle(w, 500, "Error saving the file")
 				log.Println(err)
+				if err == sql.ErrNoRows {
+					continue
+				}
 				return
+			}
+			slicecat := []string{}
+			slicecat = strings.Split(cat, ", ")
+			for _, cat := range slicecat {
+				cat = fmt.Sprintf("./assets/images/%s.png", cat)
+				p.Category = append(p.Category, cat)
 			}
 			P = append(P, p)
 		}

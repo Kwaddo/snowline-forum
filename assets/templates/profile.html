@@ -44,13 +44,14 @@
                         Upload Your Profile Picture!
                     </h1>
                     <div class="container">
-                        <form action="/profile-picture" method="POST" enctype="multipart/form-data">
-                        <div class="button-wrap">
+                        <form action="/profile-picture" method="POST"
+                            enctype="multipart/form-data">
+                            <div class="button-wrap">
                                 <label class="buttonn" for="upload">
                                     Upload
                                     File
                                 </label>
-                                <input id="upload" name = "image" type="file">
+                                <input id="upload" name="image" type="file">
                             </div>
                         </div>
                         <button type="submit" id="upload-button">
@@ -71,14 +72,17 @@
                         <div class="postBody">
                             <div class="postTop">
                                 <div class="postHeader">
-                                    <img src="{{.ProfilePic}}" alt="" class="postPFP">
+                                    <img src="{{.ProfilePic}}" alt
+                                        class="postPFP">
                                     <p class="postAuthor">@{{.Username}}</p>
                                 </div>
                                 {{if $.Users.Delete}}
                                 <form action="/delete-post" method="POST">
-                                    <input type="hidden" name = "post_id" value="{{.ID}}">
-                                    <button type = "submit" class = "delButton">
-                                        <img class = "deleteButton" src="{{$.Users.Delete}}">
+                                    <input type="hidden" name="post_id"
+                                        value="{{.ID}}">
+                                    <button type="submit" class="delButton">
+                                        <img class="deleteButton"
+                                            src="{{$.Users.Delete}}">
                                     </button>
                                 </form>
                                 {{end}}
@@ -98,32 +102,49 @@
                                 {{end}}
                                 <div class="postOptions">
                                     <div class="option">
-                                        <form action="/profile-like" method="POST">
-                                            <input type="hidden" name="post_id" value="{{.ID}}">
-                                            <button type="submit" class="button">
-                                                <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                                        <form action="/profile-like"
+                                            method="POST">
+                                            <input type="hidden" name="post_id"
+                                                value="{{.ID}}">
+                                            <button type="submit"
+                                                class="button">
+                                                <img
+                                                    src="../images/like-filled.png"
+                                                    alt="Like" class="likeIcon">
                                             </button>
                                         </form>
                                         <p class="counters">{{.Likes}}</p>
                                     </div>
                                     <div class="option">
-                                        <form action="/profile-dislike" method="POST">
-                                            <input type="hidden" name="post_id" value="{{.ID}}">
-                                            <button type="submit" class="button">
-                                                <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                                        <form action="/profile-dislike"
+                                            method="POST">
+                                            <input type="hidden" name="post_id"
+                                                value="{{.ID}}">
+                                            <button type="submit"
+                                                class="button">
+                                                <img
+                                                    src="../images/dislike-filled.png"
+                                                    alt="Dislike"
+                                                    class="dislikeIcon">
                                             </button>
                                         </form>
                                         <p class="counters">{{.Dislikes}}</p>
                                     </div>
                                     <div class="option">
                                         <a href="/view-post?id={{.ID}}">
-                                            <img src="../images/comments.png" class="commentIcon" alt="Comments">
+                                            <img src="../images/comments.png"
+                                                class="commentIcon"
+                                                alt="Comments">
                                         </a>
                                         <p class="counters">{{.Comments}}</p>
                                     </div>
                                 </div>
                                 <p class="postDate">{{.CreatedAt}}</p>
-                                <div>{{.Category}}</div>
+                                {{range .Category}}
+                                <div>
+                                    <img src="{{.}}" alt="{{.}}" />
+                                </div>
+                                {{end}}
                             </div>
                             <!-- Optional image container -->
                         </div>
@@ -133,19 +154,22 @@
                         <div class="popup-content">
                             <div class="comment-content">
                                 <a href="/" class="popup-close">
-                                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                                    <img
+                                        src="../images/close-tab-svgrepo-com.png"
+                                        alt="Close">
                                 </a>
                                 <h1 class="logtitle">Enter Your Comment!</h1>
                                 <div class="comment-bar">
-                                    <form action="/savecomment" method="POST" align="center">
-                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <form action="/savecomment" method="POST"
+                                        align="center">
+                                        <input type="hidden" name="post_id"
+                                            value="{{.ID}}">
                                         <textarea
-                                        placeholder="Start typing!"
-                                        name="content"
-                                        rows="8"
-                                        maxlength="2000"
-                                        required
-                                        ></textarea>
+                                            placeholder="Start typing!"
+                                            name="content"
+                                            rows="8"
+                                            maxlength="2000"
+                                            required></textarea>
                                         <button type="submit">
                                             Comment
                                         </button>
@@ -165,12 +189,14 @@
                 </a>
                 <a href="#edit-profile">
                     <div class="editContainer container-hover">
-                        <img src="../images/edit.png" alt="Edit Profile" id="edit">
+                        <img src="../images/edit.png" alt="Edit Profile"
+                            id="edit">
                     </div>
                 </a>
                 <a href="#logout-confirmation">
                     <div class="logoutConfirmationContainer container-hover">
-                        <img src="../images/logout.png" alt="Logout" id="logoutConfirmation">
+                        <img src="../images/logout.png" alt="Logout"
+                            id="logoutConfirmation">
                     </div>
                 </a>
                 <div class="pfp">
@@ -181,48 +207,48 @@
                     <form action="/edit-username" method="POST">
                         <div class="username-container">
                             <button type="button" class="usernameButton">
-                                <img src="../images/edit.png" alt="Edit Profile" id="edit">
+                                <img src="../images/edit.png" alt="Edit Profile"
+                                    id="edit">
                             </button>
-                            <input type="text" placeholder="Username" name="name" required>
-                            <button type = "save">Save Changes</button>
+                            <input type="text" placeholder="Username"
+                                name="name" required>
+                            <button type="save">Save Changes</button>
                         </div>
                     </form>
                 </div>
                 <hr id="content-break">
                 <div class="nav">
                     <!-- Form for filter actions -->
-                    <form action="/Profile-page/filter" method="post" id="filterForm">
+                    <form action="/Profile-page/filter" method="post"
+                        id="filterForm">
                         <div class="nav">
                             <button
                                 type="submit"
                                 name="action"
                                 value="like"
-                                class="options button"
-                            >
+                                class="options button">
                                 <img src="../images/like-filled.png" alt="Like">
                             </button>
                             <button
                                 type="submit"
                                 name="action"
                                 value="dislike"
-                                class="options button"
-                            >
-                                <img src="../images/dislike-filled.png" alt="Dislike">
+                                class="options button">
+                                <img src="../images/dislike-filled.png"
+                                    alt="Dislike">
                             </button>
                             <button
                                 type="submit"
                                 name="action"
                                 value="created"
-                                class="options button"
-                            >
+                                class="options button">
                                 <img src="../images/uploaded.png" alt="Created">
                             </button>
                             <button
                                 type="submit"
                                 name="action"
                                 value="comment"
-                                class="options button"
-                            >
+                                class="options button">
                                 <img src="../images/comments.png" alt="comment">
                             </button>
                         </div>

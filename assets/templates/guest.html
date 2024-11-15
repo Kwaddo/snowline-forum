@@ -63,8 +63,10 @@
                         <label for="random-filter">Random</label>
                     </fieldset>
                     <div class="applyFilterDiv">
-                        <button type="applyFiltersButton" id="applyFilters"></button>
-                        <label for="applyFilters" class="confirmLabel">Apply</label>
+                        <button type="applyFiltersButton"
+                            id="applyFilters"></button>
+                        <label for="applyFilters"
+                            class="confirmLabel">Apply</label>
                     </div>
                 </form>
             </div>
@@ -135,7 +137,11 @@
                                     </div>
                                 </div>
                                 <p class="postDate">{{.CreatedAt}}</p>
-                                <div>{{.Category}}</div>
+                                {{range .Category}}
+                                <div>
+                                    <img src="{{.}}" alt="{{.}}" />
+                                </div>
+                                {{end}}
                             </div>
 
                             <!-- Optional image container -->

@@ -1,137 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <title>Post Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/post.css">
-</head>
+    <head>
+        <title>Post Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/post.css">
+    </head>
 
-<body>
-    <div id="header-container">
-        <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
-        <div class="dynamic-island">
-            <div class="island-content">
-                <a href="/">
-                    <img src="../images/Home.png" class="icon" title="Home">
-                </a>
-                <a href="/#createPostPopup">
-                    <img src="../images/Plus.png" class="icon" title="Create Post">
-                </a>
-                <a href="/Profile-page">
-                    <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id="createPostPopup" class="popup">
-        <div class="popup-content">
-            <a href="/" class="popup-close">
-                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-            </a>
-            <img src="../images/blog-pencil.png" alt="Create" class="createPostIcon">
-            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
-                <div class="textarea-container">
-                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-                    <input type="file" id="image" name="image" hidden>
-                    <label for="image" class="upload-icon">
-                        <img src="../images/paperclip-vertical.png" alt="Upload">
-                    </label>
-                </div>
-                <input type="checkbox" id="toggleCategories" hidden>
-                <label for="toggleCategories" class="upload-button">Categories</label>
-                <fieldset class="category-checkboxes">
-                    <input type="checkbox" id="sports" name="category" value="Sports">
-                    <label for="sports">Sports</label>
-
-                    <input type="checkbox" id="gaming" name="category" value="Gaming">
-                    <label for="gaming">Gaming</label>
-
-                    <input type="checkbox" id="art" name="category" value="Art">
-                    <label for="art">Art</label>
-
-                    <input type="checkbox" id="music" name="category" value="Music">
-                    <label for="music">Music</label>
-
-                    <input type="checkbox" id="food" name="category" value="Food">
-                    <label for="food">Food</label>
-
-                    <input type="checkbox" id="random" name="category" value="Random">
-                    <label for="random">Random</label>
-                </fieldset>
-                <input type="submit" value="Submit Post">
-            </form>
-        </div>
-    </div>
-    <div id="logout-confirmation" class="popup">
-        <div class="popup-content">
-            <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-            <form action="/logout" method="POST">
-                <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
-            </form>
-            <form action="/">
-                <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
-            </form>
-            <div class="button-row">
-                <label for="yes-toggle" class="confirmLabel">YES</label>
-                <label for="no-toggle" class="confirmLabel">NO</label>
-            </div>
-        </div>
-    </div>
-    <div class="postAll {{if not .info.Posts.ImagePath}}noImage{{end}}">
-        <img src="{{.info.Posts.ProfilePic}}" alt="Post Image" class="postPFP">
-        <p class="postAuthor">@{{.info.Posts.Username}}</p>
-        <p class="postContent">{{.info.Posts.Content}}</p>
-
-        {{if .info.Posts.ImagePath}}
-        <div class="imageContainer">
-            <img src="{{.info.Posts.ImagePath}}" alt="Post Image" class="postImage">
-        </div>
-        {{end}}
-        <div>{{.info.Posts.Category}}</div> 
-    </div>
-    <div class="textarea-container2">
-        <form action="/savecomment" method="POST" align="center">
-            <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
-            <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
-            <button type="submit">
-                Comment
-            </button>
-        </form>
-    </div>
-    <div class="comments">
-        {{range .info.Comments}}
-        <div class="comment" id="comment-{{.ID}}">
-            <div class = "commentStuff">
-                <img src="../uploads/DefaultPFP.jpg" alt="User Icon" class="commentIcon">
-                <p class="commentUsername">@{{.Username}}</p>
-                <p class="commentText">{{.Content}}</p>
-                
-            </div>
-            <div class="commentDetails">
-                <p class="commentTime">{{.CreatedAt}}</p>
-                   
-                <div class="commentOptions">
-                    <form action="/comment-like" method="POST">
-                        <input type="hidden" name="comment_id" value="{{.ID}}">
-                        <input type="hidden" name="post_id" value="{{.PostID}}">
-                        <button type="submit">
-                            <img src="../images/like-filled.png" alt="Like" class="commentLikeIcon">
-                        </button>
-                        <span class="commentLikeCount">{{.Likes}}</span>
-                    </form>
-                    <form action="/comment-dislike" method="POST">
-                        <input type="hidden" name="comment_id" value="{{.ID}}">
-                        <input type="hidden" name="post_id" value="{{.PostID}}">
-                        <button type="submit">
-                            <img src="../images/dislike-filled.png" alt="Dislike" class="commentDislikeIcon">
-                        </button>
-                        <span class="commentDislikeCount">{{.Dislikes}}</span>
-                    </form>
+    <body>
+        <div id="header-container">
+            <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
+            <div class="dynamic-island">
+                <div class="island-content">
+                    <a href="/">
+                        <img src="../images/Home.png" class="icon" title="Home">
+                    </a>
+                    <a href="/#createPostPopup">
+                        <img src="../images/Plus.png" class="icon"
+                            title="Create Post">
+                    </a>
+                    <a href="/Profile-page">
+                        <img src="../images/Profile.png"
+                            class="icon profile-icon" title="Profile">
+                    </a>
                 </div>
             </div>
         </div>
-        {{end}}
-    </div>
-</body>
+        <div id="createPostPopup" class="popup">
+            <div class="popup-content">
+                <a href="/" class="popup-close">
+                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                </a>
+                <img src="../images/blog-pencil.png" alt="Create"
+                    class="createPostIcon">
+                <form action="/save-post" method="POST" class="createPostForm"
+                    enctype="multipart/form-data">
+                    <div class="textarea-container">
+                        <textarea placeholder="Start typing!" name="content"
+                            rows="8" maxlength="2000" required></textarea>
+                        <input type="file" id="image" name="image" hidden>
+                        <label for="image" class="upload-icon">
+                            <img src="../images/paperclip-vertical.png"
+                                alt="Upload">
+                        </label>
+                    </div>
+                    <input type="checkbox" id="toggleCategories" hidden>
+                    <label for="toggleCategories"
+                        class="upload-button">Categories</label>
+                    <fieldset class="category-checkboxes">
+                        <input type="checkbox" id="sports" name="category"
+                            value="Sports">
+                        <label for="sports">Sports</label>
+
+                        <input type="checkbox" id="gaming" name="category"
+                            value="Gaming">
+                        <label for="gaming">Gaming</label>
+
+                        <input type="checkbox" id="art" name="category"
+                            value="Art">
+                        <label for="art">Art</label>
+
+                        <input type="checkbox" id="music" name="category"
+                            value="Music">
+                        <label for="music">Music</label>
+
+                        <input type="checkbox" id="food" name="category"
+                            value="Food">
+                        <label for="food">Food</label>
+
+                        <input type="checkbox" id="random" name="category"
+                            value="Random">
+                        <label for="random">Random</label>
+                    </fieldset>
+                    <input type="submit" value="Submit Post">
+                </form>
+            </div>
+        </div>
+        <div id="logout-confirmation" class="popup">
+            <div class="popup-content">
+                <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+                <form action="/logout" method="POST">
+                    <button id="yes-toggle" type="submit"
+                        class="button hidden-button">YES</button>
+                </form>
+                <form action="/">
+                    <button type="submit" id="no-toggle"
+                        class="button hidden-button">NO</button>
+                </form>
+                <div class="button-row">
+                    <label for="yes-toggle" class="confirmLabel">YES</label>
+                    <label for="no-toggle" class="confirmLabel">NO</label>
+                </div>
+            </div>
+        </div>
+        <div class="postAll {{if not .info.Posts.ImagePath}}noImage{{end}}">
+            <img src="{{.info.Posts.ProfilePic}}" alt="Post Image"
+                class="postPFP">
+            <p class="postAuthor">@{{.info.Posts.Username}}</p>
+            <p class="postContent">{{.info.Posts.Content}}</p>
+
+            {{if .info.Posts.ImagePath}}
+            <div class="imageContainer">
+                <img src="{{.info.Posts.ImagePath}}" alt="Post Image"
+                    class="postImage">
+            </div>
+            {{end}}
+            {{range info.Posts.Category}}
+            <div>
+                <img src="{{.}}" alt="{{.}}" />
+            </div>
+            {{end}}
+        </div>
+        <div class="textarea-container2">
+            <form action="/savecomment" method="POST" align="center">
+                <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
+                <textarea placeholder="Start typing!" name="content" rows="8"
+                    maxlength="2000" required></textarea>
+                <button type="submit">
+                    Comment
+                </button>
+            </form>
+        </div>
+        <div class="comments">
+            {{range .info.Comments}}
+            <div class="comment" id="comment-{{.ID}}">
+                <div class="commentStuff">
+                    <img src="../uploads/DefaultPFP.jpg" alt="User Icon"
+                        class="commentIcon">
+                    <p class="commentUsername">@{{.Username}}</p>
+                    <p class="commentText">{{.Content}}</p>
+
+                </div>
+                <div class="commentDetails">
+                    <p class="commentTime">{{.CreatedAt}}</p>
+
+                    <div class="commentOptions">
+                        <form action="/comment-like" method="POST">
+                            <input type="hidden" name="comment_id"
+                                value="{{.ID}}">
+                            <input type="hidden" name="post_id"
+                                value="{{.PostID}}">
+                            <button type="submit">
+                                <img src="../images/like-filled.png" alt="Like"
+                                    class="commentLikeIcon">
+                            </button>
+                            <span class="commentLikeCount">{{.Likes}}</span>
+                        </form>
+                        <form action="/comment-dislike" method="POST">
+                            <input type="hidden" name="comment_id"
+                                value="{{.ID}}">
+                            <input type="hidden" name="post_id"
+                                value="{{.PostID}}">
+                            <button type="submit">
+                                <img src="../images/dislike-filled.png"
+                                    alt="Dislike" class="commentDislikeIcon">
+                            </button>
+                            <span
+                                class="commentDislikeCount">{{.Dislikes}}</span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </body>

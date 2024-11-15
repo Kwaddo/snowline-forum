@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -26,7 +27,7 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		return 0, err
 	}
 
-	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"),categories)
+	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"), categories)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -75,9 +76,20 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+		cat := ""
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 		if err != nil {
+			log.Println(err)
+			if err == sql.ErrNoRows {
+				continue
+			}
 			return nil, err
+		}
+		slicecat := []string{}
+		slicecat = strings.Split(cat, ", ")
+		for _, cat := range slicecat {
+			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			p.Category = append(p.Category, cat)
 		}
 		err = m.fetchLikesAndDislikes(&p)
 		if err != nil {
@@ -148,9 +160,20 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+		cat := ""
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 		if err != nil {
+			log.Println(err)
+			if err == sql.ErrNoRows {
+				continue
+			}
 			return models.PostandMainUsername{}, err
+		}
+		slicecat := []string{}
+		slicecat = strings.Split(cat, ", ")
+		for _, cat := range slicecat {
+			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			p.Category = append(p.Category, cat)
 		}
 
 		err = u.DB.QueryRow(UserNAMEByPostStmt, p.ID).Scan(&p.Username)
@@ -250,13 +273,20 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+		cat := ""
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 		if err != nil {
+			log.Println(err)
 			if err == sql.ErrNoRows {
 				continue
 			}
-			log.Println("Error scanning post:", err)
 			return models.PostandMainUsername{}, err
+		}
+		slicecat := []string{}
+		slicecat = strings.Split(cat, ", ")
+		for _, cat := range slicecat {
+			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			p.Category = append(p.Category, cat)
 		}
 
 		var postUserID string
@@ -295,8 +325,8 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 		return models.PostandMainUsername{}, err
 	}
 	result := models.PostandMainUsername{
-		Posts:    posts,
-		Username: username,
+		Posts:     posts,
+		Username:  username,
 		ImagePath: path,
 	}
 
@@ -340,13 +370,20 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+		cat := ""
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 		if err != nil {
+			log.Println(err)
 			if err == sql.ErrNoRows {
 				continue
 			}
-			log.Println("Error scanning post:", err)
 			return models.PostandMainUsername{}, err
+		}
+		slicecat := []string{}
+		slicecat = strings.Split(cat, ", ")
+		for _, cat := range slicecat {
+			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			p.Category = append(p.Category, cat)
 		}
 
 		var postUserID string
@@ -385,8 +422,8 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 		return models.PostandMainUsername{}, err
 	}
 	result := models.PostandMainUsername{
-		Posts:    posts,
-		Username: username,
+		Posts:     posts,
+		Username:  username,
 		ImagePath: path,
 	}
 
@@ -430,14 +467,23 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+		cat := ""
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 		if err != nil {
+			log.Println(err)
 			if err == sql.ErrNoRows {
 				continue
 			}
-			log.Println("Error scanning post:", err)
 			return models.PostandMainUsername{}, err
 		}
+		slicecat := []string{}
+		slicecat = strings.Split(cat, ", ")
+		for _, cat := range slicecat {
+			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			p.Category = append(p.Category, cat)
+		}
+
+		
 
 		var postUserID string
 		err = u.DB.QueryRow(UserIDByPostStmt, p.ID).Scan(&postUserID)
@@ -475,8 +521,8 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 		return models.PostandMainUsername{}, err
 	}
 	result := models.PostandMainUsername{
-		Posts:    posts,
-		Username: username,
+		Posts:     posts,
+		Username:  username,
 		ImagePath: path,
 	}
 
@@ -486,12 +532,18 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, error) {
 	postID := r.URL.Query().Get("id")
 
-	p := models.Post{}
 	row := m.DB.QueryRow(PostWithCommentQuery, postID)
-	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
+	p := models.Post{}
+	cat := ""
+	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 	if err != nil {
-		log.Println(err)
 		return models.PostandComment{}, err
+	}
+	slicecat := []string{}
+	slicecat = strings.Split(cat, ", ")
+	for _, cat := range slicecat {
+		cat = fmt.Sprintf("./assets/images/%s.png", cat)
+		p.Category = append(p.Category, cat)
 	}
 
 	err = m.DB.QueryRow(PostLikesCountQuery, p.ID).Scan(&p.Likes)
