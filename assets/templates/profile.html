@@ -82,17 +82,23 @@
                                     </button>
                                 </form>
                                 {{end}}
-                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                    <p class="postContent">{{.Content}}</p>
-                                </div>
+                                <a href="/view-post?id={{.ID}}">
+                                    <div
+                                        class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                        <p class="postContent">{{.Content}}</p>
+                                    </div>
+                                </a>
                                 {{if .ImagePath}}
-                                <div class="imageContainer">
-                                    <img src="{{.ImagePath}}" alt="image" class="postImage">
-                                </div>
+                                <a href="/view-post?id={{.ID}}">
+                                    <div class="imageContainer">
+                                        <img src="{{.ImagePath}}" alt="image"
+                                            class="postImage">
+                                    </div>
+                                </a>
                                 {{end}}
                                 <div class="postOptions">
                                     <div class="option">
-                                        <form action="/like" method="POST">
+                                        <form action="/profile-like" method="POST">
                                             <input type="hidden" name="post_id" value="{{.ID}}">
                                             <button type="submit" class="button">
                                                 <img src="../images/like-filled.png" alt="Like" class="likeIcon">
@@ -101,7 +107,7 @@
                                         <p class="counters">{{.Likes}}</p>
                                     </div>
                                     <div class="option">
-                                        <form action="/dislike" method="POST">
+                                        <form action="/profile-dislike" method="POST">
                                             <input type="hidden" name="post_id" value="{{.ID}}">
                                             <button type="submit" class="button">
                                                 <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
@@ -184,7 +190,7 @@
                 <hr id="content-break">
                 <div class="nav">
                     <!-- Form for filter actions -->
-                    <form action="/filter" method="post" id="filterForm">
+                    <form action="/Profile-page/filter" method="post" id="filterForm">
                         <div class="nav">
                             <button
                                 type="submit"
