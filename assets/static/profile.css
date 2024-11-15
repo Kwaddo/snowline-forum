@@ -14,7 +14,9 @@ html {
     cursor: pointer;
 }
 
-
+a {
+    text-decoration: none;
+}
 
 
 /* --- SCROLL BAR STYLES --- */

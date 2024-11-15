@@ -17,6 +17,10 @@ body {
     cursor: pointer;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* --- DYNAMIC ISLAND STYLES --- */
 
 #header-container {
@@ -159,6 +163,24 @@ body {
 
 .filters fieldset {
     display: block;
+}
+
+.applyFilterDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.applyFilterDiv label {
+    background-color: #802BB1;
+    border: none;
+}
+
+.applyFilterDiv label:hover {
+    background-color: #71239e;
+    text-align: center;
 }
 
 .category-checkboxes-filters {
@@ -746,6 +768,10 @@ fieldset {
 
 /* Hide the checkbox inputs visually but keep them functional */
 .category-checkboxes input[type="checkbox"] {
+    display: none;
+}
+
+#applyFilters {
     display: none;
 }
 
