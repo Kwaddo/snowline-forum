@@ -170,6 +170,10 @@ input[type="submit"]:not(:hover) {
     color: #9ca0a7;
 }
 
+.errormsg {
+    color: #af0000;
+}
+
 
 @media (max-width: 1000px) {
     .login-container {

@@ -13,11 +13,11 @@
     <div class="login-container">
         <img src="../images/snowlinelogo.png" class="title">
         <form action="/signin" method="POST" class="registerForm">
-            <input placeholder="Email Address or Username"  name="email" required>
+            <input placeholder="Email Address or Username" name="email" required>
             <input type="password" placeholder="Password" name="password" required>
             <input type="submit" value="Sign In">
-            {{ if .ErrorMsg}}
-            {{.ErrorMsg}}
+            {{if .ErrorMsg}}
+            <p class="errormsg">{{.ErrorMsg}}</p>
             {{end}}
             <a href="/register" id="regred">Don't Have an Account? Register!</a>
         </form>
