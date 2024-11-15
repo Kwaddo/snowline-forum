@@ -57,7 +57,7 @@
                     <input type="checkbox" id="food" name="category" value="Food">
                     <label for="food">Food</label>
 
-                    <input type="checkbox" id="random" name="category" value="Random" checked required>
+                    <input type="checkbox" id="random" name="category" value="Random">
                     <label for="random">Random</label>
                 </fieldset>
                 <input type="submit" value="Submit Post">
@@ -89,6 +89,7 @@
             <img src="{{.info.Posts.ImagePath}}" alt="Post Image" class="postImage">
         </div>
         {{end}}
+        <div>{{.info.Posts.Category}}</div> 
     </div>
     <div class="textarea-container2">
         <form action="/savecomment" method="POST" align="center">
@@ -106,9 +107,11 @@
                 <img src="../uploads/DefaultPFP.jpg" alt="User Icon" class="commentIcon">
                 <p class="commentUsername">@{{.Username}}</p>
                 <p class="commentText">{{.Content}}</p>
+                
             </div>
             <div class="commentDetails">
                 <p class="commentTime">{{.CreatedAt}}</p>
+                   
                 <div class="commentOptions">
                     <form action="/comment-like" method="POST">
                         <input type="hidden" name="comment_id" value="{{.ID}}">

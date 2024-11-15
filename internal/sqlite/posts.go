@@ -13,7 +13,7 @@ type POSTMODEL struct {
 	DB *sql.DB
 }
 
-func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path string) (int64, error) {
+func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path, categories string) (int64, error) {
 	userID, err := userModel.GetUserID(r)
 	if err != nil {
 		log.Println(err)
@@ -26,7 +26,7 @@ func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *h
 		return 0, err
 	}
 
-	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"))
+	post_id, err := m.DB.Exec(InsertPostQuery, title, content, image_path, userID, userName, time.Now().Format("2006-01-02 15:04:05"),categories)
 	if err != nil {
 		log.Println(err)
 		return 0, err
@@ -75,7 +75,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 		if err != nil {
 			return nil, err
 		}
@@ -148,7 +148,7 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 	posts := []models.Post{}
 	for rows.Next() {
 		p := models.Post{}
-		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 		if err != nil {
 			return models.PostandMainUsername{}, err
 		}
@@ -250,7 +250,7 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				continue
@@ -340,7 +340,7 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				continue
@@ -430,7 +430,7 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 	for _, postID := range postIDs {
 		row := u.DB.QueryRow(PostWithCommentQuery, postID)
 		p := models.Post{}
-		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+		err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				continue
@@ -488,7 +488,7 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 
 	p := models.Post{}
 	row := m.DB.QueryRow(PostWithCommentQuery, postID)
-	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+	err := row.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 	if err != nil {
 		log.Println(err)
 		return models.PostandComment{}, err

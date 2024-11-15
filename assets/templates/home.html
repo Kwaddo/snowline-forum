@@ -80,27 +80,27 @@
                         <form method="post" action="/filter">
                     <fieldset class="category-checkboxes">
                         <input type="checkbox" id="sports" name="category"
-                            value="1">
+                            value="Sports">
                         <label for="sports">Sports</label>
 
                         <input type="checkbox" id="gaming" name="category"
-                            value="2">
+                            value="Gaming">
                         <label for="gaming">Gaming</label>
 
                         <input type="checkbox" id="art" name="category"
-                            value="3">
+                            value="Art">
                         <label for="art">Art</label>
 
                         <input type="checkbox" id="music" name="category"
-                            value="4">
+                            value="Music">
                         <label for="music">Music</label>
 
                         <input type="checkbox" id="food" name="category"
-                            value="5">
+                            value="Food">
                         <label for="food">Food</label>
 
                         <input type="checkbox" id="random" name="category"
-                            value="6">
+                            value="Random">
                         <label for="random">Random</label>
                     </fieldset>
                     <input type="submit" value="Submit Post">
@@ -135,27 +135,27 @@
                 <form action="/filterposts" method="post">
                     <fieldset class="category-checkboxes-filters">
                         <input type="checkbox" id="sports-filter"
-                            name="category" value="1">
+                            name="category" value="Sports">
                         <label for="sports-filter">Sports</label>
 
                         <input type="checkbox" id="gaming-filter"
-                            name="category" value="2">
+                            name="category" value="Gaming">
                         <label for="gaming-filter">Gaming</label>
 
                         <input type="checkbox" id="art-filter" name="category"
-                            value="3">
+                            value="Art">
                         <label for="art-filter">Art</label>
 
                         <input type="checkbox" id="music-filter" name="category"
-                            value="4">
+                            value="Music">
                         <label for="music-filter">Music</label>
 
                         <input type="checkbox" id="food-filter" name="category"
-                            value="5">
+                            value="Food">
                         <label for="food-filter">Food</label>
 
                         <input type="checkbox" id="random-filter"
-                            name="category" value="6">
+                            name="category" value="Random">
                         <label for="random-filter">Random</label>
                     </fieldset>
                     <div class="applyFilterDiv">
@@ -229,6 +229,7 @@
                                     </div>
                                 </div>
                                 <p class="postDate">{{.CreatedAt}}</p>
+                                <div>{{.Category}}</div>
                             </div>
 
                             <!-- Optional image container -->

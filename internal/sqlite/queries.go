@@ -2,7 +2,7 @@ package sqlite
 
 // Insert statements to save in DB
 const (
-	InsertPostQuery               = `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at) VALUES (?, ?, ?, ?, ?, ?)`
+	InsertPostQuery               = `INSERT INTO POSTS (title, content, image_path, user_id, UserName, created_at, categories) VALUES (?, ?, ?, ?, ?, ?, ?)`
 	InsertCommentQuery            = `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, ?, ?)`
 	InsertUserQuery               = `INSERT INTO USERS (name, email, password) VALUES (?, ?, ?)`
 	InsertSession                 = `INSERT INTO SESSIONS (cookie_value, user_id, expires_at, username, isvalid) VALUES (?, ?, ?, ?, true);`
@@ -22,9 +22,9 @@ const (
 
 // Select statements
 const (
-	AllPostsQuery              = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS ORDER BY post_id DESC`
-	AllUsersPostsQuery         = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
-	PostWithCommentQuery       = `SELECT post_id, title, content, image_path, created_at, UserName FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
+	AllPostsQuery              = `SELECT post_id, title, content, image_path, created_at, UserName, categories FROM POSTS ORDER BY post_id DESC`
+	AllUsersPostsQuery         = `SELECT post_id, title, content, image_path, created_at, UserName, categories FROM POSTS WHERE user_id = ? ORDER BY post_id DESC`
+	PostWithCommentQuery       = `SELECT post_id, title, content, image_path, created_at, UserName, categories FROM POSTS WHERE post_id = ? ORDER BY post_id DESC`
 	CommentsForPostQuery       = `SELECT comment_id, post_id, content, created_at, username FROM COMMENTS WHERE post_id = ?`
 	PostLikesCountQuery        = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = TRUE`
 	PostDislikesCountQuery     = `SELECT COUNT(*) FROM POST_LIKES WHERE post_id = ? AND isliked = FALSE`

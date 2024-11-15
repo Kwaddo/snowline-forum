@@ -11,6 +11,7 @@ type Post struct {
 	Likes      string
 	Dislikes   string
 	Comments   string
+	Category   string
 }
 
 type Comment struct {

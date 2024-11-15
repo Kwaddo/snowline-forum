@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
-	"strconv"
+	"strings"
 	"time"
 )
 
@@ -20,7 +20,8 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
+	category_ids := r.Form["category"]
+	categoryIdsStr := strings.Join(category_ids, ", ")
 	image, _, err := r.FormFile("image")
 	if err != nil && err.Error() != "http: no such file" {
 		ErrorHandle(w, 400, "Error retrieving the file")
@@ -34,9 +35,9 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		defer image.Close()
 		timestamp := time.Now().UnixNano()
-		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
+		saveImage := fmt.Sprintf("assets/uploads/image%d.jpg", timestamp)
 
-		dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+		dbimage := fmt.Sprintf("../uploads/image%d.jpg", timestamp)
 
 		place, err := os.Create(saveImage)
 		if err != nil {
@@ -55,29 +56,28 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		imagePath = ""
 	}
-	post_id, err := app.posts.InsertPost(app.users, w, r, title, content, imagePath)
+	post_id, err := app.posts.InsertPost(app.users, w, r, title, content, imagePath, categoryIdsStr)
 	if err != nil {
 		log.Println(err)
 		http.Redirect(w, r, "/signin", http.StatusFound)
 		return
 	}
 
-	category_ids := r.Form["category"]
 	if len(category_ids) == 0 {
-		category_ids = append(category_ids, "6")
+		category_ids = append(category_ids, "Random")
 	}
 	for _, category_id_str := range category_ids {
 
-		category_id, err := strconv.Atoi(category_id_str)
-		if err != nil {
-			log.Println("Failed to convert category_id:", category_id_str)
-			ErrorHandle(w, 400, "Invalid category_id")
-			return
-		}
+		// category_id, err := strconv.Atoi(category_id_str)
+		// if err != nil {
+		// 	log.Println("Failed to convert category_id:", category_id_str)
+		// 	ErrorHandle(w, 400, "Invalid category_id")
+		// 	return
+		// }
 
-		_, err = app.posts.DB.Exec(sqlite.InsertIntoCategory, category_id, post_id)
+		_, err = app.posts.DB.Exec(sqlite.InsertIntoCategory, category_id_str, post_id)
 		if err != nil {
-			log.Println("Error inserting category_id:", category_id)
+			log.Println("Error inserting category_id:", category_id_str)
 			log.Println(err)
 			ErrorHandle(w, 500, "Internal Server Error")
 			return
@@ -320,7 +320,7 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		for rows.Next() {
-			err = rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username)
+			err = rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &p.Category)
 			if err != nil {
 				ErrorHandle(w, 500, "Error saving the file")
 				log.Println(err)
@@ -370,12 +370,12 @@ func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	postID := r.FormValue("post_id")
- 
+
 	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
 	if err != nil {
 		log.Println("Error deleting post", err)
 		return
 	}
-	http.Redirect(w,r,"/Profile-page", http.StatusFound)
-	
+	http.Redirect(w, r, "/Profile-page", http.StatusFound)
+
 }
