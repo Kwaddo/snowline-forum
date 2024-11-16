@@ -91,7 +91,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 			cat = fmt.Sprintf("./assets/images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
-		err = m.fetchLikesAndDislikes(&p)
+		err = m.FetchLikesAndDislikes(&p)
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 			return nil, err
@@ -125,7 +125,7 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 	return posts, nil
 }
 
-func (m *POSTMODEL) fetchLikesAndDislikes(p *models.Post) error {
+func (m *POSTMODEL) FetchLikesAndDislikes(p *models.Post) error {
 	err := m.DB.QueryRow(PostLikesCountQuery, p.ID).Scan(&p.Likes)
 	if err != nil {
 		return err
@@ -134,7 +134,7 @@ func (m *POSTMODEL) fetchLikesAndDislikes(p *models.Post) error {
 	return err
 }
 
-func (u *USERMODEL) fetchLikesAndDislikes(p *models.Post) error {
+func (u *USERMODEL) FetchLikesAndDislikes(p *models.Post) error {
 	err := u.DB.QueryRow(PostLikesCountQuery, p.ID).Scan(&p.Likes)
 	if err != nil {
 		return err
@@ -181,7 +181,7 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 			log.Println("Error fetching user_id")
 			return models.PostandMainUsername{}, err
 		}
-		err = u.fetchLikesAndDislikes(&p)
+		err = u.FetchLikesAndDislikes(&p)
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 			return models.PostandMainUsername{}, err
@@ -295,7 +295,7 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 			log.Println("Error fetching user_id:", err)
 			return models.PostandMainUsername{}, err
 		}
-		err = u.fetchLikesAndDislikes(&p)
+		err = u.FetchLikesAndDislikes(&p)
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 			return models.PostandMainUsername{}, err
@@ -392,7 +392,7 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 			log.Println("Error fetching user_id:", err)
 			return models.PostandMainUsername{}, err
 		}
-		err = u.fetchLikesAndDislikes(&p)
+		err = u.FetchLikesAndDislikes(&p)
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 			return models.PostandMainUsername{}, err
@@ -491,7 +491,7 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 			log.Println("Error fetching user ID:", err)
 			return models.PostandMainUsername{}, err
 		}
-		err = u.fetchLikesAndDislikes(&p)
+		err = u.FetchLikesAndDislikes(&p)
 		if err != nil {
 			log.Println("Error fetching likes/dislikes:", err)
 			return models.PostandMainUsername{}, err
