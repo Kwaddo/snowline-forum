@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <title>Registration Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/register.css">
-</head>
+    <head>
+        <title>Registration Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/register.css">
+    </head>
 
-
-<body>
-    <div class="login-container">
-        <img src="../images/snowlinelogo.png" class="title">
-        <form action="/signin" method="POST" class="registerForm">
-            <input placeholder="Email Address or Username" name="email" required>
-            <input type="password" placeholder="Password" name="password" required>
-            <input type="submit" value="Sign In">
-            {{if .ErrorMsg}}
-            <p class="errormsg">{{.ErrorMsg}}</p>
-            {{end}}
-            <a href="/register" id="regred">Don't Have an Account? Register!</a>
-        </form>
-    </div>
-    <a href="/" class="back-button">
-        <img src="../images/Home.png" class="icon">
-    </a>
-</body>
+    <body>
+        <div class="login-container">
+            <img src="../images/snowlinelogo.png" class="title">
+            <form action="/signin" method="POST" class="registerForm">
+                <input placeholder="Email Address or Username" name="email"
+                    required>
+                <input type="password" placeholder="Password" name="password"
+                    required>
+                <input type="submit" value="Sign In">
+                {{if .ErrorMsg}}
+                <p class="errormsg">{{.ErrorMsg}}</p>
+                {{end}}
+                <a href="/register" id="regred">Don't Have an Account?
+                    Register!</a>
+            </form>
+            <a href="/signin/github/login">
+                <button>GitHub</button>
+            </a>
+            <a href="/signin/google/login">
+                <button>Google</button>
+            </a>
+        </div>
+        <a href="/" class="back-button">
+            <img src="../images/Home.png" class="icon">
+        </a>
+    </body>
 
 </html>

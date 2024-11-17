@@ -18,12 +18,12 @@ func NewApp() *app {
 	if err != nil {
 		panic(err)
 	}
-
 	return &app{
 		users: &sqlite.USERMODEL{DB: db},
 		posts: &sqlite.POSTMODEL{DB: db},
 	}
 }
+
 func (a *app) StartServer() *http.Server {
 	return &http.Server{
 		Addr:    ":3333",

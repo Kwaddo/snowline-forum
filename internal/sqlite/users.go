@@ -64,7 +64,7 @@ func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 			}
 		}
 	}
-	
+
 	if cookievalue == "" {
 		return "", errors.New("userId cannot be empty")
 	}
@@ -124,4 +124,30 @@ func (u *USERMODEL) IsAuthenticated(r *http.Request) bool {
 	}
 
 	return false
+}
+
+func (u *USERMODEL) CheckEmailExists(email string) (bool, error) {
+	var count int
+	row := u.DB.QueryRow(CheckEmailExistsQuery, email)
+	err := row.Scan(&count)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// No rows, email doesn't exist
+			return false, nil
+		}
+		log.Println("Error checking email existence:", err)
+		return false, err
+	}
+	
+	return count > 0, nil
+}
+
+// InsertUser inserts a new user into the user table
+func (u *USERMODEL) InsertUser(name, email, password string) error {
+	_, err := u.DB.Exec(InsertUserQuery, name, email, password)
+	if err != nil {
+		log.Println("Error inserting user:", err)
+		return err
+	}
+	return nil
 }
