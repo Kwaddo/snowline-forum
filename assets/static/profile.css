@@ -973,10 +973,32 @@ input[name="name"]:hover {
     }
 
     /* Display the filters panel as a header-like drop-down */
-    .filter-checkbox:checked~.containers .filters {
+    .filter-checkbox:checked~.filters {
         transform: translate(-50%, 40%);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
+
+    .filter-checkbox {
+        display: none;
+    }
+
+    .applyFilterDiv {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .applyFilterDiv label {
+        background-color: #802BB1;
+        border: none;
+    }
+    
+    .applyFilterDiv label:hover {
+        background-color: #71239e;
+        text-align: center;
+    }    
 
     .dynamic-island {
         top: auto;

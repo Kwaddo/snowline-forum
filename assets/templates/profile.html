@@ -91,49 +91,49 @@
                 </div>
             </div>
         </div>
+        <input type="checkbox" id="filter-toggle" class="filter-checkbox">
+        <label for="filter-toggle" class="filter-toggle-button">
+            <img src="../images/settings-sliders.png" alt="Close">
+        </label>
+        <div class="filters">
+            <form action="/filterposts" method="post">
+                <fieldset class="category-checkboxes-filters">
+                    <input type="checkbox" id="sports-filter"
+                        name="category" value="Sports">
+                    <label for="sports-filter">Sports</label>
+
+                    <input type="checkbox" id="gaming-filter"
+                        name="category" value="Gaming">
+                    <label for="gaming-filter">Gaming</label>
+
+                    <input type="checkbox" id="art-filter"
+                        name="category"
+                        value="Art">
+                    <label for="art-filter">Art</label>
+
+                    <input type="checkbox" id="music-filter"
+                        name="category"
+                        value="Music">
+                    <label for="music-filter">Music</label>
+
+                    <input type="checkbox" id="food-filter"
+                        name="category"
+                        value="Food">
+                    <label for="food-filter">Food</label>
+
+                    <input type="checkbox" id="random-filter"
+                        name="category" value="Random">
+                    <label for="random-filter">Random</label>
+                </fieldset>
+                <div class="applyFilterDiv">
+                    <button type="applyFiltersButton"
+                        id="applyFilters"></button>
+                    <label for="applyFilters"
+                        class="confirmLabel">Apply</label>
+                </div>
+            </form>
+        </div>
         <div class="all">
-            <input type="checkbox" id="filter-toggle" class="filter-checkbox">
-            <label for="filter-toggle" class="filter-toggle-button">
-                <img src="../images/settings-sliders.png" alt="Close">
-            </label>
-            <div class="filters">
-                <form action="/filterposts" method="post">
-                    <fieldset class="category-checkboxes-filters">
-                        <input type="checkbox" id="sports-filter"
-                            name="category" value="Sports">
-                        <label for="sports-filter">Sports</label>
-
-                        <input type="checkbox" id="gaming-filter"
-                            name="category" value="Gaming">
-                        <label for="gaming-filter">Gaming</label>
-
-                        <input type="checkbox" id="art-filter"
-                            name="category"
-                            value="Art">
-                        <label for="art-filter">Art</label>
-
-                        <input type="checkbox" id="music-filter"
-                            name="category"
-                            value="Music">
-                        <label for="music-filter">Music</label>
-
-                        <input type="checkbox" id="food-filter"
-                            name="category"
-                            value="Food">
-                        <label for="food-filter">Food</label>
-
-                        <input type="checkbox" id="random-filter"
-                            name="category" value="Random">
-                        <label for="random-filter">Random</label>
-                    </fieldset>
-                    <div class="applyFilterDiv">
-                        <button type="applyFiltersButton"
-                            id="applyFilters"></button>
-                        <label for="applyFilters"
-                            class="confirmLabel">Apply</label>
-                    </div>
-                </form>
-            </div>
             <div class=" profileInfo-resp">
                 <a href="#edit-profile">
                     <div class="pfp">
