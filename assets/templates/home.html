@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../static/home.css">
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     </head>
 
     <body>
@@ -33,28 +34,6 @@
             </div>
         </div>
 
-        <!-- Popups for login, create post, and logout confirmation -->
-        <div id="login" class="popup">
-            <div class="backtrack"
-                style="width: 100%; height: 100px; position: absolute;"></div>
-            <div class="popup-content">
-                <a href="/" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <h2 class="logtitle">LOGIN</h2>
-                <form action="/signin" method="POST" class="loginForm">
-                    <input name="email" placeholder="Email Address or Username"
-                        maxlength="254" minlength="9" required>
-                    <input type="password" name="password"
-                        placeholder="Passwords" maxlength="100" minlength="0"
-                        required>
-                    <input type="submit" value="Login">
-                    <a href="/register" id="regred">Don't Have an Account?
-                        Register!</a>
-                </form>
-            </div>
-        </div>
-
         <!-- Create Post Popup -->
         <div id="createPostPopup" class="popup">
             <div class="popup-content">
@@ -70,8 +49,7 @@
                             rows="8" maxlength="2000" required></textarea>
                         <input type="file" id="image" name="image" hidden>
                         <label for="image" class="upload-icon">
-                            <img src="../images/paperclip-vertical.png"
-                                alt="Upload">
+                            <i class='bx bx-paperclip' style="font-size: 40px; color: #2D283E; transform: rotate(-45deg);"></i>
                         </label>
                     </div>
                     <input type="checkbox" id="toggleCategories" hidden>
