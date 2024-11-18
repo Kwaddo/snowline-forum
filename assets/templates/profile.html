@@ -96,40 +96,40 @@
             <img src="../images/settings-sliders.png" alt="Close">
         </label>
         <div class="filters">
-            <form action="/filterposts" method="post">
-                <fieldset class="category-checkboxes-filters">
-                    <input type="checkbox" id="sports-filter"
-                        name="category" value="Sports">
-                    <label for="sports-filter">Sports</label>
-
-                    <input type="checkbox" id="gaming-filter"
-                        name="category" value="Gaming">
-                    <label for="gaming-filter">Gaming</label>
-
-                    <input type="checkbox" id="art-filter"
-                        name="category"
-                        value="Art">
-                    <label for="art-filter">Art</label>
-
-                    <input type="checkbox" id="music-filter"
-                        name="category"
-                        value="Music">
-                    <label for="music-filter">Music</label>
-
-                    <input type="checkbox" id="food-filter"
-                        name="category"
-                        value="Food">
-                    <label for="food-filter">Food</label>
-
-                    <input type="checkbox" id="random-filter"
-                        name="category" value="Random">
-                    <label for="random-filter">Random</label>
-                </fieldset>
-                <div class="applyFilterDiv">
-                    <button type="applyFiltersButton"
-                        id="applyFilters"></button>
-                    <label for="applyFilters"
-                        class="confirmLabel">Apply</label>
+            <form action="/Profile-page/filter" method="post" id="filterForm">
+                <div class="nav">
+                    <button
+                        type="submit"
+                        name="action"
+                        value="like"
+                        class="options button"
+                    >
+                        <img src="../images/like-filled.png" alt="Like">
+                    </button>
+                    <button
+                        type="submit"
+                        name="action"
+                        value="dislike"
+                        class="options button"
+                    >
+                        <img src="../images/dislike-filled.png" alt="Dislike">
+                    </button>
+                    <button
+                        type="submit"
+                        name="action"
+                        value="created"
+                        class="options button"
+                    >
+                        <img src="../images/uploaded.png" alt="Created">
+                    </button>
+                    <button
+                        type="submit"
+                        name="action"
+                        value="comment"
+                        class="options button"
+                    >
+                        <img src="../images/comments.png" alt="comment">
+                    </button>
                 </div>
             </form>
         </div>
@@ -160,7 +160,7 @@
                                 <form action="/delete-post" method="POST">
                                     <input type="hidden" name="post_id" value="{{.ID}}">
                                     <button type="submit" class="delButton">
-                                        <img class="deleteButton" src="{{$.Users.Delete}}">
+                                        <img class="deleteButton" src="../images/delete-button.png">
                                     </button>
                                 </form>
                                 {{end}}

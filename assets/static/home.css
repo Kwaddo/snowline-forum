@@ -978,6 +978,7 @@ fieldset {
         align-items: center;
         justify-content: center;
         display: block;
+        background-color: #352d4d9f;
     }
 
     .category-checkboxes-filters {
