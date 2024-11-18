@@ -1,156 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <title>Home Page</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/home.css">
-    </head>
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/home.css">
+</head>
 
-    <body>
-        <!-- Main header with logo and dynamic island -->
-        <div id="header-container">
-            <img src="../images/snowlinelogoshadow.png" alt="Logo"
-                class="logo2">
-            <div class="dynamic-island">
-                <div class="island-content">
-                    <a href="/">
-                        <img src="../images/Home.png" class="icon" title="Home">
-                    </a>
-                    <a href="/signin">
-                        <img src="../images/Plus.png" class="icon"
-                            title="Create Post">
-                    </a>
-                    <a href="/signin">
-                        <img src="../images/Profile.png"
-                            class="icon profile-icon" title="Profile">
-                    </a>
-                </div>
+<body>
+    <!-- Main header with logo and dynamic island -->
+    <div id="header-container">
+        <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo2">
+        <div class="dynamic-island">
+            <div class="island-content">
+                <a href="/">
+                    <img src="../images/Home.png" class="icon" title="Home">
+                </a>
+                <a href="/signin">
+                    <img src="../images/Plus.png" class="icon" title="Create Post">
+                </a>
+                <a href="/signin">
+                    <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
+                </a>
             </div>
         </div>
+    </div>
 
-        <input type="checkbox" id="filter-toggle" class="filter-checkbox">
-        <label for="filter-toggle" class="filter-toggle-button">
-            <img src="../images/settings-sliders.png" alt="Close">
-        </label>
-        <div class="containers">
-            <div class="filters">
-                <form action="/filterposts" method="post">
-                    <fieldset class="category-checkboxes-filters">
-                        <input type="checkbox" id="sports-filter"
-                            name="category" value="Sports">
-                        <label for="sports-filter">Sports</label>
+    <input type="checkbox" id="filter-toggle" class="filter-checkbox">
+    <label for="filter-toggle" class="filter-toggle-button">
+        <img src="../images/settings-sliders.png" alt="Close">
+    </label>
+    <div class="containers">
+        <div class="filters">
+            <form action="/filterposts" method="post">
+                <fieldset class="category-checkboxes-filters">
+                    <input type="checkbox" id="sports-filter" name="category" value="Sports">
+                    <label for="sports-filter">Sports</label>
 
-                        <input type="checkbox" id="gaming-filter"
-                            name="category" value="Gaming">
-                        <label for="gaming-filter">Gaming</label>
+                    <input type="checkbox" id="gaming-filter" name="category" value="Gaming">
+                    <label for="gaming-filter">Gaming</label>
 
-                        <input type="checkbox" id="art-filter" name="category"
-                            value="Art">
-                        <label for="art-filter">Art</label>
+                    <input type="checkbox" id="art-filter" name="category" value="Art">
+                    <label for="art-filter">Art</label>
 
-                        <input type="checkbox" id="music-filter" name="category"
-                            value="Music">
-                        <label for="music-filter">Music</label>
+                    <input type="checkbox" id="music-filter" name="category" value="Music">
+                    <label for="music-filter">Music</label>
 
-                        <input type="checkbox" id="food-filter" name="category"
-                            value="Food">
-                        <label for="food-filter">Food</label>
+                    <input type="checkbox" id="food-filter" name="category" value="Food">
+                    <label for="food-filter">Food</label>
 
-                        <input type="checkbox" id="random-filter"
-                            name="category" value="Random">
-                        <label for="random-filter">Random</label>
-                    </fieldset>
-                    <div class="applyFilterDiv">
-                        <button type="applyFiltersButton"
-                            id="applyFilters"></button>
-                        <label for="applyFilters"
-                            class="confirmLabel">Apply</label>
-                    </div>
-                </form>
-            </div>
-            <div class="posts">
-                {{range .Posts}}
-                <div class="postWithOptions">
-                    <div class="post {{if not .ImagePath}}noImage{{end}}"
-                        id="post-{{.ID}}">
-                        <input type="hidden" name="post_id" value="{{.ID}}">
+                    <input type="checkbox" id="random-filter" name="category" value="Random">
+                    <label for="random-filter">Random</label>
+                </fieldset>
+                <div class="applyFilterDiv">
+                    <button type="applyFiltersButton" id="applyFilters"></button>
+                    <label for="applyFilters" class="confirmLabel">Apply</label>
+                </div>
+            </form>
+        </div>
+        <div class="posts">
+            {{range .Posts}}
+            <div class="postWithOptions">
+                <div class="post {{if not .ImagePath}}noImage{{end}}" id="post-{{.ID}}">
+                    <input type="hidden" name="post_id" value="{{.ID}}">
 
-                        <!-- Body of the post, with profile, content, and image side-by-side -->
-                        <div class="postBody">
-                            <div class="postTop">
-                                <div class="postHeader">
-                                    <img src="{{.ProfilePic}}" alt
-                                        class="postPFP">
-                                    <p class="postAuthor">@{{.Username}}</p>
+                    <!-- Body of the post, with profile, content, and image side-by-side -->
+                    <div class="postBody">
+                        <div class="postTop">
+                            <div class="postHeader">
+                                <img src="{{.ProfilePic}}" alt class="postPFP">
+                                <p class="postAuthor">@{{.Username}}</p>
+                            </div>
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                    <p class="postContent">{{.Content}}</p>
                                 </div>
-                                <a href="/view-post?id={{.ID}}">
-                                    <div
-                                        class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                        <p class="postContent">{{.Content}}</p>
-                                    </div>
-                                </a>
-                                {{if .ImagePath}}
-                                <a href="/view-post?id={{.ID}}">
-                                    <div class="imageContainer">
-                                        <img src="{{.ImagePath}}" alt="image"
-                                            class="postImage">
-                                    </div>
-                                </a>
-                                {{end}}
-                                <div class="postOptions">
-                                    <div class="option">
-                                        <form action="/like" method="POST">
-                                            <input type="hidden" name="post_id"
-                                                value="{{.ID}}">
-                                            <button type="submit"
-                                                class="button">
-                                                <img
-                                                    src="../images/like-filled.png"
-                                                    alt="Like" class="likeIcon">
-                                            </button>
-                                        </form>
-                                        <p class="counters">{{.Likes}}</p>
-                                    </div>
-                                    <div class="option">
-                                        <form action="/dislike" method="POST">
-                                            <input type="hidden" name="post_id"
-                                                value="{{.ID}}">
-                                            <button type="submit"
-                                                class="button">
-                                                <img
-                                                    src="../images/dislike-filled.png"
-                                                    alt="Dislike"
-                                                    class="dislikeIcon">
-                                            </button>
-                                        </form>
-                                        <p class="counters">{{.Dislikes}}</p>
-                                    </div>
-                                    <div class="option">
-                                        <a href="/view-post?id={{.ID}}">
-                                            <img src="../images/comments.png"
-                                                class="commentIcon"
-                                                alt="Comments">
-                                        </a>
-                                        <p class="counters">{{.Comments}}</p>
-                                    </div>
+                            </a>
+                            {{if .ImagePath}}
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="imageContainer">
+                                    <img src="{{.ImagePath}}" alt="image" class="postImage">
                                 </div>
-                                <p class="postDate">{{.CreatedAt}}</p>
+                            </a>
+                            {{end}}
+                            <div class="postOptions">
+                                <div class="option">
+                                    <form action="/like" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Likes}}</p>
+                                </div>
+                                <div class="option">
+                                    <form action="/dislike" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Dislikes}}</p>
+                                </div>
+                                <div class="option">
+                                    <a href="/view-post?id={{.ID}}">
+                                        <img src="../images/comments.png" class="commentIcon" alt="Comments">
+                                    </a>
+                                    <p class="counters">{{.Comments}}</p>
+                                </div>
+                            </div>
+                            <p class="postDate">{{.CreatedAt}}</p>
+                            <div class="categoryImages">
                                 {{range .Category}}
-                                <div>
-                                    <img src="{{.}}" alt="{{.}}" />
-                                </div>
+                                <img src="{{.}}" alt="{{.}}" />
                                 {{end}}
                             </div>
-
-                            <!-- Optional image container -->
                         </div>
+
+                        <!-- Optional image container -->
                     </div>
                 </div>
-                {{end}}
             </div>
+            {{end}}
         </div>
-    </body>
+    </div>
+</body>
 
 </html>

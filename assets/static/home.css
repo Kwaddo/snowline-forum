@@ -616,16 +616,38 @@ input[type="submit"]:not(:hover) {
     bottom: 14px;
     right: 12px;
     cursor: pointer;
-    transition: opacity 0.3s;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .upload-icon:hover {
     opacity: 0.7;
 }
 
-.upload-icon img {
-    width: 2rem;
-    height: 2rem;
+.upload-icon i {
+    font-size: 40px;
+    color: #2D283E; /* Default color */
+    transform: rotate(-45deg);
+    transition: color 0.3s ease;
+}
+
+/* Change color when a file is selected (works in browsers that support :valid) */
+input[type="file"]:valid + label .upload-icon i {
+    color: #E74C3C; /* Red when file selected */
+}
+
+.categoryImages {
+    display: flex;               /* Use Flexbox layout */
+    justify-content: center;     /* Center images horizontally */
+    gap: 10px;                   /* Add space between images */
+    flex-wrap: wrap;             /* Allow wrapping of images if space is limited */
+    margin-top: 10px;            /* Optional: Add space between category images and other content */
+}
+
+.categoryImages img {
+    max-width: 40px;             /* Limit the size of each image */
+    height: auto;                /* Maintain the aspect ratio */
+    border-radius: 50%;          /* Make the images circular (optional) */
+    object-fit: cover;           /* Ensure the image scales correctly */
 }
 
 .createPostIcon {

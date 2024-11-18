@@ -85,10 +85,9 @@ func (m *POSTMODEL) AllPosts() ([]models.Post, error) {
 			}
 			return nil, err
 		}
-		slicecat := []string{}
-		slicecat = strings.Split(cat, ", ")
+		slicecat := strings.Split(cat, ", ")
 		for _, cat := range slicecat {
-			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
 		err = m.FetchLikesAndDislikes(&p)
@@ -169,10 +168,9 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 			}
 			return models.PostandMainUsername{}, err
 		}
-		slicecat := []string{}
-		slicecat = strings.Split(cat, ", ")
+		slicecat := strings.Split(cat, ", ")
 		for _, cat := range slicecat {
-			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
 
@@ -285,7 +283,7 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 		slicecat := []string{}
 		slicecat = strings.Split(cat, ", ")
 		for _, cat := range slicecat {
-			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
 
@@ -382,7 +380,7 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 		slicecat := []string{}
 		slicecat = strings.Split(cat, ", ")
 		for _, cat := range slicecat {
-			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
 
@@ -479,7 +477,7 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 		slicecat := []string{}
 		slicecat = strings.Split(cat, ", ")
 		for _, cat := range slicecat {
-			cat = fmt.Sprintf("./assets/images/%s.png", cat)
+			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
 		}
 
@@ -542,7 +540,7 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 	slicecat := []string{}
 	slicecat = strings.Split(cat, ", ")
 	for _, cat := range slicecat {
-		cat = fmt.Sprintf("./assets/images/%s.png", cat)
+		cat = fmt.Sprintf("../images/%s.png", cat)
 		p.Category = append(p.Category, cat)
 	}
 

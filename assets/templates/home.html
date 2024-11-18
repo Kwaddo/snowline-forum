@@ -1,241 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <title>Home Page</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/home.css">
-        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-    </head>
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/home.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
 
-    <body>
-        <!-- Main header with logo and dynamic island -->
-        <div id="header-container">
-            <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
-            <div class="dynamic-island">
-                <div class="island-content">
-                    <a href="/">
-                        <img src="../images/Home.png" class="icon" title="Home">
-                    </a>
-                    <a href="#createPostPopup">
-                        <img src="../images/Plus.png" class="icon"
-                            title="Create Post">
-                    </a>
-                    <a href="/Profile-page">
-                        <img src="../images/Profile.png"
-                            class="icon profile-icon" title="Profile">
-                    </a>
-                    <a href="/#logout-confirmation">
-                        <img src="../images/logout.png" alt="Logout"
-                            class="icon logout-icon">
-                    </a>
-                </div>
+<body>
+    <!-- Main header with logo and dynamic island -->
+    <div id="header-container">
+        <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
+        <div class="dynamic-island">
+            <div class="island-content">
+                <a href="/">
+                    <img src="../images/Home.png" class="icon" title="Home">
+                </a>
+                <a href="#createPostPopup">
+                    <img src="../images/Plus.png" class="icon" title="Create Post">
+                </a>
+                <a href="/Profile-page">
+                    <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
+                </a>
+                <a href="/#logout-confirmation">
+                    <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
+                </a>
             </div>
         </div>
+    </div>
 
-        <!-- Create Post Popup -->
-        <div id="createPostPopup" class="popup">
-            <div class="popup-content">
-                <a href="/" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <img src="../images/blog-pencil.png" alt="Create"
-                    class="createPostIcon">
-                <form action="/save-post" method="POST" class="createPostForm"
-                    enctype="multipart/form-data">
-                    <div class="textarea-container">
-                        <textarea placeholder="Start typing!" name="content"
-                            rows="8" maxlength="2000" required></textarea>
-                        <input type="file" id="image" name="image" hidden>
-                        <label for="image" class="upload-icon">
-                            <i class='bx bx-paperclip' style="font-size: 40px; color: #2D283E; transform: rotate(-45deg);"></i>
-                        </label>
-                    </div>
-                    <input type="checkbox" id="toggleCategories" hidden>
-                    <label for="toggleCategories"
-                        class="upload-button">Categories</label>
-                    <form method="post" action="/filter">
-                        <fieldset class="category-checkboxes">
-                            <input type="checkbox" id="sports" name="category"
-                                value="Sports">
-                            <label for="sports">Sports</label>
-
-                            <input type="checkbox" id="gaming" name="category"
-                                value="Gaming">
-                            <label for="gaming">Gaming</label>
-
-                            <input type="checkbox" id="art" name="category"
-                                value="Art">
-                            <label for="art">Art</label>
-
-                            <input type="checkbox" id="music" name="category"
-                                value="Music">
-                            <label for="music">Music</label>
-
-                            <input type="checkbox" id="food" name="category"
-                                value="Food">
-                            <label for="food">Food</label>
-
-                            <input type="checkbox" id="random" name="category"
-                                value="Random">
-                            <label for="random">Random</label>
-                        </fieldset>
-                        <input type="submit" value="Submit Post">
-                    </form>
+    <!-- Create Post Popup -->
+    <div id="createPostPopup" class="popup">
+        <div class="popup-content">
+            <a href="/" class="popup-close">
+                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+            </a>
+            <img src="../images/blog-pencil.png" alt="Create" class="createPostIcon">
+            <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
+                <div class="textarea-container">
+                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
+                    <input type="file" id="image" name="image" hidden>
+                    <label for="image" class="upload-icon">
+                        <i class='bx bx-paperclip'
+                            style="font-size: 40px; color: #2D283E; transform: rotate(-45deg);"></i>
+                    </label>
                 </div>
+                <input type="checkbox" id="toggleCategories" hidden>
+                <label for="toggleCategories" class="upload-button">Categories</label>
+                <form method="post" action="/filter">
+                    <fieldset class="category-checkboxes">
+                        <input type="checkbox" id="sports" name="category" value="Sports">
+                        <label for="sports">Sports</label>
+
+                        <input type="checkbox" id="gaming" name="category" value="Gaming">
+                        <label for="gaming">Gaming</label>
+
+                        <input type="checkbox" id="art" name="category" value="Art">
+                        <label for="art">Art</label>
+
+                        <input type="checkbox" id="music" name="category" value="Music">
+                        <label for="music">Music</label>
+
+                        <input type="checkbox" id="food" name="category" value="Food">
+                        <label for="food">Food</label>
+
+                        <input type="checkbox" id="random" name="category" value="Random">
+                        <label for="random">Random</label>
+                    </fieldset>
+                    <input type="submit" value="Submit Post">
+                </form>
+        </div>
+    </div>
+
+    <div id="logout-confirmation" class="popup">
+        <div class="popup-content">
+            <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO
+                LOGOUT?</h1>
+            <form action="/logout" method="POST">
+                <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
+            </form>
+            <form action="/">
+                <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
+            </form>
+            <div class="button-row">
+                <label for="yes-toggle" class="confirmLabel">YES</label>
+                <label for="no-toggle" class="confirmLabel">NO</label>
             </div>
+        </div>
+    </div>
 
-            <div id="logout-confirmation" class="popup">
-                <div class="popup-content">
-                    <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO
-                        LOGOUT?</h1>
-                    <form action="/logout" method="POST">
-                        <button id="yes-toggle" type="submit"
-                            class="button hidden-button">YES</button>
-                    </form>
-                    <form action="/">
-                        <button type="submit" id="no-toggle"
-                            class="button hidden-button">NO</button>
-                    </form>
-                    <div class="button-row">
-                        <label for="yes-toggle" class="confirmLabel">YES</label>
-                        <label for="no-toggle" class="confirmLabel">NO</label>
-                    </div>
+    <input type="checkbox" id="filter-toggle" class="filter-checkbox">
+    <label for="filter-toggle" class="filter-toggle-button">
+        <img src="../images/settings-sliders.png" alt="Close">
+    </label>
+    <div class="containers">
+        <div class="filters">
+            <form action="/filterposts" method="post">
+                <fieldset class="category-checkboxes-filters">
+                    <input type="checkbox" id="sports-filter" name="category" value="Sports">
+                    <label for="sports-filter">Sports</label>
+
+                    <input type="checkbox" id="gaming-filter" name="category" value="Gaming">
+                    <label for="gaming-filter">Gaming</label>
+
+                    <input type="checkbox" id="art-filter" name="category" value="Art">
+                    <label for="art-filter">Art</label>
+
+                    <input type="checkbox" id="music-filter" name="category" value="Music">
+                    <label for="music-filter">Music</label>
+
+                    <input type="checkbox" id="food-filter" name="category" value="Food">
+                    <label for="food-filter">Food</label>
+
+                    <input type="checkbox" id="random-filter" name="category" value="Random">
+                    <label for="random-filter">Random</label>
+                </fieldset>
+                <div class="applyFilterDiv">
+                    <button type="applyFiltersButton" id="applyFilters"></button>
+                    <label for="applyFilters" class="confirmLabel">Apply</label>
                 </div>
-            </div>
-
-            <input type="checkbox" id="filter-toggle" class="filter-checkbox">
-            <label for="filter-toggle" class="filter-toggle-button">
-                <img src="../images/settings-sliders.png" alt="Close">
-            </label>
-            <div class="containers">
-                <div class="filters">
-                    <form action="/filterposts" method="post">
-                        <fieldset class="category-checkboxes-filters">
-                            <input type="checkbox" id="sports-filter"
-                                name="category" value="Sports">
-                            <label for="sports-filter">Sports</label>
-
-                            <input type="checkbox" id="gaming-filter"
-                                name="category" value="Gaming">
-                            <label for="gaming-filter">Gaming</label>
-
-                            <input type="checkbox" id="art-filter"
-                                name="category"
-                                value="Art">
-                            <label for="art-filter">Art</label>
-
-                            <input type="checkbox" id="music-filter"
-                                name="category"
-                                value="Music">
-                            <label for="music-filter">Music</label>
-
-                            <input type="checkbox" id="food-filter"
-                                name="category"
-                                value="Food">
-                            <label for="food-filter">Food</label>
-
-                            <input type="checkbox" id="random-filter"
-                                name="category" value="Random">
-                            <label for="random-filter">Random</label>
-                        </fieldset>
-                        <div class="applyFilterDiv">
-                            <button type="applyFiltersButton"
-                                id="applyFilters"></button>
-                            <label for="applyFilters"
-                                class="confirmLabel">Apply</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="posts">
-                    {{range .Posts}}
-                    <div class="postWithOptions">
-                        <div class="post {{if not .ImagePath}}noImage{{end}}"
-                            id="post-{{.ID}}">
-                            <input type="hidden" name="post_id" value="{{.ID}}">
-                            <div class="postBody">
-                                <div class="postTop">
-                                    <div class="postHeader">
-                                        <img src="{{.ProfilePic}}" alt
-                                            class="postPFP">
-                                        <p class="postAuthor">@{{.Username}}</p>
-                                    </div>
-                                    <a href="/view-post?id={{.ID}}">
-                                        <div
-                                            class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                            <p
-                                                class="postContent">{{.Content}}</p>
-                                        </div>
-                                    </a>
-                                    {{if .ImagePath}}
-                                    <a href="/view-post?id={{.ID}}">
-                                        <div class="imageContainer">
-                                            <img src="{{.ImagePath}}"
-                                                alt="image"
-                                                class="postImage">
-                                        </div>
-                                    </a>
-                                    {{end}}
-                                    <div class="postOptions">
-                                        <div class="option">
-                                            <form action="/like" method="POST">
-                                                <input type="hidden"
-                                                    name="post_id"
-                                                    value="{{.ID}}">
-                                                <button type="submit"
-                                                    class="button">
-                                                    <img
-                                                        src="../images/like-filled.png"
-                                                        alt="Like"
-                                                        class="likeIcon">
-                                                </button>
-                                            </form>
-                                            <p class="counters">{{.Likes}}</p>
-                                        </div>
-                                        <div class="option">
-                                            <form action="/dislike"
-                                                method="POST">
-                                                <input type="hidden"
-                                                    name="post_id"
-                                                    value="{{.ID}}">
-                                                <button type="submit"
-                                                    class="button">
-                                                    <img
-                                                        src="../images/dislike-filled.png"
-                                                        alt="Dislike"
-                                                        class="dislikeIcon">
-                                                </button>
-                                            </form>
-                                            <p
-                                                class="counters">{{.Dislikes}}</p>
-                                        </div>
-                                        <div class="option">
-                                            <a href="/view-post?id={{.ID}}">
-                                                <img
-                                                    src="../images/comments.png"
-                                                    class="commentIcon"
-                                                    alt="Comments">
-                                            </a>
-                                            <p
-                                                class="counters">{{.Comments}}</p>
-                                        </div>
-                                    </div>
-                                    <p class="postDate">{{.CreatedAt}}</p>
-                                    {{range .Category}}
-                                    <div>
-                                        <img src="{{.}}" alt="{{.}}" />
-                                    </div>
-                                    {{end}}
+            </form>
+        </div>
+        <div class="posts">
+            {{range .Posts}}
+            <div class="postWithOptions">
+                <div class="post {{if not .ImagePath}}noImage{{end}}" id="post-{{.ID}}">
+                    <input type="hidden" name="post_id" value="{{.ID}}">
+                    <div class="postBody">
+                        <div class="postTop">
+                            <div class="postHeader">
+                                <img src="{{.ProfilePic}}" alt class="postPFP">
+                                <p class="postAuthor">@{{.Username}}</p>
+                            </div>
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                    <p class="postContent">{{.Content}}</p>
                                 </div>
-
-                                <!-- Optional image container -->
+                            </a>
+                            {{if .ImagePath}}
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="imageContainer">
+                                    <img src="{{.ImagePath}}" alt="image" class="postImage">
+                                </div>
+                            </a>
+                            {{end}}
+                            <div class="postOptions">
+                                <div class="option">
+                                    <form action="/like" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Likes}}</p>
+                                </div>
+                                <div class="option">
+                                    <form action="/dislike" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Dislikes}}</p>
+                                </div>
+                                <div class="option">
+                                    <a href="/view-post?id={{.ID}}">
+                                        <img src="../images/comments.png" class="commentIcon" alt="Comments">
+                                    </a>
+                                    <p class="counters">{{.Comments}}</p>
+                                </div>
+                            </div>
+                            <p class="postDate">{{.CreatedAt}}</p>
+                            <div class="categoryImages">
+                                {{range .Category}}
+                                <img src="{{.}}" alt="{{.}}" />
+                                {{end}}
                             </div>
                         </div>
+
+                        <!-- Optional image container -->
                     </div>
-                    {{end}}
                 </div>
             </div>
-        </body>
+            {{end}}
+        </div>
+    </div>
+</body>
 
-    </html>
+</html>

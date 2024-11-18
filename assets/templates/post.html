@@ -106,11 +106,11 @@
                     class="postImage">
             </div>
             {{end}}
-            {{range .info.Posts.Category}}
-            <div>
+            <div class="categoryImages">
+                {{range .info.Posts.Category}}
                 <img src="{{.}}" alt="{{.}}" />
+                {{end}}
             </div>
-            {{end}}
         </div>
         <div class="textarea-container2">
             <form action="/savecomment" method="POST" align="center">

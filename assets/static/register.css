@@ -180,6 +180,26 @@ input[type="submit"]:not(:hover) {
     color: #af0000;
 }
 
+.connectionIcons {
+    display: flex;                   /* Align items in a row */
+    gap: 10px;                       /* Space between the buttons */
+    justify-content: center;         /* Center the buttons horizontally */
+    align-items: center;   
+    margin-top: 5px;          /* Center the buttons vertically */
+}
+
+.connectionIcons button {
+    background: none;                /* Remove default button styling */
+    border: none;                    /* Remove border */
+    padding: 5px;                    /* Add some padding around the icon */
+    cursor: pointer;                 /* Change cursor to pointer */
+}
+
+.connectionIcons button img {
+    width: 32.5px;                     /* Adjust the size of the icons */
+    height: 32.5px;
+}
+
 
 @media (max-width: 1000px) {
     .login-container {
