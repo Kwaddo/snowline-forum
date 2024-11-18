@@ -203,11 +203,11 @@
                                     </div>
                                 </div>
                                 <p class="postDate">{{.CreatedAt}}</p>
-                                {{range .Category}}
-                                <div>
-                                    <img src="{{.}}" alt="{{.}}">
+                                <div class="categoryImages">
+                                    {{range .Category}}
+                                    <img src="{{.}}" alt="{{.}}" />
+                                    {{end}}
                                 </div>
-                                {{end}}
                             </div>
                             <!-- Optional image container -->
                         </div>
