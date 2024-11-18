@@ -31,7 +31,11 @@ a {
 .filter-toggle-button {
     position: fixed;
     display: none;
-    flex-direction: column;
+    flex-direction: column;        
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
     justify-content: center;
     background-color: #802BB1;
     top: 50%;
@@ -323,7 +327,7 @@ html::-webkit-scrollbar-track {
 
 
 .posts {
-    width: 70%;
+    width: 90%;
     /* Dynamic width for larger screens */
     border-radius: 3rem;
     display: flex;
@@ -343,7 +347,7 @@ html::-webkit-scrollbar-track {
 
 .post {
     background-color: #564F6F;
-    width: 600px;
+    width: 87.5%;
     border-radius: 20px;
     padding: 30px;
     display: flex;
@@ -902,37 +906,35 @@ input[name="name"]:hover {
 }
 
 @media (max-width:768px) {
-
     .profileInfo-resp {
         display: flex;
         flex-direction: column;
         align-items: center;
         grid-row: 1/2;
         justify-self: center;
-        margin-top: 3em;
+        /* margin-top: 3em; */
     }
 
     .all {
-        grid-template-rows: 40vh 70vh;
-        grid-template-columns: 100vh;
-        height: auto 0;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 20px; /* Ensure there is space between grid items */
+        margin-bottom: 200px; /* Space below the entire container */
     }
-
+    
     .posts {
         grid-row: 2/-1;
         grid-column: 1/2;
         justify-self: center;
-        margin-top: 8em;
+        width: 85%;
+        /* margin-top: 8em; */
         display: grid;
         grid-template-columns: 1fr;  /* Single column layout */
         gap: 1rem;  /* Space between posts */
         padding: 1rem;  /* Padding to ensure space around the edges */
         height: auto; /* Automatically adjusts height based on content */
-        background: transparent;
-        border-radius: 0;
-        box-shadow: none;
-        border: none;
+        margin-bottom: 10px;
     }
 
 
@@ -1192,6 +1194,7 @@ input[name="name"]:hover {
         /* Stack items on top of each other */
         gap: 2rem;
         align-items: center;
+        justify-content: center;
     }
 
     #title {
@@ -1199,7 +1202,7 @@ input[name="name"]:hover {
     }
 
     .posts {
-        width: 50%;
+        width: 85%;
         /* Full width for posts */
     }
 
@@ -1284,7 +1287,7 @@ input[name="name"]:hover {
         width: 300px;
     }
     .posts {
-        width: 350px;
+        width: 85%;
         /* Full width for posts */
     }
 
@@ -1375,7 +1378,7 @@ input[name="name"]:hover {
     }
 
     .posts {
-        width: 300px;
+        width: 90%;
     }
 
     .post {
