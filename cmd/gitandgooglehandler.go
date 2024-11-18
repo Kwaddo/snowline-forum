@@ -173,19 +173,21 @@ func (app *app) SetGoogleUserInfo(w http.ResponseWriter, r *http.Request, access
 
 	exists, err := app.users.CheckEmailExists(email)
 	if err != nil {
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		log.Println(err)
+		ErrorHandle(w, 500, "Database error")
 		return
 	}
 
 	if !exists {
-		err = app.users.InsertUser(email, username, "")
+		err = app.users.InsertUser(username, email, "")
 		if err != nil {
-			http.Error(w, "Error saving user to database", http.StatusInternalServerError)
+			log.Println(err)
+			ErrorHandle(w, 500, "Error Saving User in Database")
 			return
 		}
 	}
 
-	uniqueInput := r.PostForm.Get("email") + time.Now().Format(time.RFC3339Nano)
+	uniqueInput := email + time.Now().Format(time.RFC3339Nano)
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
 	expiresAt := time.Now().Add(1 * time.Hour)
 	http.SetCookie(w, &http.Cookie{
@@ -197,8 +199,16 @@ func (app *app) SetGoogleUserInfo(w http.ResponseWriter, r *http.Request, access
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	})
-	id, _ := app.users.GetUserID(r)
-	name, _ := app.users.GetUserName(r)
+	id, name, _ := app.users.Authentication2(
+		email,
+		username,
+	)
+	_, err = app.users.DB.Exec(sqlite.UpdateSimiliarSessions, id)
+	if err != nil {
+		log.Println(err)
+		ErrorHandle(w, 500, "Failed to create session")
+		return
+	}
 	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)
@@ -258,16 +268,15 @@ func (app *app) SetGitHubUserInfo(w http.ResponseWriter, r *http.Request, access
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
-
 	if !exists {
-		err = app.users.InsertUser(email, username, "")
+		err = app.users.InsertUser(username, email, "")
 		if err != nil {
 			http.Error(w, "Error saving user to database", http.StatusInternalServerError)
 			return
 		}
 	}
 
-	uniqueInput := r.PostForm.Get("email") + time.Now().Format(time.RFC3339Nano)
+	uniqueInput := r.PostForm.Get(email) + time.Now().Format(time.RFC3339Nano)
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
 	expiresAt := time.Now().Add(1 * time.Hour)
 	http.SetCookie(w, &http.Cookie{
@@ -279,8 +288,16 @@ func (app *app) SetGitHubUserInfo(w http.ResponseWriter, r *http.Request, access
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	})
-	id, _ := app.users.GetUserID(r)
-	name, _ := app.users.GetUserName(r)
+	id, name, _ := app.users.Authentication2(
+		email,
+		username,
+	)
+	_, err = app.users.DB.Exec(sqlite.UpdateSimiliarSessions, id)
+	if err != nil {
+		log.Println(err)
+		ErrorHandle(w, 500, "Failed to create session")
+		return
+	}
 	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
 	if err != nil {
 		log.Println("Error inserting session:", err)

@@ -63,6 +63,7 @@ const (
 // Select ---> Authentication and User Retrieval
 const (
 	AuthenticateUserQuery = `SELECT user_id, password, name FROM USERS WHERE email = ? OR name = ?`
+	AuthenticateUserQuery2 = `SELECT user_id, name FROM USERS WHERE email = ? OR name = ?`
 	GetUserIDQuery        = `SELECT user_id FROM SESSIONS WHERE cookie_value = ?`
 	GetUserNameQuery      = `SELECT username FROM SESSIONS WHERE cookie_value = ?`
 )

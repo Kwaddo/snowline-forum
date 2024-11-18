@@ -48,6 +48,18 @@ func (u *USERMODEL) Authentication(email, password string) (int, string, error) 
 	return id, name, nil
 }
 
+func (u *USERMODEL) Authentication2(email, username string) (int, string, error) {
+	var id int
+	var name string
+
+	row := u.DB.QueryRow(AuthenticateUserQuery2, email, username)
+	err := row.Scan(&id, &name)
+	if err != nil {
+		return 0, "", err
+	}
+	return id, name, nil
+}
+
 func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 	cookies := r.Cookies()
 	var cookievalue string
@@ -74,6 +86,7 @@ func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	log.Println("lol:",id)
 	return id, nil
 }
 
@@ -132,7 +145,6 @@ func (u *USERMODEL) CheckEmailExists(email string) (bool, error) {
 	err := row.Scan(&count)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			// No rows, email doesn't exist
 			return false, nil
 		}
 		log.Println("Error checking email existence:", err)
@@ -142,7 +154,6 @@ func (u *USERMODEL) CheckEmailExists(email string) (bool, error) {
 	return count > 0, nil
 }
 
-// InsertUser inserts a new user into the user table
 func (u *USERMODEL) InsertUser(name, email, password string) error {
 	_, err := u.DB.Exec(InsertUserQuery, name, email, password)
 	if err != nil {

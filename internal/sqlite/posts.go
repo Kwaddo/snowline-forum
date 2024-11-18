@@ -17,9 +17,10 @@ type POSTMODEL struct {
 func (m *POSTMODEL) InsertPost(userModel *USERMODEL, w http.ResponseWriter, r *http.Request, title, content, image_path, categories string) (int64, error) {
 	userID, err := userModel.GetUserID(r)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error fetching user_id:", err)
 		return 0, err
 	}
+
 	var userName string
 	err = m.DB.QueryRow(UserNamefromUserID, userID).Scan(&userName)
 	if err != nil {

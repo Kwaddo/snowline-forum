@@ -22,6 +22,9 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	category_ids := r.Form["category"]
+	if len(category_ids) == 0 {
+		category_ids = append(category_ids, "Random")
+	}
 	categoryIdsStr := strings.Join(category_ids, ", ")
 	image, _, err := r.FormFile("image")
 	if err != nil && err.Error() != "http: no such file" {
@@ -321,7 +324,7 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		for rows.Next() {
-			
+
 			cat := ""
 			err := rows.Scan(&p.ID, &p.Title, &p.Content, &p.ImagePath, &p.CreatedAt, &p.Username, &cat)
 			if err != nil {
@@ -334,12 +337,18 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 			slicecat := []string{}
 			slicecat = strings.Split(cat, ", ")
 			for _, cat := range slicecat {
-				cat = fmt.Sprintf("./assets/images/%s.png", cat)
+				cat = fmt.Sprintf("../images/%s.png", cat)
 				p.Category = append(p.Category, cat)
 			}
 			err = app.posts.FetchLikesAndDislikes(&p)
 			if err != nil {
 				log.Println("Error fetching likes/dislikes:", err)
+				return
+			}
+
+			err = app.users.DB.QueryRow(sqlite.PostCommentsCountStmt, p.ID).Scan(&p.Comments)
+			if err != nil {
+				log.Println("Error fetching post likes count:", err)
 				return
 			}
 			P = append(P, p)
