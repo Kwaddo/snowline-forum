@@ -36,6 +36,10 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	title := r.FormValue("title")
 	content := r.FormValue("content")
+	if content == "" || title == "" {
+		ErrorHandle(w, 400, "Content is empty")
+		return
+	}
 	if err == nil {
 		defer image.Close()
 		timestamp := time.Now().UnixNano()
@@ -108,6 +112,10 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 	const maxContentLength = 2000 // Example: 10,000 characters
 	if len(content) > maxContentLength {
 		ErrorHandle(w, 400, "Comment is too long")
+		return
+	}
+	if content == "" {
+		ErrorHandle(w, 400, "Comment is empty")
 		return
 	}
 	commentID, err := app.posts.InsertComment(app.users, w, r, content, postID)
