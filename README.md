@@ -23,7 +23,7 @@ The project was created by Ahmed Aburowais, Salman Naderl, Moataz Ibrahim and Al
     ```
 3. Run the code:
     ```bash
-    go run . ./cmd/.
+    go run ./cmd/.
     ```
 
 ## Usage
