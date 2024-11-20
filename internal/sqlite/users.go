@@ -86,7 +86,6 @@ func (u *USERMODEL) GetUserID(r *http.Request) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	log.Println("lol:",id)
 	return id, nil
 }
 
