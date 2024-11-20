@@ -27,56 +27,6 @@
                 </div>
             </div>
         </div>
-        <div id="createPostPopup" class="popup">
-            <div class="popup-content">
-                <a href="/" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <img src="../images/blog-pencil.png" alt="Create"
-                    class="createPostIcon">
-                <form action="/save-post" method="POST" class="createPostForm"
-                    enctype="multipart/form-data">
-                    <div class="textarea-container">
-                        <textarea placeholder="Start typing!" name="content"
-                            rows="8" maxlength="2000" required></textarea>
-                        <input type="file" id="image" name="image" hidden>
-                        <label for="image" class="upload-icon">
-                            <img src="../images/paperclip-vertical.png"
-                                alt="Upload">
-                        </label>
-                    </div>
-                    <input type="checkbox" id="toggleCategories" hidden>
-                    <label for="toggleCategories"
-                        class="upload-button">Categories</label>
-                    <fieldset class="category-checkboxes">
-                        <input type="checkbox" id="sports" name="category"
-                            value="Sports">
-                        <label for="sports">Sports</label>
-
-                        <input type="checkbox" id="gaming" name="category"
-                            value="Gaming">
-                        <label for="gaming">Gaming</label>
-
-                        <input type="checkbox" id="art" name="category"
-                            value="Art">
-                        <label for="art">Art</label>
-
-                        <input type="checkbox" id="music" name="category"
-                            value="Music">
-                        <label for="music">Music</label>
-
-                        <input type="checkbox" id="food" name="category"
-                            value="Food">
-                        <label for="food">Food</label>
-
-                        <input type="checkbox" id="random" name="category"
-                            value="Random">
-                        <label for="random">Random</label>
-                    </fieldset>
-                    <input type="submit" value="Submit Post">
-                </form>
-            </div>
-        </div>
         <div id="logout-confirmation" class="popup">
             <div class="popup-content">
                 <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
@@ -110,6 +60,26 @@
                 {{range .info.Posts.Category}}
                 <img src="{{.}}" alt="{{.}}" />
                 {{end}}
+            </div>
+            <div class="postOptions">
+                <div class="option">
+                    <form action="/post-like" method="POST">
+                        <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
+                        <button type="submit" class="button">
+                            <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                        </button>
+                    </form>
+                    <p class="counters">{{.info.Posts.Likes}}</p>
+                </div>
+                <div class="option">
+                    <form action="/post-dislike" method="POST">
+                        <input type="hidden" name="post_id" value="{{.info.Posts.ID}}">
+                        <button type="submit" class="button">
+                            <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                        </button>
+                    </form>
+                    <p class="counters">{{.info.Posts.Dislikes}}</p>
+                </div>
             </div>
         </div>
         <div class="textarea-container2">

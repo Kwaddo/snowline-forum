@@ -141,6 +141,8 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/#post-"+postID, http.StatusFound)
 }
 
+
+
 func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -161,6 +163,50 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, "/#post-"+postID, http.StatusFound)
+}
+
+func (app *app) PostLikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/signin", http.StatusFound)
+		return
+	}
+	err = app.posts.ToggleLike(w, r, postID, userID)
+	if err != nil {
+		log.Println("Error toggling like:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
+}
+
+func (app *app) PostDislikeHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	postID := r.FormValue("post_id")
+	userID, err := app.users.GetUserID(r)
+	if err != nil {
+		log.Println("Error getting user ID:", err)
+		http.Redirect(w, r, "/signin", http.StatusFound)
+		return
+	}
+	err = app.posts.ToggleDislike(w, r, postID, userID)
+	if err != nil {
+		log.Println("Error toggling dislike:", err)
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/view-post?id="+postID, http.StatusFound)
 }
 
 func (app *app) ProfileLikeHandler(w http.ResponseWriter, r *http.Request) {

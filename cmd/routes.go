@@ -17,6 +17,8 @@ func (app *app) routes() http.Handler {
 	mux.HandleFunc("POST /Profile-page/filter", app.FilteringPosts)
 	mux.HandleFunc("POST /like", app.LikeHandler)
 	mux.HandleFunc("POST /dislike", app.DislikeHandler)
+	mux.HandleFunc("POST /post-like", app.PostLikeHandler)
+	mux.HandleFunc("POST /post-dislike", app.PostDislikeHandler)
 	mux.HandleFunc("POST /profile-like", app.ProfileLikeHandler)
 	mux.HandleFunc("POST /profile-dislike", app.ProfileDislikeHandler)
 	mux.HandleFunc("POST /comment-like", app.CommentLikeHandler)
