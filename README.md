@@ -26,12 +26,21 @@ The project was created by Ahmed Aburowais, Salman Naderl, Moataz Ibrahim and Al
     go run ./cmd/.
     ```
 
+
+# To build the docker image using the dockerfile run this command:
+
+    - docker image build -f dockerfile -t forum-image .
+
+# To Build the docker container using the docker file run this command:
+
+    - docker container run -p 3333:3333 --detach --name forum-container forum-image
+
 ## Usage
 
 1. Open your browser and navigate to `http://localhost:3333`.
 2. Register a new account or log in with an existing account.
 3. Start creating and interacting with posts!
 
-## License
+# License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
