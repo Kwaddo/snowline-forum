@@ -164,6 +164,7 @@ html::-webkit-scrollbar-track {
 .delButton {
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 .deleteButton {

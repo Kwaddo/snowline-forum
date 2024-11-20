@@ -37,7 +37,9 @@
             <a href="/" class="popup-close">
                 <img src="../images/close-tab-svgrepo-com.png" alt="Close">
             </a>
-            <img src="../images/blog-pencil.png" alt="Create" class="createPostIcon">
+            <div class="createPostTop">
+                <img src="../images/clipboard-regular-240 (1).png" alt="Create" class="createPostIcon">
+            </div>
             <form action="/save-post" method="POST" class="createPostForm" enctype="multipart/form-data">
                 <div class="textarea-container">
                     <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000" required></textarea>
@@ -51,7 +53,7 @@
                 <label for="toggleCategories" class="upload-button">Categories</label>
                 <form method="post" action="/filter">
                     <fieldset class="category-checkboxes">
-                        <input type="checkbox" id="sports" name="category" value="Sports">
+                        <input type="checkbox" id="sports" name="category" value="Sports" required>
                         <label for="sports">Sports</label>
 
                         <input type="checkbox" id="gaming" name="category" value="Gaming">
