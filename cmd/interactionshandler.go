@@ -36,7 +36,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 
 	title := r.FormValue("title")
 	content := r.FormValue("content")
-	if content == "" || title == "" {
+	if content == ""{
 		ErrorHandle(w, 400, "Content is empty")
 		return
 	}
