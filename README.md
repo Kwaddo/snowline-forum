@@ -15,23 +15,15 @@ The project was created by Ahmed Aburowais, Salman Naderl, Moataz Ibrahim and Al
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/forum.git
+    git clone https://learn.reboot01.com/git/ak1/forum.git
     ```
 2. Navigate to the project directory:
     ```bash
     cd forum
     ```
-3. Install dependencies:
+3. Run the code:
     ```bash
-    npm install
-    ```
-4. Set up the database:
-    ```bash
-    npm run setup-db
-    ```
-5. Start the development server:
-    ```bash
-    npm start
+    go run . ./cmd/.
     ```
 
 ## Usage
