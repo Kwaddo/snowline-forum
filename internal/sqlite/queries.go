@@ -44,6 +44,7 @@ const (
 	CommentIsLikedQuery        = `SELECT isliked FROM COMMENT_LIKES WHERE comment_id = ? AND user_id = ?`
 	PostCategory               = `SELECT post_id FROM post_categories WHERE category_id = ? ORDER BY post_id DESC`
 	UserNamefromUserID         = `SELECT name FROM USERS WHERE user_id = ?`
+	PostExistsQuery            = `SELECT COUNT(*) FROM posts WHERE id = ?`
 )
 
 // Update statements
@@ -62,8 +63,8 @@ const (
 
 // Select ---> Authentication and User Retrieval
 const (
-	AuthenticateUserQuery = `SELECT user_id, password, name FROM USERS WHERE email = ? OR name = ?`
+	AuthenticateUserQuery  = `SELECT user_id, password, name FROM USERS WHERE email = ? OR name = ?`
 	AuthenticateUserQuery2 = `SELECT user_id, name FROM USERS WHERE email = ? OR name = ?`
-	GetUserIDQuery        = `SELECT user_id FROM SESSIONS WHERE cookie_value = ?`
-	GetUserNameQuery      = `SELECT username FROM SESSIONS WHERE cookie_value = ?`
+	GetUserIDQuery         = `SELECT user_id FROM SESSIONS WHERE cookie_value = ?`
+	GetUserNameQuery       = `SELECT username FROM SESSIONS WHERE cookie_value = ?`
 )

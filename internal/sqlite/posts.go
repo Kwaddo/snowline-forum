@@ -713,3 +713,13 @@ func (m *POSTMODEL) ToggleCommentDislike(w http.ResponseWriter, r *http.Request,
 	}
 	return nil
 }
+
+func (m *POSTMODEL) PostExists(postID string) (bool, error) {
+	var count int
+	err := m.DB.QueryRow(PostExistsQuery, postID).Scan(&count)
+	if err != nil {
+		log.Println("Error checking if post exists:", err)
+		return false, err
+	}
+	return count > 0, nil
+}

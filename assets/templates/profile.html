@@ -159,6 +159,7 @@
                                 {{if $.Users.Delete}}
                                 <form action="/delete-post" method="POST">
                                     <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <input type="hidden" name="username" value="{{.Username}}">
                                     <button type="submit" class="delButton">
                                         <img class="deleteButton" src="../images/delete-button.png">
                                     </button>
