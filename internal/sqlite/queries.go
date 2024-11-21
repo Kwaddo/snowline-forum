@@ -6,6 +6,7 @@ const (
 	InsertCommentQuery            = `INSERT INTO COMMENTS (post_id, user_id, content, username, created_at) VALUES (?, ?, ?, ?, ?)`
 	InsertUserQuery               = `INSERT INTO USERS (name, email, password) VALUES (?, ?, ?)`
 	CheckEmailExistsQuery         = `SELECT COUNT(*) FROM users WHERE email = ?`
+	CheckUsernameExistsQuery      = `SELECT COUNT(*) FROM users WHERE name = ?`
 	InsertUserQueryNoP            = `INSERT INTO users (name, email) VALUES (?, ?)`
 	InsertSession                 = `INSERT INTO SESSIONS (cookie_value, user_id, expires_at, username, isvalid) VALUES (?, ?, ?, ?, true);`
 	InsertOrReplaceLike           = `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE);`

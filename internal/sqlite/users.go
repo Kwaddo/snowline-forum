@@ -161,6 +161,21 @@ func (u *USERMODEL) CheckEmailExists(email string) (bool, error) {
 	return count > 0, nil
 }
 
+func (u *USERMODEL) CheckNameExists(username string) (bool, error) {
+	var count int
+	row := u.DB.QueryRow(CheckUsernameExistsQuery, username)
+	err := row.Scan(&count)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, nil
+		}
+		log.Println("Error checking email existence:", err)
+		return false, err
+	}
+
+	return count > 0, nil
+}
+
 func (u *USERMODEL) InsertUser(name, email, password string) error {
 	_, err := u.DB.Exec(InsertUserQuery, name, email, password)
 	if err != nil {

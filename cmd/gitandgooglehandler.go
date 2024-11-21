@@ -173,16 +173,18 @@ func (app *app) SetGoogleUserInfo(w http.ResponseWriter, r *http.Request, access
 
 	exists, err := app.users.CheckEmailExists(email)
 	if err != nil {
-		log.Println(err)
-		ErrorHandle(w, 500, "Database error")
+		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
-
-	if !exists {
+	exists2, err := app.users.CheckNameExists(username)
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+	if !exists && !exists2 {
 		err = app.users.InsertUser(username, email, "")
 		if err != nil {
-			log.Println(err)
-			ErrorHandle(w, 500, "Error Saving User in Database")
+			http.Error(w, "Error saving user to database", http.StatusInternalServerError)
 			return
 		}
 	}
@@ -268,7 +270,12 @@ func (app *app) SetGitHubUserInfo(w http.ResponseWriter, r *http.Request, access
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
-	if !exists {
+	exists2, err := app.users.CheckNameExists(username)
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+	if !exists && !exists2 {
 		err = app.users.InsertUser(username, email, "")
 		if err != nil {
 			http.Error(w, "Error saving user to database", http.StatusInternalServerError)
