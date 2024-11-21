@@ -106,7 +106,11 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 	image, header, err := r.FormFile("image")
-	if err != nil && err.Error() != "http: no such file" {
+	if err != nil {
+		if err.Error() == "http: no such file" {
+			http.Redirect(w, r, "/Profile-page", http.StatusFound)
+			return
+		}
 		ErrorHandle(w, 400, "Error retrieving the file")
 		log.Println(err)
 		return
@@ -154,6 +158,6 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/Profile-page", http.StatusFound)
 
 }
