@@ -44,7 +44,7 @@ const (
 	CommentIsLikedQuery        = `SELECT isliked FROM COMMENT_LIKES WHERE comment_id = ? AND user_id = ?`
 	PostCategory               = `SELECT post_id FROM post_categories WHERE category_id = ? ORDER BY post_id DESC`
 	UserNamefromUserID         = `SELECT name FROM USERS WHERE user_id = ?`
-	PostExistsQuery            = `SELECT COUNT(*) FROM posts WHERE id = ?`
+	PostExistsQuery            = `SELECT COUNT(*) FROM POSTS WHERE post_id = ?`
 )
 
 // Update statements
