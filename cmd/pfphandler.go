@@ -117,6 +117,12 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorHandle(w, 400, "File size too large")
 			return
 		}
+		contentType := header.Header.Get("Content-Type")
+		if !validMimeTypes[contentType] {
+			ErrorHandle(w, 400, "Invalid file type. Only JPG, JPEG, PNG, or GIF allowed")
+			log.Println("Invalid file type:", contentType)
+			return
+		}
 		timestamp := time.Now().UnixNano()
 		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
 

@@ -24,10 +24,11 @@ var allowedCategories = map[string]bool{
 	"Random": true,
 }
 
-var validTypes = map[string]bool{
+var validMimeTypes = map[string]bool{
 	"image/jpeg": true,
 	"image/png":  true,
 	"image/gif":  true,
+	"image/jpg":  true,
 }
 
 func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +66,12 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		defer image.Close()
 		if header.Size > maxImageSize {
 			ErrorHandle(w, 400, "File size too large")
+			return
+		}
+		contentType := header.Header.Get("Content-Type")
+		if !validMimeTypes[contentType] {
+			ErrorHandle(w, 400, "Invalid file type. Only JPG, JPEG, PNG, or GIF allowed")
+			log.Println("Invalid file type:", contentType)
 			return
 		}
 		timestamp := time.Now().UnixNano()
