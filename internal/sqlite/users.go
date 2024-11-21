@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -21,14 +22,20 @@ func (u *USERMODEL) Insert(name, email, password string) error {
 		log.Println(err)
 		return err
 	}
+	pattern := `^[^@]+@[^@]+\.[a-zA-Z]{2,}$`
+	re, err := regexp.Compile(pattern)
+	if re.MatchString(email) {
+		_, err = u.DB.Exec(InsertUserQuery, name, email, passwordHashed)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
 
-	_, err = u.DB.Exec(InsertUserQuery, name, email, passwordHashed)
-	if err != nil {
-		log.Println(err)
+		return nil
+	} else {
 		return err
 	}
 
-	return nil
 }
 
 func (u *USERMODEL) Authentication(email, password string) (int, string, error) {
@@ -149,7 +156,7 @@ func (u *USERMODEL) CheckEmailExists(email string) (bool, error) {
 		log.Println("Error checking email existence:", err)
 		return false, err
 	}
-	
+
 	return count > 0, nil
 }
 

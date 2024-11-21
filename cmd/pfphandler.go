@@ -83,6 +83,7 @@ func (app *app) FilteringPosts(w http.ResponseWriter, r *http.Request) {
 
 	tmp, err := template.ParseFiles("./assets/templates/profile.html")
 	if err != nil {
+		ErrorHandle(w,500,"Internal Server Error")
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		log.Println(err)
 		return
@@ -90,6 +91,7 @@ func (app *app) FilteringPosts(w http.ResponseWriter, r *http.Request) {
 
 	if err := tmp.Execute(w, map[string]any{"Users": userData}); err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w,500,"Internal Server Error")
 		log.Println(err)
 		return
 	}

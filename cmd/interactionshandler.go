@@ -55,6 +55,10 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	var imagePath string
 	title := r.FormValue("title")
 	content := r.FormValue("content")
+	trimcontent := strings.TrimSpace(content)
+	if len(trimcontent) == 0 {
+		ErrorHandle(w, 400, "Empty Content")
+	}
 	const maxImageSize = 20 * 1024 * 1024
 	image, header, err := r.FormFile("image")
 	if err != nil && err.Error() != "http: no such file" {
@@ -130,6 +134,10 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	content := r.FormValue("content")
+	trimcontent := strings.TrimSpace(content)
+	if len(trimcontent) == 0 {
+		ErrorHandle(w, 400, "Empty Content")
+	}
 	postID := r.FormValue("post_id")
 	const maxContentLength = 2000 // Example: 10,000 characters
 	if len(content) > maxContentLength {
@@ -158,18 +166,18 @@ func (app *app) LikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -196,18 +204,18 @@ func (app *app) DislikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -234,18 +242,18 @@ func (app *app) PostLikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -272,18 +280,18 @@ func (app *app) PostDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -310,18 +318,18 @@ func (app *app) ProfileLikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -348,18 +356,18 @@ func (app *app) ProfileDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	userID, err := app.users.GetUserID(r)
@@ -399,18 +407,18 @@ func (app *app) CommentLikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	http.Redirect(w, r, "/view-post?id="+postID+"#comment-"+commentID, http.StatusFound)
@@ -438,18 +446,18 @@ func (app *app) CommentDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	postID := r.FormValue("post_id")
 	if postID == "" {
 		log.Println("Missing post ID")
-		http.Error(w, "Bad Request: Missing post ID", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Missing post ID")
 		return
 	}
 	exists, err := app.posts.PostExists(postID)
 	if err != nil {
 		log.Println("Error checking post existence:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		ErrorHandle(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 	if !exists {
 		log.Println("Post ID does not exist:", postID)
-		http.Error(w, "Bad Request: Post does not exist", http.StatusBadRequest)
+		ErrorHandle(w, http.StatusBadRequest, "Bad Request: Post does not exist")
 		return
 	}
 	http.Redirect(w, r, "/view-post?id="+postID+"#comment-"+commentID, http.StatusFound)
@@ -604,49 +612,49 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
-    err := r.ParseForm()
-    if err != nil {
-        log.Println("Error parsing form:", err)
-        ErrorHandle(w, 400, "Failed to parse form")
-        return
-    }
-    postID := r.FormValue("post_id")
-    formUsername := r.FormValue("username")
-    if err != nil {
-        log.Println("Error fetching userID:", err)
-        ErrorHandle(w, 500, "Failed to fetch user information")
-        return
-    }
-    var postUserID int
-    var postUsername string
-    err = app.users.DB.QueryRow(sqlite.UserIDByPostStmt, postID).Scan(&postUserID)
-    if err != nil {
-        log.Println("Error fetching post's userID:", err)
-        ErrorHandle(w, 500, "Failed to fetch post user ID")
-        return
-    }
-    err = app.users.DB.QueryRow(sqlite.UserNAMEByPostStmt, postID).Scan(&postUsername)
-    if err != nil {
-        log.Println("Error fetching post's username:", err)
-        ErrorHandle(w, 500, "Failed to fetch post username")
-        return
-    }
-    if formUsername != postUsername {
-        log.Println("Unauthorized user trying to delete post.")
-        ErrorHandle(w, 403, "You are not authorized to delete this post")
-        return
-    }
-    _, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
-    if err != nil {
-        log.Println("Error deleting post:", err)
-        ErrorHandle(w, 500, "Failed to delete post")
-        return
-    }
-    _, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
-    if err != nil {
-        log.Println("Error deleting post:", err)
-        ErrorHandle(w, 500, "Failed to delete post")
-        return
-    }
-    http.Redirect(w, r, "/Profile-page", http.StatusFound)
+	err := r.ParseForm()
+	if err != nil {
+		log.Println("Error parsing form:", err)
+		ErrorHandle(w, 400, "Failed to parse form")
+		return
+	}
+	postID := r.FormValue("post_id")
+	formUsername := r.FormValue("username")
+	if err != nil {
+		log.Println("Error fetching userID:", err)
+		ErrorHandle(w, 500, "Failed to fetch user information")
+		return
+	}
+	var postUserID int
+	var postUsername string
+	err = app.users.DB.QueryRow(sqlite.UserIDByPostStmt, postID).Scan(&postUserID)
+	if err != nil {
+		log.Println("Error fetching post's userID:", err)
+		ErrorHandle(w, 500, "Failed to fetch post user ID")
+		return
+	}
+	err = app.users.DB.QueryRow(sqlite.UserNAMEByPostStmt, postID).Scan(&postUsername)
+	if err != nil {
+		log.Println("Error fetching post's username:", err)
+		ErrorHandle(w, 500, "Failed to fetch post username")
+		return
+	}
+	if formUsername != postUsername {
+		log.Println("Unauthorized user trying to delete post.")
+		ErrorHandle(w, 403, "You are not authorized to delete this post")
+		return
+	}
+	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post:", err)
+		ErrorHandle(w, 500, "Failed to delete post")
+		return
+	}
+	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post:", err)
+		ErrorHandle(w, 500, "Failed to delete post")
+		return
+	}
+	http.Redirect(w, r, "/Profile-page", http.StatusFound)
 }

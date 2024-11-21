@@ -32,6 +32,7 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		RenderingErrorMsg(w, "Invalid Credentials", "./assets/templates/signin.html", r)
+		w.WriteHeader(400)
 		return
 	}
 
@@ -75,6 +76,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.PostForm.Get("password") != r.PostForm.Get("re-password") {
 		RenderingErrorMsg(w, "Passwords Don't Match", "./assets/templates/register.html", r)
+		w.WriteHeader(400)
 		return
 	}
 	err := app.users.Insert(
@@ -85,6 +87,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		RenderingErrorMsg(w, "Email or Username already in use ", "./assets/templates/register.html", r)
+		w.WriteHeader(400)
 		return
 	}
 	id, name, _ := app.users.Authentication(
@@ -116,28 +119,33 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 func(app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
+		ErrorHandle(w, 500, "Error Parsing Form")
 		log.Println(err)
 	}
 	username := r.PostForm.Get("name")
 	
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
+		ErrorHandle(w, 500, "Error fetching userID")
 		log.Println("Error fetching userID", err)
 		return
 	}
 
 	_, err = app.users.DB.Exec(sqlite.ChangeUsernameQuery,username,userID)
 	if err != nil {
+		ErrorHandle(w, 500, "Error changing Username")
 		log.Println("Error changing Username", err)
 		return
 	}
 	_, err = app.users.DB.Exec(sqlite.ChangeUserNameInSessionsQuery,username,userID)
 	if err != nil {
+		ErrorHandle(w, 500, "Error changing Username")
 		log.Println("Error changing Username", err)
 		return
 	}
 	_, err = app.users.DB.Exec(sqlite.ChangeUsernameInPostsQuery, username, userID)
 	if err != nil {
+		ErrorHandle(w, 500, "Error changing Username in posts table")
 		log.Println("Error changing Username in posts table", err)
 		return
 	}
