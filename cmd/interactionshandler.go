@@ -51,51 +51,22 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 		category_ids = []string{"Random"}
 	}
 	categoryIdsStr := strings.Join(category_ids, ", ")
-	const maxImageSize = 20 * 1024 * 1024 
-	err := r.ParseMultipartForm(maxImageSize)
-    if err != nil {
-        ErrorHandle(w, 400, "Error parsing form data")
-        log.Println(err)
-        return
-    }
-
-	image, fileHeader, err := r.FormFile("image")
-    if err != nil {
-        ErrorHandle(w, 400, "Error retrieving the image file")
-        log.Println(err)
-        return
-    }
-    defer image.Close()
-	if fileHeader.Size > maxImageSize {
-        ErrorHandle(w, 413, "Image file is too large. Maximum size is 20MB")
-        log.Println("File size exceeds limit:", fileHeader.Size)
-        return
-    }
-    buffer := make([]byte, 512) 
-    _, err = image.Read(buffer)
-    if err != nil {
-        ErrorHandle(w, 400, "Error reading the image file")
-        log.Println(err)
-        return
-    }
-	contentType := http.DetectContentType(buffer)
-	if !validTypes[contentType] {
-        ErrorHandle(w, 415, "Unsupported image format. Only JPEG, PNG, and GIF are allowed")
-        log.Println("Invalid image format:", contentType)
-        return
-    }
 	var imagePath string
 	title := r.FormValue("title")
 	content := r.FormValue("content")
-	if content == "" {
-		ErrorHandle(w, 400, "Content is empty")
+	image, _, err := r.FormFile("image")
+	if err != nil && err.Error() != "http: no such file" {
+		ErrorHandle(w, 400, "Error retrieving the file")
+		log.Println(err)
 		return
 	}
 	if err == nil {
 		defer image.Close()
 		timestamp := time.Now().UnixNano()
-		saveImage := fmt.Sprintf("assets/uploads/image%d.jpg", timestamp)
-		dbimage := fmt.Sprintf("../uploads/image%d.jpg", timestamp)
+		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
+
+		dbimage := fmt.Sprintf("../uploads/image_%d.jpg", timestamp)
+
 		place, err := os.Create(saveImage)
 		if err != nil {
 			ErrorHandle(w, 500, "Unable to create file")
@@ -103,6 +74,7 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer place.Close()
+
 		if _, err := io.Copy(place, image); err != nil {
 			ErrorHandle(w, 500, "Error saving the file")
 			log.Println(err)
