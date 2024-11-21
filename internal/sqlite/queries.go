@@ -59,6 +59,7 @@ const (
 // Delete statements
 const (
 	DeletePostQuery = `DELETE FROM POSTS WHERE POST_ID = ?`
+	DeletePostCatQuery = `DELETE FROM post_categories WHERE POST_ID = ?`
 )
 
 // Select ---> Authentication and User Retrieval

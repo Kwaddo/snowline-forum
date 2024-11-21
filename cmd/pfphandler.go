@@ -105,7 +105,7 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
         log.Println(err)
         return
     }
-	image, _, err := r.FormFile("image")
+	image, header, err := r.FormFile("image")
 	if err != nil && err.Error() != "http: no such file" {
 		ErrorHandle(w, 400, "Error retrieving the file")
 		log.Println(err)
@@ -113,6 +113,10 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if err == nil {
 		defer image.Close()
+		if header.Size > maxImageSize {
+			ErrorHandle(w, 400, "File size too large")
+			return
+		}
 		timestamp := time.Now().UnixNano()
 		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
 

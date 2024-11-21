@@ -54,7 +54,8 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	var imagePath string
 	title := r.FormValue("title")
 	content := r.FormValue("content")
-	image, _, err := r.FormFile("image")
+	const maxImageSize = 20 * 1024 * 1024
+	image, header, err := r.FormFile("image")
 	if err != nil && err.Error() != "http: no such file" {
 		ErrorHandle(w, 400, "Error retrieving the file")
 		log.Println(err)
@@ -62,6 +63,10 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if err == nil {
 		defer image.Close()
+		if header.Size > maxImageSize {
+			ErrorHandle(w, 400, "File size too large")
+			return
+		}
 		timestamp := time.Now().UnixNano()
 		saveImage := fmt.Sprintf("assets/uploads/image_%d.jpg", timestamp)
 
@@ -473,12 +478,7 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-	} else {
-		ErrorHandle(w, 500, "Error retrieving posts by category")
-		log.Println(err)
-		return
 	}
-
 	var postIDs []int
 	for _, cat := range categories {
 		rows, err := app.users.DB.Query(sqlite.PostCategory, cat)
@@ -597,43 +597,49 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		log.Println("Error parsing form:", err)
-		ErrorHandle(w, 400, "Failed to parse form")
-		return
-	}
-	postID := r.FormValue("post_id")
-	formUsername := r.FormValue("username")
-	if err != nil {
-		log.Println("Error fetching userID:", err)
-		ErrorHandle(w, 500, "Failed to fetch user information")
-		return
-	}
-	var postUserID int
-	var postUsername string
-	err = app.users.DB.QueryRow(sqlite.UserIDByPostStmt, postID).Scan(&postUserID)
-	if err != nil {
-		log.Println("Error fetching post's userID:", err)
-		ErrorHandle(w, 500, "Failed to fetch post user ID")
-		return
-	}
-	err = app.users.DB.QueryRow(sqlite.UserNAMEByPostStmt, postID).Scan(&postUsername)
-	if err != nil {
-		log.Println("Error fetching post's username:", err)
-		ErrorHandle(w, 500, "Failed to fetch post username")
-		return
-	}
-	if formUsername != postUsername {
-		log.Println("Unauthorized user trying to delete post.")
-		ErrorHandle(w, 403, "You are not authorized to delete this post")
-		return
-	}
-	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
-	if err != nil {
-		log.Println("Error deleting post:", err)
-		ErrorHandle(w, 500, "Failed to delete post")
-		return
-	}
-	http.Redirect(w, r, "/Profile-page", http.StatusFound)
+    err := r.ParseForm()
+    if err != nil {
+        log.Println("Error parsing form:", err)
+        ErrorHandle(w, 400, "Failed to parse form")
+        return
+    }
+    postID := r.FormValue("post_id")
+    formUsername := r.FormValue("username")
+    if err != nil {
+        log.Println("Error fetching userID:", err)
+        ErrorHandle(w, 500, "Failed to fetch user information")
+        return
+    }
+    var postUserID int
+    var postUsername string
+    err = app.users.DB.QueryRow(sqlite.UserIDByPostStmt, postID).Scan(&postUserID)
+    if err != nil {
+        log.Println("Error fetching post's userID:", err)
+        ErrorHandle(w, 500, "Failed to fetch post user ID")
+        return
+    }
+    err = app.users.DB.QueryRow(sqlite.UserNAMEByPostStmt, postID).Scan(&postUsername)
+    if err != nil {
+        log.Println("Error fetching post's username:", err)
+        ErrorHandle(w, 500, "Failed to fetch post username")
+        return
+    }
+    if formUsername != postUsername {
+        log.Println("Unauthorized user trying to delete post.")
+        ErrorHandle(w, 403, "You are not authorized to delete this post")
+        return
+    }
+    _, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+    if err != nil {
+        log.Println("Error deleting post:", err)
+        ErrorHandle(w, 500, "Failed to delete post")
+        return
+    }
+    _, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+    if err != nil {
+        log.Println("Error deleting post:", err)
+        ErrorHandle(w, 500, "Failed to delete post")
+        return
+    }
+    http.Redirect(w, r, "/Profile-page", http.StatusFound)
 }
