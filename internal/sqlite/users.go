@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,17 +24,18 @@ func (u *USERMODEL) Insert(name, email, password string) error {
 	}
 	pattern := `^[^@]+@[^@]+\.[a-zA-Z]{2,}$`
 	re, err := regexp.Compile(pattern)
-	if re.MatchString(email) {
-		_, err = u.DB.Exec(InsertUserQuery, name, email, passwordHashed)
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-
-		return nil
-	} else {
+	if err != nil {
+		return fmt.Errorf("invalid email format")
+	}
+	if !re.MatchString(email) {
+		return fmt.Errorf("invalid email format")
+	}
+	_, err = u.DB.Exec(InsertUserQuery, name, email, passwordHashed)
+	if err != nil {
+		log.Println(err)
 		return err
 	}
+	return nil
 
 }
 

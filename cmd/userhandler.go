@@ -2,12 +2,11 @@ package main
 
 import (
 	"db/internal/sqlite"
+	"github.com/gofrs/uuid/v5"
 	"html/template"
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/gofrs/uuid/v5"
 )
 
 func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -86,9 +85,15 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		log.Println(err)
-		RenderingErrorMsg(w, "Email or Username already in use ", "./assets/templates/register.html", r)
-		w.WriteHeader(400)
-		return
+		if err != nil && err.Error() == "invalid email format" {
+			RenderingErrorMsg(w, "Invalid Email Format", "./assets/templates/register.html", r)
+			w.WriteHeader(400)
+			return
+		} else {
+			RenderingErrorMsg(w, "Email or Username already in use", "./assets/templates/register.html", r)
+			w.WriteHeader(400)
+			return
+		}
 	}
 	id, name, _ := app.users.Authentication(
 		r.PostForm.Get("email"),
@@ -116,14 +121,14 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func(app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
+func (app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		ErrorHandle(w, 500, "Error Parsing Form")
 		log.Println(err)
 	}
 	username := r.PostForm.Get("name")
-	
+
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
 		ErrorHandle(w, 500, "Error fetching userID")
@@ -131,13 +136,13 @@ func(app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = app.users.DB.Exec(sqlite.ChangeUsernameQuery,username,userID)
+	_, err = app.users.DB.Exec(sqlite.ChangeUsernameQuery, username, userID)
 	if err != nil {
 		ErrorHandle(w, 500, "Error changing Username")
 		log.Println("Error changing Username", err)
 		return
 	}
-	_, err = app.users.DB.Exec(sqlite.ChangeUserNameInSessionsQuery,username,userID)
+	_, err = app.users.DB.Exec(sqlite.ChangeUserNameInSessionsQuery, username, userID)
 	if err != nil {
 		ErrorHandle(w, 500, "Error changing Username")
 		log.Println("Error changing Username", err)
@@ -149,9 +154,9 @@ func(app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error changing Username in posts table", err)
 		return
 	}
-	
-	http.Redirect(w,r,"/Profile-page", http.StatusFound)
-	
+
+	http.Redirect(w, r, "/Profile-page", http.StatusFound)
+
 }
 
 func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Request) {
@@ -175,4 +180,3 @@ func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Req
 	}
 
 }
-
