@@ -404,7 +404,7 @@ fieldset {
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
-    margin-top: 0px;
+    margin-top: 5px;
     color: #D1D7E0;
 }
 
@@ -477,6 +477,15 @@ fieldset {
 .dislikeIcon{
     width: 34px;
     height: 34px;
+    transition: transform 0.3s ease; /* Add smooth transition for transform property */
+}
+
+.likeIcon:hover {
+    transform: scale(1.15) rotate(10deg); /* Slightly enlarge and rotate to the right */
+}
+
+.dislikeIcon:hover {
+    transform: scale(1.15) rotate(-10deg); /* Slightly enlarge and rotate to the left */
 }
 
 .counters {
