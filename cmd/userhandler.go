@@ -2,11 +2,12 @@ package main
 
 import (
 	"db/internal/sqlite"
-	"github.com/gofrs/uuid/v5"
 	"html/template"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/gofrs/uuid/v5"
 )
 
 func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +32,6 @@ func (app *app) SignInHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		RenderingErrorMsg(w, "Invalid Credentials", "./assets/templates/signin.html", r)
-		w.WriteHeader(400)
 		return
 	}
 
@@ -74,8 +74,9 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.PostForm.Get("password") != r.PostForm.Get("re-password") {
+
 		RenderingErrorMsg(w, "Passwords Don't Match", "./assets/templates/register.html", r)
-		w.WriteHeader(400)
+
 		return
 	}
 	err := app.users.Insert(
@@ -86,12 +87,12 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		if err != nil && err.Error() == "invalid email format" {
+
 			RenderingErrorMsg(w, "Invalid Email Format", "./assets/templates/register.html", r)
-			w.WriteHeader(400)
 			return
 		} else {
+
 			RenderingErrorMsg(w, "Email or Username already in use", "./assets/templates/register.html", r)
-			w.WriteHeader(400)
 			return
 		}
 	}
@@ -171,12 +172,13 @@ func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Req
 		ErrorHandle(w, 500, "Internal Server Error")
 		return
 	}
-
+	w.WriteHeader(400)
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Internal Server Error")
 		return
 	}
+	
 
 }

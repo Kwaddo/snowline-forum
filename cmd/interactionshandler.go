@@ -650,7 +650,7 @@ func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 500, "Failed to delete post")
 		return
 	}
-	_, err = app.users.DB.Exec(sqlite.DeletePostQuery, postID)
+	_, err = app.users.DB.Exec(sqlite.DeletePostCatQuery, postID)
 	if err != nil {
 		log.Println("Error deleting post:", err)
 		ErrorHandle(w, 500, "Failed to delete post")

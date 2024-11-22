@@ -34,12 +34,14 @@ func ErrorHandle(w http.ResponseWriter, statusCode int, message string) {
 		log.Println(err)
 		return
 	}
-	w.WriteHeader(statusCode)
+	
 	errData := map[string]interface{}{
 		"Code": statusCode,
 		"Msg":  message,
 	}
+	w.WriteHeader(statusCode)
 	if err := tmp.Execute(w, errData); err != nil {
+		http.Error(w, "Internal Server Error", 500)
 		log.Println("Error executing error template:", err)
 	}
 }
