@@ -34,7 +34,7 @@ func ErrorHandle(w http.ResponseWriter, statusCode int, message string) {
 		log.Println(err)
 		return
 	}
-	
+
 	errData := map[string]interface{}{
 		"Code": statusCode,
 		"Msg":  message,
@@ -117,4 +117,8 @@ func (app *app) ViewPostPageHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		ErrorHandle(w, 405, "Method Not Allowed")
 	}
+}
+
+func (app *app) UploadHanlder(w http.ResponseWriter, r *http.Request) {
+	ErrorHandle(w, 405, "Method Not Allowed")
 }

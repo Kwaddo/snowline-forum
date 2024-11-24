@@ -31,12 +31,23 @@ func (app *app) routes() http.Handler {
 	mux.HandleFunc("GET /signin/google/callback",app.handleGoogleCallback)
 	mux.HandleFunc("GET /signin/google/login", app.handleGoogleLogin)
 	mux.HandleFunc("GET /signin/github/login", app.handleGitHubLogin)
+	mux.HandleFunc("GET /uploads", app.UploadHanlder)
 
 	fs := http.FileServer(http.Dir("./assets/static"))
 	fs2 := http.FileServer(http.Dir("./assets/uploads"))
 	fs3 := http.FileServer(http.Dir("./assets/images"))
-	mux.Handle("GET /static/", http.StripPrefix("/static", fs))
-	mux.Handle("GET /uploads/", http.StripPrefix("/uploads", fs2))
-	mux.Handle("GET /images/", http.StripPrefix("/images", fs3))
+	mux.Handle("GET /static/", app.RestrictedFileHandler(http.StripPrefix("/static", fs)))
+	mux.Handle("GET /uploads/", app.RestrictedFileHandler(http.StripPrefix("/uploads", fs2)))
+	mux.Handle("GET /images/", app.RestrictedFileHandler(http.StripPrefix("/images", fs3)))
 	return mux
+}
+
+func (app *app) RestrictedFileHandler(fs http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        if r.URL.Path == "/uploads/" || r.URL.Path == "/static/" || r.URL.Path == "/images/" {
+            ErrorHandle(w, http.StatusForbidden, "Forbidden") 
+            return
+        }
+        fs.ServeHTTP(w, r)
+    })
 }

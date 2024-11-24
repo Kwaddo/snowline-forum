@@ -439,7 +439,6 @@ html::-webkit-scrollbar-track {
     height: 400px;
     position: relative;
     border-radius: 1em;
-    border: 2px solid #D1D7E0;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

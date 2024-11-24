@@ -56,8 +56,10 @@ func (app *app) SavePostHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 	trimcontent := strings.TrimSpace(content)
-	if len(trimcontent) == 0 {
-		ErrorHandle(w, 400, "Empty Content")
+	if len(trimcontent) == 0 || len(trimcontent) > 2000 {
+		ErrorHandle(w, 400, "Empty Content/ Exceeded Limit")
+		log.Println("Empty Content/ Exceeded Limit")
+		return
 	}
 	const maxImageSize = 20 * 1024 * 1024
 	image, header, err := r.FormFile("image")
@@ -137,6 +139,8 @@ func (app *app) SaveCommentHandler(w http.ResponseWriter, r *http.Request) {
 	trimcontent := strings.TrimSpace(content)
 	if len(trimcontent) == 0 {
 		ErrorHandle(w, 400, "Empty Content")
+		log.Println("Empty Content")
+		return
 	}
 	postID := r.FormValue("post_id")
 	const maxContentLength = 2000 // Example: 10,000 characters
