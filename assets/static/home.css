@@ -505,6 +505,18 @@ input[type="submit"]:not(:hover) {
     z-index: 999;
 }
 
+.popup-anchor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998; /* Lower than .popup-content */
+    background: transparent; /* Optional: Add a subtle effect */
+    display: block;
+    pointer-events: auto; /* Ensure it catches clicks */
+}
+
 #login:target,
 #createPostPopup:target,
 #logout-confirmation:target {

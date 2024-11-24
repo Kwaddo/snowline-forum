@@ -33,8 +33,9 @@
 
     <!-- Create Post Popup -->
     <div id="createPostPopup" class="popup">
+        <a href="#" class="popup-anchor"></a>
         <div class="popup-content">
-            <a href="/" class="popup-close">
+            <a href="#" class="popup-close">
                 <img src="../images/close-tab-svgrepo-com.png" alt="Close">
             </a>
             <div class="createPostTop">
@@ -77,13 +78,14 @@
     </div>
 
     <div id="logout-confirmation" class="popup">
+        <a href="#" class="popup-anchor"></a>
         <div class="popup-content">
             <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO
                 LOGOUT?</h1>
             <form action="/logout" method="POST">
                 <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
             </form>
-            <form action="/">
+            <form action="#">
                 <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
             </form>
             <div class="button-row">
