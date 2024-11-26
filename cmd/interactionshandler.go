@@ -660,5 +660,43 @@ func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 500, "Failed to delete post")
 		return
 	}
+	_, err = app.users.DB.Exec(sqlite.DeletePostlikeQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post:", err)
+		ErrorHandle(w, 500, "Failed to delete post")
+		return
+	}
+	
+	query, err := app.users.DB.Query(sqlite.CommentIDQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post:", err)
+		ErrorHandle(w, 500, "Failed to delete post")
+		return
+	}
+	c_ids := []int{}
+	for query.Next() {
+		id := 0
+		err = query.Scan(&id)
+		if err != nil {
+			ErrorHandle(w, 500, "Failed to delete post")
+			return
+		}
+		c_ids = append(c_ids, id)
+	}
+	for _ , ids := range c_ids {
+		_ , err =app.users.DB.Exec(sqlite.DeleteCommentlikeQuery,ids)
+		if err != nil {
+			ErrorHandle(w, 500, "Failed to delete post lol")
+			return
+		}
+	}
+	_, err = app.users.DB.Exec(sqlite.DeletePostcommentQuery, postID)
+	if err != nil {
+		log.Println("Error deleting post:", err)
+		ErrorHandle(w, 500, "Failed to delete post")
+		return
+	}
+
+
 	http.Redirect(w, r, "/Profile-page", http.StatusFound)
 }

@@ -55,12 +55,17 @@ const (
 	ChangeUsernameQuery           = `UPDATE USERS SET name = ? WHERE user_id = ?`
 	ChangeUserNameInSessionsQuery = `UPDATE SESSIONS SET username = ? WHERE user_id = ?`
 	ChangeUsernameInPostsQuery    = `UPDATE POSTS SET username = ? WHERE user_id = ?`
+	
 )
 
 // Delete statements
 const (
 	DeletePostQuery = `DELETE FROM POSTS WHERE POST_ID = ?`
 	DeletePostCatQuery = `DELETE FROM post_categories WHERE POST_ID = ?`
+	DeletePostlikeQuery = `DELETE FROM Post_likes WHERE POST_ID = ?`
+	DeleteCommentlikeQuery = `DELETE FROM Comment_likes WHERE COMMENT_ID = ?`
+	DeletePostcommentQuery = `DELETE FROM Comments WHERE POST_ID = ?`
+	CommentIDQuery = `SELECT comment_id  FROM comments WHERE POST_ID = ?`
 )
 
 // Select ---> Authentication and User Retrieval
