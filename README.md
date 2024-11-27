@@ -1,7 +1,7 @@
 # Forum Project
 
 Welcome to the Forum Project! This project is designed to create a simple and efficient forum for users to discuss various topics.
-The project was created by Ahmed Aburowais, Salman Nader, Moataz Ibrahim and Ali Khalaf.
+The project was created by Ahmed Aburowais, Salman Abboudi, Moataz Ibrahim and Ali Khalaf.
 
 ## Features
 
