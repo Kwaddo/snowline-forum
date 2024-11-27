@@ -55,7 +55,7 @@ const (
 	ChangeUsernameQuery           = `UPDATE USERS SET name = ? WHERE user_id = ?`
 	ChangeUserNameInSessionsQuery = `UPDATE SESSIONS SET username = ? WHERE user_id = ?`
 	ChangeUsernameInPostsQuery    = `UPDATE POSTS SET username = ? WHERE user_id = ?`
-	
+	ChangeUsernameInCommentsQuery = `UPDATE COMMENTS SET username = ? WHERE user_id = ?`
 )
 
 // Delete statements

@@ -155,6 +155,12 @@ func (app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error changing Username in posts table", err)
 		return
 	}
+	_, err = app.users.DB.Exec(sqlite.ChangeUsernameInCommentsQuery, username, userID)
+	if err != nil {
+		ErrorHandle(w, 500, "Error changing Username in comments table")
+		log.Println("Error changing Username in posts table", err)
+		return
+	}
 
 	http.Redirect(w, r, "/Profile-page", http.StatusFound)
 
