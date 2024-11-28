@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
-
+	"strings"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -79,10 +79,31 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+	username := r.PostForm.Get("name")
+	trimusername := strings.TrimSpace(username)
+	if len(trimusername) == 0 || len(trimusername) > 50 {
+		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
+		log.Println("Empty Username/ Exceeded Limit")
+		return
+	}
+	email := r.PostForm.Get("email")
+	trimemail := strings.TrimSpace(email)
+	if len(trimemail) == 0 || len(trimemail) > 50 {
+		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
+		log.Println("Empty Username/ Exceeded Limit")
+		return
+	}
+	password := r.PostForm.Get("password")
+	trimpassword := strings.TrimSpace(password)
+	if len(trimpassword) == 0 || len(trimpassword) > 50 {
+		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
+		log.Println("Empty Username/ Exceeded Limit")
+		return
+	}
 	err := app.users.Insert(
-		r.PostForm.Get("name"),
-		r.PostForm.Get("email"),
-		r.PostForm.Get("password"),
+		username,
+		email,
+		password,
 	)
 	if err != nil {
 		log.Println(err)
@@ -97,11 +118,11 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	id, name, _ := app.users.Authentication(
-		r.PostForm.Get("email"),
-		r.PostForm.Get("password"),
+		email,
+		password,
 	)
 
-	uniqueInput := r.PostForm.Get("email") + time.Now().Format(time.RFC3339Nano)
+	uniqueInput := email + time.Now().Format(time.RFC3339Nano)
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
 	expiresAt := time.Now().Add(1 * time.Hour)
 	http.SetCookie(w, &http.Cookie{
@@ -129,7 +150,12 @@ func (app *app) EditUsernameHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	username := r.PostForm.Get("name")
-
+	trimcontent := strings.TrimSpace(username)
+	if len(trimcontent) == 0 || len(trimcontent) > 50 {
+		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
+		log.Println("Empty Username/ Exceeded Limit")
+		return
+	}
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
 		ErrorHandle(w, 500, "Error fetching userID")
@@ -185,6 +211,5 @@ func RenderingErrorMsg(w http.ResponseWriter, errorMsg, path string, r *http.Req
 		ErrorHandle(w, 500, "Internal Server Error")
 		return
 	}
-	
 
 }
