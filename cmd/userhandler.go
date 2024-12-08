@@ -89,15 +89,15 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.PostForm.Get("email")
 	trimemail := strings.TrimSpace(email)
 	if len(trimemail) == 0 || len(trimemail) > 50 {
-		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
-		log.Println("Empty Username/ Exceeded Limit")
+		ErrorHandle(w, 400, "Empty Email/ Exceeded Limit")
+		log.Println("Empty Email/ Exceeded Limit")
 		return
 	}
 	password := r.PostForm.Get("password")
 	trimpassword := strings.TrimSpace(password)
 	if len(trimpassword) == 0 || len(trimpassword) > 50 {
-		ErrorHandle(w, 400, "Empty Username/ Exceeded Limit")
-		log.Println("Empty Username/ Exceeded Limit")
+		ErrorHandle(w, 400, "Empty Password/ Exceeded Limit")
+		log.Println("Empty Password/ Exceeded Limit")
 		return
 	}
 	err := app.users.Insert(
@@ -108,7 +108,6 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		if err != nil && err.Error() == "invalid email format" {
-
 			RenderingErrorMsg(w, "Invalid Email Format", "./assets/templates/register.html", r)
 			return
 		} else {
