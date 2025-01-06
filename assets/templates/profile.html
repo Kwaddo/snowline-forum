@@ -1,140 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../static/profile.css">
-        <title>Profile Page</title>
-    </head>
-    <body>
-        <div id="header-container">
-            <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
-            <div class="dynamic-island">
-                <div class="island-content">
-                    <a href="/">
-                        <img src="../images/Home.png" class="icon" title="Home">
-                    </a>
-                    <a href="/#createPostPopup">
-                        <img src="../images/Plus.png" class="icon" title="Create Post">
-                    </a>
-                    <a href="/Profile-page">
-                        <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
-                    </a>
-                    <a href="/#logout-confirmation">
-                        <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
-                    </a>
-                </div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/profile.css">
+    <title>Profile Page</title>
+</head>
+
+<body>
+    <div id="header-container">
+        <img src="../images/snowlinelogoshadow.png" alt="Logo" class="logo">
+        <div class="dynamic-island">
+            <div class="island-content">
+                <a href="/">
+                    <img src="../images/Home.png" class="icon" title="Home">
+                </a>
+                <a href="/#createPostPopup">
+                    <img src="../images/Plus.png" class="icon" title="Create Post">
+                </a>
+                <a href="/Profile-page">
+                    <img src="../images/Profile.png" class="icon profile-icon" title="Profile">
+                </a>
+                <a href="/#logout-confirmation">
+                    <img src="../images/logout.png" alt="Logout" class="icon logout-icon">
+                </a>
             </div>
         </div>
-        <!-- logout confirmation popup -->
-        <div id="logout-confirmation" class="popup">
-            <div class="popup-content">
-                <a href="/Profile-page" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
-                <form action="/logout" method="POST">
-                    <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
-                </form>
-                <form action="/Profile-page">
-                    <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
-                </form>
-                <div class="button-row">
-                    <label for="yes-toggle" class="confirmLabel">YES</label>
-                    <label for="no-toggle" class="confirmLabel">NO</label>
-                </div>
+    </div>
+    <!-- logout confirmation popup -->
+    <div id="logout-confirmation" class="popup">
+        <div class="popup-content">
+            <a href="/Profile-page" class="popup-close">
+                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+            </a>
+            <h1 class="logoutTitle">ARE YOU SURE YOU WANT TO LOGOUT?</h1>
+            <form action="/logout" method="POST">
+                <button id="yes-toggle" type="submit" class="button hidden-button">YES</button>
+            </form>
+            <form action="/Profile-page">
+                <button type="submit" id="no-toggle" class="button hidden-button">NO</button>
+            </form>
+            <div class="button-row">
+                <label for="yes-toggle" class="confirmLabel">YES</label>
+                <label for="no-toggle" class="confirmLabel">NO</label>
             </div>
         </div>
-        <!-- edit profile popup -->
-        <div id="edit-profile" class="popup">
-            <div class="popup-content">
-                <a href="/Profile-page" class="popup-close">
-                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                </a>
-                <div class="inside-popup">
-                    <h1 class="upload-title">
-                        Update Your Profile!
-                    </h1>
-                    <div class="container">
-                        <div class="editUsername">
-                            <form action="/edit-username" method="POST">
-                                <div class="username-container">
-                                    <button type="button" class="usernameButton">
-                                        <img src="../images/edit.png" alt="Edit Profile" id="edit">
-                                    </button>
-                                    <input
-                                        type="text"
-                                        placeholder="Username"
-                                        name="name"
-                                        required
-                                    >
-                                    <button type="save" class="saveName-button">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                        <form action="/profile-picture" method="POST" enctype="multipart/form-data">
-                            <div class="changePFP">
-                                <div class="button-wrap">
-                                    <label class="buttonn" for="upload">
-                                        Upload
-                                        File
-                                    </label>
-                                    <input id="upload" name="image" type="file">
-                                </div>
-                                <button type="submit" id="upload-button">
-                                    Set Profile
-                                    Picture!
+    </div>
+    <!-- edit profile popup -->
+    <div id="edit-profile" class="popup">
+        <div class="popup-content">
+            <a href="/Profile-page" class="popup-close">
+                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+            </a>
+            <div class="inside-popup">
+                <h1 class="upload-title">
+                    Update Your Profile!
+                </h1>
+                <div class="container">
+                    <div class="editUsername">
+                        <form action="/edit-username" method="POST">
+                            <div class="username-container">
+                                <button type="button" class="usernameButton">
+                                    <img src="../images/edit.png" alt="Edit Profile" id="edit">
                                 </button>
+                                <input type="text" placeholder="Username" name="name" required>
+                                <button type="save" class="saveName-button">Save</button>
                             </div>
                         </form>
                     </div>
+                    <form action="/profile-picture" method="POST" enctype="multipart/form-data">
+                        <div class="changePFP">
+                            <div class="button-wrap">
+                                <label class="buttonn" for="upload">
+                                    Upload
+                                    File
+                                </label>
+                                <input id="upload" name="image" type="file">
+                            </div>
+                            <button type="submit" id="upload-button">
+                                Set Profile
+                                Picture!
+                            </button>
+                        </div>
+                    </form>
+                    {{if eq .Users.Role "user"}}
+                    <form action="/applyformoderator" method="POST">
+                        <input type="hidden" name="Username" value="{{.Users.Username}}">
+                        <button type="submit" id="upload-button">
+                            Apply for Moderator?
+                        </button>
+                    </form>
+                    {{end}}
                 </div>
             </div>
         </div>
-        <input type="checkbox" id="filter-toggle" class="filter-checkbox">
-        <label for="filter-toggle" class="filter-toggle-button">
-            <img src="../images/settings-sliders.png" alt="Close">
-        </label>
-        <div class="filters">
-            <form action="/Profile-page/filter" method="post" id="filterForm">
-                <div class="nav">
-                    <button
-                        type="submit"
-                        name="action"
-                        value="like"
-                        class="options button"
-                    >
-                        <img src="../images/like-filled.png" alt="Like">
-                    </button>
-                    <button
-                        type="submit"
-                        name="action"
-                        value="dislike"
-                        class="options button"
-                    >
-                        <img src="../images/dislike-filled.png" alt="Dislike">
-                    </button>
-                    <button
-                        type="submit"
-                        name="action"
-                        value="created"
-                        class="options button"
-                    >
-                        <img src="../images/uploaded.png" alt="Created">
-                    </button>
-                    <button
-                        type="submit"
-                        name="action"
-                        value="comment"
-                        class="options button"
-                    >
-                        <img src="../images/comments.png" alt="comment">
-                    </button>
+    </div>
+    <input type="checkbox" id="filter-toggle" class="filter-checkbox">
+    <label for="filter-toggle" class="filter-toggle-button">
+        <img src="../images/settings-sliders.png" alt="Close">
+    </label>
+    <div class="filters">
+        <form action="/Profile-page/filter" method="post" id="filterForm">
+            <div class="nav">
+                <button type="submit" name="action" value="like" class="options button">
+                    <img src="../images/like-filled.png" alt="Like">
+                </button>
+                <button type="submit" name="action" value="dislike" class="options button">
+                    <img src="../images/dislike-filled.png" alt="Dislike">
+                </button>
+                <button type="submit" name="action" value="created" class="options button">
+                    <img src="../images/uploaded.png" alt="Created">
+                </button>
+                <button type="submit" name="action" value="comment" class="options button">
+                    <img src="../images/comments.png" alt="comment">
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="all">
+        <div class=" profileInfo-resp">
+            <a href="#edit-profile">
+                <div class="pfp">
+                    <img src="{{.Users.ImagePath}}" alt>
                 </div>
-            </form>
+            </a>
+            <div class="name">
+                <p>@{{.Users.Username}}</p>
+            </div>
         </div>
-        <div class="all">
-            <div class=" profileInfo-resp">
+        <div class="posts">
+            {{range .Users.Posts}}
+            <div class="postWithOptions">
+                <div class="post {{if not .ImagePath}}noImage{{end}}">
+                    <input type="hidden" name="post_id" value="{{.ID}}">
+                    <!-- Body of the post, with profile, content, and image side-by-side -->
+                    <div class="postBody">
+                        <div class="postTop">
+                            <div class="postHeader">
+                                <img src="{{.ProfilePic}}" alt class="postPFP">
+                                <p class="postAuthor">@{{.Username}}</p>
+                            </div>
+                            {{if $.Users.Delete}}
+                            <form action="/delete-post" method="POST">
+                                <input type="hidden" name="post_id" value="{{.ID}}">
+                                <input type="hidden" name="username" value="{{.Username}}">
+                                <button type="submit" class="delButton">
+                                    <img class="deleteButton" src="../images/delete-button.png">
+                                </button>
+                            </form>
+                            {{end}}
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
+                                    <p class="postContent">{{.Content}}</p>
+                                </div>
+                            </a>
+                            {{if .ImagePath}}
+                            <a href="/view-post?id={{.ID}}">
+                                <div class="imageContainer">
+                                    <img src="{{.ImagePath}}" alt="image" class="postImage">
+                                </div>
+                            </a>
+                            {{end}}
+                            <div class="postOptions">
+                                <div class="option">
+                                    <form action="/profile-like" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/like-filled.png" alt="Like" class="likeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Likes}}</p>
+                                </div>
+                                <div class="option">
+                                    <form action="/profile-dislike" method="POST">
+                                        <input type="hidden" name="post_id" value="{{.ID}}">
+                                        <button type="submit" class="button">
+                                            <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
+                                        </button>
+                                    </form>
+                                    <p class="counters">{{.Dislikes}}</p>
+                                </div>
+                                <div class="option">
+                                    <a href="/view-post?id={{.ID}}">
+                                        <img src="../images/comments.png" class="commentIcon" alt="Comments">
+                                    </a>
+                                    <p class="counters">{{.Comments}}</p>
+                                </div>
+                            </div>
+                            <p class="postDate">{{.CreatedAt}}</p>
+                            <div class="categoryImages">
+                                {{range .Category}}
+                                <img src="{{.}}" alt="{{.}}" />
+                                {{end}}
+                            </div>
+                        </div>
+                        <!-- Optional image container -->
+                    </div>
+                </div>
+                <!-- Popup for adding a comment -->
+                <div id="comment-popup" class="popup">
+                    <div class="popup-content">
+                        <div class="comment-content">
+                            <a href="/" class="popup-close">
+                                <img src="../images/close-tab-svgrepo-com.png" alt="Close">
+                            </a>
+                            <h1 class="logtitle">Enter Your Comment!</h1>
+                            <div class="comment-bar">
+                                <form action="/savecomment" method="POST" align="center">
+                                    <input type="hidden" name="post_id" value="{{.ID}}">
+                                    <textarea placeholder="Start typing!" name="content" rows="8" maxlength="2000"
+                                        required></textarea>
+                                    <button type="submit">
+                                        Comment
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+        <div class="leftBar">
+            <div class="profileInfo">
                 <a href="#edit-profile">
                     <div class="pfp">
                         <img src="{{.Users.ImagePath}}" alt>
@@ -144,156 +233,28 @@
                     <p>@{{.Users.Username}}</p>
                 </div>
             </div>
-            <div class="posts">
-                {{range .Users.Posts}}
-                <div class="postWithOptions">
-                    <div class="post {{if not .ImagePath}}noImage{{end}}">
-                        <input type="hidden" name="post_id" value="{{.ID}}">
-                        <!-- Body of the post, with profile, content, and image side-by-side -->
-                        <div class="postBody">
-                            <div class="postTop">
-                                <div class="postHeader">
-                                    <img src="{{.ProfilePic}}" alt class="postPFP">
-                                    <p class="postAuthor">@{{.Username}}</p>
-                                </div>
-                                {{if $.Users.Delete}}
-                                <form action="/delete-post" method="POST">
-                                    <input type="hidden" name="post_id" value="{{.ID}}">
-                                    <input type="hidden" name="username" value="{{.Username}}">
-                                    <button type="submit" class="delButton">
-                                        <img class="deleteButton" src="../images/delete-button.png">
-                                    </button>
-                                </form>
-                                {{end}}
-                                <a href="/view-post?id={{.ID}}">
-                                    <div class="postContentContainer {{if not .ImagePath}}noImage{{end}}">
-                                        <p class="postContent">{{.Content}}</p>
-                                    </div>
-                                </a>
-                                {{if .ImagePath}}
-                                <a href="/view-post?id={{.ID}}">
-                                    <div class="imageContainer">
-                                        <img src="{{.ImagePath}}" alt="image" class="postImage">
-                                    </div>
-                                </a>
-                                {{end}}
-                                <div class="postOptions">
-                                    <div class="option">
-                                        <form action="/profile-like" method="POST">
-                                            <input type="hidden" name="post_id" value="{{.ID}}">
-                                            <button type="submit" class="button">
-                                                <img src="../images/like-filled.png" alt="Like" class="likeIcon">
-                                            </button>
-                                        </form>
-                                        <p class="counters">{{.Likes}}</p>
-                                    </div>
-                                    <div class="option">
-                                        <form action="/profile-dislike" method="POST">
-                                            <input type="hidden" name="post_id" value="{{.ID}}">
-                                            <button type="submit" class="button">
-                                                <img src="../images/dislike-filled.png" alt="Dislike" class="dislikeIcon">
-                                            </button>
-                                        </form>
-                                        <p class="counters">{{.Dislikes}}</p>
-                                    </div>
-                                    <div class="option">
-                                        <a href="/view-post?id={{.ID}}">
-                                            <img src="../images/comments.png" class="commentIcon" alt="Comments">
-                                        </a>
-                                        <p class="counters">{{.Comments}}</p>
-                                    </div>
-                                </div>
-                                <p class="postDate">{{.CreatedAt}}</p>
-                                <div class="categoryImages">
-                                    {{range .Category}}
-                                    <img src="{{.}}" alt="{{.}}" />
-                                    {{end}}
-                                </div>
-                            </div>
-                            <!-- Optional image container -->
-                        </div>
+            <hr id="content-break">
+            <div class="nav">
+                <!-- Form for filter actions -->
+                <form action="/Profile-page/filter" method="post" id="filterForm">
+                    <div class="nav">
+                        <button type="submit" name="action" value="like" class="options button">
+                            <img src="../images/like-filled.png" alt="Like">
+                        </button>
+                        <button type="submit" name="action" value="dislike" class="options button">
+                            <img src="../images/dislike-filled.png" alt="Dislike">
+                        </button>
+                        <button type="submit" name="action" value="created" class="options button">
+                            <img src="../images/uploaded.png" alt="Created">
+                        </button>
+                        <button type="submit" name="action" value="comment" class="options button">
+                            <img src="../images/comments.png" alt="comment">
+                        </button>
                     </div>
-                    <!-- Popup for adding a comment -->
-                    <div id="comment-popup" class="popup">
-                        <div class="popup-content">
-                            <div class="comment-content">
-                                <a href="/" class="popup-close">
-                                    <img src="../images/close-tab-svgrepo-com.png" alt="Close">
-                                </a>
-                                <h1 class="logtitle">Enter Your Comment!</h1>
-                                <div class="comment-bar">
-                                    <form action="/savecomment" method="POST" align="center">
-                                        <input type="hidden" name="post_id" value="{{.ID}}">
-                                        <textarea
-                                            placeholder="Start typing!"
-                                            name="content"
-                                            rows="8"
-                                            maxlength="2000"
-                                            required
-                                        ></textarea>
-                                        <button type="submit">
-                                            Comment
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{end}}
-            </div>
-            <div class="leftBar">
-                <div class="profileInfo">
-                    <a href="#edit-profile">
-                        <div class="pfp">
-                            <img src="{{.Users.ImagePath}}" alt>
-                        </div>
-                    </a>
-                    <div class="name">
-                        <p>@{{.Users.Username}}</p>
-                    </div>
-                </div>
-                <hr id="content-break">
-                <div class="nav">
-                    <!-- Form for filter actions -->
-                    <form action="/Profile-page/filter" method="post" id="filterForm">
-                        <div class="nav">
-                            <button
-                                type="submit"
-                                name="action"
-                                value="like"
-                                class="options button"
-                            >
-                                <img src="../images/like-filled.png" alt="Like">
-                            </button>
-                            <button
-                                type="submit"
-                                name="action"
-                                value="dislike"
-                                class="options button"
-                            >
-                                <img src="../images/dislike-filled.png" alt="Dislike">
-                            </button>
-                            <button
-                                type="submit"
-                                name="action"
-                                value="created"
-                                class="options button"
-                            >
-                                <img src="../images/uploaded.png" alt="Created">
-                            </button>
-                            <button
-                                type="submit"
-                                name="action"
-                                value="comment"
-                                class="options button"
-                            >
-                                <img src="../images/comments.png" alt="comment">
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

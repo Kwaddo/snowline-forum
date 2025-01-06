@@ -2,12 +2,13 @@ package main
 
 import (
 	"db/internal/sqlite"
+	"github.com/gofrs/uuid/v5"
 	"html/template"
 	"log"
 	"net/http"
-	"time"
 	"strings"
-	"github.com/gofrs/uuid/v5"
+	"time"
+	"strconv"
 )
 
 func (app *app) SignupPageHandler(w http.ResponseWriter, r *http.Request) {
@@ -107,11 +108,10 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		log.Println(err)
-		if err != nil && err.Error() == "invalid email format" {
+		if err.Error() == "invalid email format" {
 			RenderingErrorMsg(w, "Invalid Email Format", "./assets/templates/register.html", r)
 			return
 		} else {
-
 			RenderingErrorMsg(w, "Email or Username already in use", "./assets/templates/register.html", r)
 			return
 		}
@@ -120,7 +120,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		email,
 		password,
 	)
-
+	role, _ := app.users.GetUserRoleByID(strconv.Itoa(id))
 	uniqueInput := email + time.Now().Format(time.RFC3339Nano)
 	sessionValue := uuid.NewV5(uuid.NamespaceURL, uniqueInput).String()
 	expiresAt := time.Now().Add(1 * time.Hour)
@@ -133,7 +133,7 @@ func (app *app) StoreUserHandler(w http.ResponseWriter, r *http.Request) {
 		Secure:   true,
 		SameSite: http.SameSiteLaxMode,
 	})
-	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
+	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name, role)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")

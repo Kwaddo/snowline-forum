@@ -32,6 +32,7 @@ type PostandComment struct {
 
 type PostandMainUsername struct {
 	Posts     []Post
+	Role      string
 	Username  string
 	ImagePath string
 	Delete    string

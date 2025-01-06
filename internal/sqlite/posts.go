@@ -224,12 +224,13 @@ func (u *USERMODEL) AllUsersPosts(w http.ResponseWriter, r *http.Request) (model
 	}
 
 	imgPath := "../uploads/delete-button.png"
-
+	role, _ := u.GetUserRoleByID(uID)
 	result := models.PostandMainUsername{
 		Posts:     posts,
 		Username:  username,
 		ImagePath: path,
 		Delete:    imgPath,
+		Role:      role,
 	}
 
 	return result, nil
@@ -281,8 +282,7 @@ func (u *USERMODEL) AllUserLikedPosts(w http.ResponseWriter, r *http.Request) (m
 			}
 			return models.PostandMainUsername{}, err
 		}
-		slicecat := []string{}
-		slicecat = strings.Split(cat, ", ")
+		slicecat := strings.Split(cat, ", ")
 		for _, cat := range slicecat {
 			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
@@ -378,8 +378,7 @@ func (u *USERMODEL) AllUserDisLikedPosts(w http.ResponseWriter, r *http.Request)
 			}
 			return models.PostandMainUsername{}, err
 		}
-		slicecat := []string{}
-		slicecat = strings.Split(cat, ", ")
+		slicecat := strings.Split(cat, ", ")
 		for _, cat := range slicecat {
 			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
@@ -475,8 +474,7 @@ func (u *USERMODEL) AllUserCommentedPosts(w http.ResponseWriter, r *http.Request
 			}
 			return models.PostandMainUsername{}, err
 		}
-		slicecat := []string{}
-		slicecat = strings.Split(cat, ", ")
+		slicecat := strings.Split(cat, ", ")
 		for _, cat := range slicecat {
 			cat = fmt.Sprintf("../images/%s.png", cat)
 			p.Category = append(p.Category, cat)
@@ -538,8 +536,7 @@ func (m *POSTMODEL) PostWithComment(r *http.Request) (models.PostandComment, err
 	if err != nil {
 		return models.PostandComment{}, err
 	}
-	slicecat := []string{}
-	slicecat = strings.Split(cat, ", ")
+	slicecat := strings.Split(cat, ", ")
 	for _, cat := range slicecat {
 		cat = fmt.Sprintf("../images/%s.png", cat)
 		p.Category = append(p.Category, cat)

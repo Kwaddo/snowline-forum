@@ -561,8 +561,7 @@ func (app *app) FilterPosts(w http.ResponseWriter, r *http.Request) {
 				}
 				return
 			}
-			slicecat := []string{}
-			slicecat = strings.Split(cat, ", ")
+			slicecat := strings.Split(cat, ", ")
 			for _, cat := range slicecat {
 				cat = fmt.Sprintf("../images/%s.png", cat)
 				p.Category = append(p.Category, cat)
@@ -624,11 +623,6 @@ func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	postID := r.FormValue("post_id")
 	formUsername := r.FormValue("username")
-	if err != nil {
-		log.Println("Error fetching userID:", err)
-		ErrorHandle(w, 500, "Failed to fetch user information")
-		return
-	}
 	var postUserID int
 	var postUsername string
 	err = app.users.DB.QueryRow(sqlite.UserIDByPostStmt, postID).Scan(&postUserID)
@@ -696,7 +690,6 @@ func (app *app) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 		ErrorHandle(w, 500, "Failed to delete post")
 		return
 	}
-
 
 	http.Redirect(w, r, "/Profile-page", http.StatusFound)
 }

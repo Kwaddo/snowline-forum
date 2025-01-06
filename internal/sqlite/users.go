@@ -184,3 +184,72 @@ func (u *USERMODEL) InsertUser(name, email, password string) error {
 	}
 	return nil
 }
+
+func (u *USERMODEL) GetUserRole(w http.ResponseWriter, r *http.Request) (string, error) {
+	var role string
+	userID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching user_id:", err)
+		return "", err
+	}
+	row := u.DB.QueryRow(CheckUserRoleByUserIDQuery, userID)
+	err2 := row.Scan(&role)
+	if err2 != nil {
+		log.Println("Error checking user role:", err)
+		return "", err
+	}
+	return role, nil
+}
+
+func (u *USERMODEL) PromoteUserToAdmin(w http.ResponseWriter, r *http.Request) error {
+	userID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching user_id:", err)
+		return err
+	}
+	_, err = u.DB.Exec(ChangeRoleToAdminQuery, userID)
+	if err != nil {
+		log.Println("Error promoting user to admin:", err)
+		return err
+	}
+	return nil
+}
+
+func (u *USERMODEL) PromoteUserToModerator(w http.ResponseWriter, r *http.Request) error {
+	userID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching user_id:", err)
+		return err
+	}
+	_, err = u.DB.Exec(ChangeRoleToModeratorQuery, userID)
+	if err != nil {
+		log.Println("Error promoting user to admin:", err)
+		return err
+	}
+	return nil
+}
+
+func (u *USERMODEL) DemoteUserToNormal(w http.ResponseWriter, r *http.Request) error {
+	userID, err := u.GetUserID(r)
+	if err != nil {
+		log.Println("Error fetching user_id:", err)
+		return err
+	}
+	_, err = u.DB.Exec(ChangeRoleToUserQuery, userID)
+	if err != nil {
+		log.Println("Error demoting user from admin:", err)
+		return err
+	}
+	return nil
+}
+
+func (u *USERMODEL) GetUserRoleByID(userID string) (string, error) {
+	var role string
+	row := u.DB.QueryRow(CheckUserRoleByUserIDQuery, userID)
+	err := row.Scan(&role)
+	if err != nil {
+		log.Println("Error checking user role:", err)
+		return "", err
+	}
+	return role, nil
+}

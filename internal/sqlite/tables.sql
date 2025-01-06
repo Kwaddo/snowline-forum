@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS USERS (
     name VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    image_path VARCHAR(255) DEFAULT "../uploads/DefaultPFP.jpg"
+    image_path VARCHAR(255) DEFAULT "../uploads/DefaultPFP.jpg",
+    role VARCHAR(50) DEFAULT "user"
 );
 
 
@@ -12,6 +13,7 @@ CREATE TABLE IF NOT EXISTS SESSIONS (
     cookie_value VARCHAR(55) UNIQUE,
     username VARCHAR(255) NOT NULL, 
     user_id INTEGER NOT NULL,
+    role VARCHAR(50) DEFAULT "user",
     expires_at DATETIME NOT NULL UNIQUE,
     isValid Boolean,
     foreign key (user_id) REFERENCES USERS(user_id) ON DELETE CASCADE

@@ -8,7 +8,7 @@ const (
 	CheckEmailExistsQuery         = `SELECT COUNT(*) FROM users WHERE email = ?`
 	CheckUsernameExistsQuery      = `SELECT COUNT(*) FROM users WHERE name = ?`
 	InsertUserQueryNoP            = `INSERT INTO users (name, email) VALUES (?, ?)`
-	InsertSession                 = `INSERT INTO SESSIONS (cookie_value, user_id, expires_at, username, isvalid) VALUES (?, ?, ?, ?, true);`
+	InsertSession                 = `INSERT INTO SESSIONS (cookie_value, user_id, expires_at, username, role, isvalid) VALUES (?, ?, ?, ?, ?, true);`
 	InsertOrReplaceLike           = `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, TRUE);`
 	InsertOrReplaceDislike        = `INSERT OR REPLACE INTO POST_LIKES (post_id, user_id, isliked) VALUES (?, ?, FALSE);`
 	InsertOrReplaceLikeComment    = `INSERT OR REPLACE INTO COMMENT_LIKES (comment_id, user_id, isliked) VALUES (?, ?, TRUE)`
@@ -46,6 +46,7 @@ const (
 	PostCategory               = `SELECT post_id FROM post_categories WHERE category_id = ? ORDER BY post_id DESC`
 	UserNamefromUserID         = `SELECT name FROM USERS WHERE user_id = ?`
 	PostExistsQuery            = `SELECT COUNT(*) FROM POSTS WHERE post_id = ?`
+	CheckUserRoleByUserIDQuery = `SELECT role FROM USERS WHERE user_id = ?`
 )
 
 // Update statements
@@ -56,16 +57,19 @@ const (
 	ChangeUserNameInSessionsQuery = `UPDATE SESSIONS SET username = ? WHERE user_id = ?`
 	ChangeUsernameInPostsQuery    = `UPDATE POSTS SET username = ? WHERE user_id = ?`
 	ChangeUsernameInCommentsQuery = `UPDATE COMMENTS SET username = ? WHERE user_id = ?`
+	ChangeRoleToAdminQuery       = `UPDATE USERS SET role = 'admin' WHERE user_id = ?`
+	ChangeRoleToUserQuery        = `UPDATE USERS SET role = 'user' WHERE user_id = ?`
+	ChangeRoleToModeratorQuery  = `UPDATE USERS SET role = 'moderator' WHERE user_id = ?`
 )
 
 // Delete statements
 const (
-	DeletePostQuery = `DELETE FROM POSTS WHERE POST_ID = ?`
-	DeletePostCatQuery = `DELETE FROM post_categories WHERE POST_ID = ?`
-	DeletePostlikeQuery = `DELETE FROM Post_likes WHERE POST_ID = ?`
+	DeletePostQuery        = `DELETE FROM POSTS WHERE POST_ID = ?`
+	DeletePostCatQuery     = `DELETE FROM post_categories WHERE POST_ID = ?`
+	DeletePostlikeQuery    = `DELETE FROM Post_likes WHERE POST_ID = ?`
 	DeleteCommentlikeQuery = `DELETE FROM Comment_likes WHERE COMMENT_ID = ?`
 	DeletePostcommentQuery = `DELETE FROM Comments WHERE POST_ID = ?`
-	CommentIDQuery = `SELECT comment_id  FROM comments WHERE POST_ID = ?`
+	CommentIDQuery         = `SELECT comment_id  FROM comments WHERE POST_ID = ?`
 )
 
 // Select ---> Authentication and User Retrieval

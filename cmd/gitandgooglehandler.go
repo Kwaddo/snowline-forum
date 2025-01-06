@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
-
+	"strconv"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -205,13 +205,14 @@ func (app *app) SetGoogleUserInfo(w http.ResponseWriter, r *http.Request, access
 		email,
 		username,
 	)
+	role, _ := app.users.GetUserRoleByID(strconv.Itoa(id))
 	_, err = app.users.DB.Exec(sqlite.UpdateSimiliarSessions, id)
 	if err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Failed to create session")
 		return
 	}
-	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
+	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name, role)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")
@@ -299,13 +300,14 @@ func (app *app) SetGitHubUserInfo(w http.ResponseWriter, r *http.Request, access
 		email,
 		username,
 	)
+	role, _ := app.users.GetUserRoleByID(strconv.Itoa(id))
 	_, err = app.users.DB.Exec(sqlite.UpdateSimiliarSessions, id)
 	if err != nil {
 		log.Println(err)
 		ErrorHandle(w, 500, "Failed to create session")
 		return
 	}
-	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name)
+	_, err = app.users.DB.Exec(sqlite.InsertSession, sessionValue, id, expiresAt, name, role)
 	if err != nil {
 		log.Println("Error inserting session:", err)
 		ErrorHandle(w, 500, "Failed to create session")

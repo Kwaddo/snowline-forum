@@ -108,15 +108,6 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 	image, header, err := r.FormFile("image")
-	if err != nil {
-		if err.Error() == "http: no such file" {
-			http.Redirect(w, r, "/Profile-page", http.StatusFound)
-			return
-		}
-		ErrorHandle(w, 400, "Error retrieving the file")
-		log.Println(err)
-		return
-	}
 	if err == nil {
 		defer image.Close()
 		if header.Size > maxImageSize {
@@ -149,7 +140,13 @@ func (app *app) ProfilePictureHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		imagePath = dbimage
 	} else {
-		imagePath = ""
+		if err.Error() == "http: no such file" {
+			http.Redirect(w, r, "/Profile-page", http.StatusFound)
+			return
+		}
+		ErrorHandle(w, 400, "Error retrieving the file")
+		log.Println(err)
+		return
 	}
 	userID, err := app.users.GetUserID(r)
 	if err != nil {
